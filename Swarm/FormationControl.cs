@@ -30,6 +30,8 @@ using Org.BouncyCastle.Asn1.Pkcs;
 using netDxf.Collections;
 using static Org.BouncyCastle.Asn1.Cmp.Challenge;
 using Org.BouncyCastle.Ocsp;
+using static IronPython.Modules.PythonWeakRef;
+using NetTopologySuite.Utilities;
 
 
 namespace MissionPlanner.Swarm
@@ -955,6 +957,54 @@ namespace MissionPlanner.Swarm
         
         private async void AUTO_Early_Warning_Click(object sender, EventArgs e)
         {
+            //foreach (var port in MainV2.Comports)
+            //{
+            //    foreach (var mav in port.MAVlist)
+            //    {
+            //        // 1. 构造 SET_POSITION_TARGET_GLOBAL_INT 消息
+            //        var msg = new mavlink_set_position_target_global_int_t
+            //        {
+            //            time_boot_ms = (uint)Environment.TickCount, // 当前时间戳
+            //            coordinate_frame = (byte)MAV_FRAME.GLOBAL_RELATIVE_ALT_INT, // 使用相对海拔的全局坐标系
+            //            lat_int = (int)(mav.cs.lat * 1e7), // 纬度（例如 30.0 度，转换为 int）
+            //            lon_int = (int)(mav.cs.lng * 1e7), // 经度（例如 120.0 度，转换为 int）
+            //            alt = 100, // 相对高度（米）
+
+            //            vx = 0, // 忽略 x 方向速度
+            //            vy = 0, // 忽略 y 方向速度
+            //            vz = 0, // 忽略 z 方向速度
+
+            //            afx = 0, // 忽略 x 方向加速度
+            //            afy = 0, // 忽略 y 方向加速度
+            //            afz = 0, // 忽略 z 方向加速度
+
+            //            yaw = (float)(Math.PI / 2), // 偏航角（弧度，这里设置为 0，表示朝北）
+            //            yaw_rate = 0, // 忽略偏航角速率
+
+            //            type_mask = (ushort)(
+            //                POSITION_TARGET_TYPEMASK.X_IGNORE | // 忽略位置
+            //                POSITION_TARGET_TYPEMASK.Y_IGNORE |      // 忽略速度
+            //                POSITION_TARGET_TYPEMASK.Z_IGNORE |   // 忽略加速度
+            //                POSITION_TARGET_TYPEMASK.AX_IGNORE |  // 忽略偏航角速率
+            //                POSITION_TARGET_TYPEMASK.AY_IGNORE |
+            //                POSITION_TARGET_TYPEMASK.AZ_IGNORE |
+            //                POSITION_TARGET_TYPEMASK.YAW_RATE_IGNORE |
+            //                POSITION_TARGET_TYPEMASK.FORCE_SET
+            //            ),
+
+            //            target_system = mav.sysid,
+            //            target_component = mav.compid
+            //        };
+            //        await Task.Run(() =>
+            //        {
+            //            this.Invoke((MethodInvoker)delegate {
+            //                MainV2.comPort.generatePacket(
+            //                    (byte)MAVLINK_MSG_ID.SET_POSITION_TARGET_GLOBAL_INT,
+            //                    msg, mav.sysid, mav.compid);
+            //            });
+            //        });
+            //    }
+            //}
             if (myButton7.Text == "自动预警")
             {
                 myButton7.Text = "关闭预警";
@@ -970,95 +1020,9 @@ namespace MissionPlanner.Swarm
                 cancellationTokenSource = new CancellationTokenSource();
 
 
-
-                //// 启动异步任务发送指令，不会卡住主线程
-                ////await updateUAVVXYZAsync();
-
-                //unconn_count = 0;
-
-                //while (isConnection) {
-                //    foreach (var port in MainV2.Comports)
-                //    {
-                //        foreach (var mav in port.MAVlist)
-
-                //        {
-
-                //            var currentTime = DateTime.Now;
-                //            var interval = (currentTime - mav.cs.lastdata1).TotalSeconds;
-                //            // 如果超过最大允许时间且未收到数据，则认为数据丢失
-                //            if (interval > 5)
-                //            {
-                //                uav_unconnection[mav.sysid - 1] = 1;
-                //                isConnection = false;
-                //                Console.WriteLine("正在检查连接...数据丢失警告...");
-
-                //            }
-                //            Console.WriteLine("线程正在执行..." + mav.cs.lastdata);
-
-                //            for (int i = 0; i < uav_unconnection.Length; i++)
-                //            {
-                //                int droneNumber = i + 1;
-                //                byte parameter = uav_unconnection[i];
-                //                Console.WriteLine($"uav {droneNumber} 号无人机 参数是 {parameter}");
-                //            }
-
-                //        }
-
-                //    }
-
-                //}
-
-                ////1.读取当前失恋无人机个数
-                //if (!isConnection)
-                //{
-
-                //    int a = 5;
-                //    int b = 0;
-                //    var drones = new List<Drone>();
-                //    foreach (var port in MainV2.Comports)
-                //    {
-                //        foreach (var mav in port.MAVlist)
-                //        {
-                //            if (mav == SwarmInterface.Leader)
-                //            {
-
-                //                f_yaw = mav.cs.yaw;
-
-                //            }
-
-
-                //        }
-                //    }
-                //    foreach (var port in MainV2.Comports)
-                //    {
-                //        foreach (var mav in port.MAVlist)
-                //        {
-
-                //            var vector = SwarmInterface.getOffsets(mav);
-                //            drones.Add(new Drone(mav.sysid + "", vector.x, vector.y, vector.y, 0));
-
-                //        }
-                //    }
-                //    var groups = DroneGrouping.按X轴分组(drones);
-
-                //    Console.WriteLine("按 X 轴分组结果：");
-                //    for (int i = 0; i < groups.Count; i++)
-                //    {
-                //        Console.WriteLine($"组 {i + 1}:");
-                //        foreach (var drone in groups[i])
-                //        {
-                //            drone.printDrone();
-                //        }
-                //    }
-
-
-                //    var groups_yaw = SplitByYaw(groups, f_yaw);
-
-
                 //    // 启动新任务并保存引用
                 currentTask = updateUAVVXYZAsync(cancellationTokenSource.Token);
-                //await currentTask; // 等待任务完成（可选）
-                //}
+
             }
             else
             {
@@ -1069,7 +1033,7 @@ namespace MissionPlanner.Swarm
                     //await currentTask;  // 等待任务完成
                 }
             }
-            
+
 
         }
         private async void setHomeHereToolStripMenuItem_Click(double lat, double lng,byte[] uav_unconnection)
@@ -1164,6 +1128,8 @@ namespace MissionPlanner.Swarm
                                 uav_unconnection[mav.sysid - 1] = 1;
                                 isConnection = false;
                                 Console.WriteLine("正在检查连接...数据丢失警告...");
+
+
                             }
 
                             Console.WriteLine("线程正在执行..." + mav.cs.lastdata);
@@ -1182,12 +1148,33 @@ namespace MissionPlanner.Swarm
                 }
             }, token);
 
-            // 如果因连接中断退出循环，则执行后续逻辑
-            if (!isConnection)
+           
+
+                    // 如果因连接中断退出循环，则执行后续逻辑
+             if (!isConnection)
             {
+
+                //foreach (var port in MainV2.Comports)
+                //{
+                //    foreach (var mav in port.MAVlist)
+                //    { 
+                        
+                //    }
+                //}
+
+
                 threadrun = false;
                 BUT_Start.Text = Strings.Start;
+                //foreach (var port in MainV2.Comports)
+                //{
+                //    foreach (var mav in port.MAVlist)
+                //    {
+                //        port.setMode(mav.sysid, mav.compid, "Brake");
+                //    }
+                //}
                 await HandleDroneGroupingAndFlightAsync(token);
+
+
             }
         }
 
@@ -1287,43 +1274,229 @@ namespace MissionPlanner.Swarm
                                     }
                                 }
                             }
-                            if (timeDifferenceSeconds < 5)
+
+                            /*******************方式二----start*****************************/
+                            double speed = 20.0;            // 期望速度 (m/s)
+
+                            if (timeDifferenceSeconds < 10)
                             {
-                               
+                                //Console.WriteLine("timeDifferenceSeconds < 10" );
                                 GlobalToBody(speedGlobal, yawAngle, yaw, out vx_body, out vy_body);
-                            }
-                            else if ( timeDifferenceSeconds >= 5 && timeDifferenceSeconds < 20)
-                            {
-                                //GlobalToBody(speedGlobal, yawAngle+time_date, yaw, out vx_body, out vy_body);
-                                GlobalToBody(speedGlobal, yawAngle + time_date, yaw, out vx_body, out vy_body);
+
+                                // 1. 构造 SET_POSITION_TARGET_GLOBAL_INT 消息
+                                var msg = new mavlink_set_position_target_global_int_t
+                                {
+                                    time_boot_ms = (uint)Environment.TickCount, // 当前时间戳
+                                    coordinate_frame = (byte)MAV_FRAME.GLOBAL_RELATIVE_ALT_INT, // 使用相对海拔的全局坐标系
+                                    lat_int = (int)(mav.cs.lat * 1e7), // 纬度（例如 30.0 度，转换为 int）
+                                    lon_int = (int)(mav.cs.lng * 1e7), // 经度（例如 120.0 度，转换为 int）
+                                    alt = mav.cs.alt, // 相对高度（米）
+                                    //vx = (float)2, // 北向速度
+                                    //vy = (float)2, // 东向速度
+                                    vx = (float)vx_body, // 北向速度
+                                    vy = (float)vy_body, // 东向速度
+                                    vz = 0, // 忽略 z 方向速度
+
+                                    afx = 0, // 忽略 x 方向加速度
+                                    afy = 0, // 忽略 y 方向加速度
+                                    afz = 0, // 忽略 z 方向加速度
+
+                                    //yaw = (float)(Math.PI / 2), // 偏航角（弧度，这里设置为 0，表示朝北）
+                                    yaw = (float)(yawAngle * Math.PI / 180.0), // 偏航角（弧度，这里设置为 0，表示朝北）
+                                    yaw_rate = 0, // 忽略偏航角速率
+
+                                    type_mask = (ushort)(
+                                        POSITION_TARGET_TYPEMASK.X_IGNORE | // 忽略位置
+                                        POSITION_TARGET_TYPEMASK.Y_IGNORE |      // 忽略速度
+                                        POSITION_TARGET_TYPEMASK.Z_IGNORE |   // 忽略加速度
+                                        POSITION_TARGET_TYPEMASK.AX_IGNORE |  // 忽略偏航角速率
+                                        POSITION_TARGET_TYPEMASK.AY_IGNORE |
+                                        POSITION_TARGET_TYPEMASK.AZ_IGNORE |
+                                        POSITION_TARGET_TYPEMASK.YAW_RATE_IGNORE |
+                                        POSITION_TARGET_TYPEMASK.FORCE_SET
+                                    ),
+
+                                    target_system = mav.sysid,
+                                    target_component = mav.compid
+                                };
+                                await Task.Run(() =>
+                                {
+                                    this.Invoke((MethodInvoker)delegate
+                                    {
+                                        MainV2.comPort.generatePacket(
+                                            (byte)MAVLINK_MSG_ID.SET_POSITION_TARGET_GLOBAL_INT,
+                                            msg, mav.sysid, mav.compid);
+                                    });
+                                });
 
                             }
-                            else
+                            else if (timeDifferenceSeconds > 10 && timeDifferenceSeconds < 30)
                             {
+                                Console.WriteLine("timeDifferenceSeconds > 20 && timeDifferenceSeconds < 30");
+                                //GlobalToBody(speedGlobal, 0, mav.cs.yaw, out vx_body, out vy_body);
+
+                                // 1. 构造 SET_POSITION_TARGET_GLOBAL_INT 消息
+                                var msg = new mavlink_set_position_target_global_int_t
+                                {
+                                    time_boot_ms = (uint)Environment.TickCount, // 当前时间戳
+                                    coordinate_frame = (byte)MAV_FRAME.GLOBAL_RELATIVE_ALT_INT, // 使用相对海拔的全局坐标系
+                                    lat_int = (int)(mav.cs.lat * 1e7), // 纬度（例如 30.0 度，转换为 int）
+                                    lon_int = (int)(mav.cs.lng * 1e7), // 经度（例如 120.0 度，转换为 int）
+                                    alt = mav.cs.alt, // 相对高度（米）
+                                    //vx = (float)2, // 北向速度
+                                    //vy = (float)2, // 东向速度
+                                    vx = (float)5, // 北向速度
+                                    vy = (float)0, // 东向速度
+                                    vz = 0, // 忽略 z 方向速度
+
+                                    afx = 0, // 忽略 x 方向加速度
+                                    afy = 0, // 忽略 y 方向加速度
+                                    afz = 0, // 忽略 z 方向加速度
+
+                                    //yaw = (float)(Math.PI / 2), // 偏航角（弧度，这里设置为 0，表示朝北）
+                                    yaw = (float)0, // 偏航角（弧度，这里设置为 0，表示朝北）
+                                    yaw_rate = 0, // 忽略偏航角速率
+
+                                    type_mask = (ushort)(
+                                        POSITION_TARGET_TYPEMASK.X_IGNORE | // 忽略位置
+                                        POSITION_TARGET_TYPEMASK.Y_IGNORE |      // 忽略速度
+                                        POSITION_TARGET_TYPEMASK.Z_IGNORE |   // 忽略加速度
+                                        POSITION_TARGET_TYPEMASK.AX_IGNORE |  // 忽略偏航角速率
+                                        POSITION_TARGET_TYPEMASK.AY_IGNORE |
+                                        POSITION_TARGET_TYPEMASK.AZ_IGNORE |
+                                        POSITION_TARGET_TYPEMASK.YAW_RATE_IGNORE |
+                                        POSITION_TARGET_TYPEMASK.FORCE_SET
+                                    ),
+
+                                    target_system = mav.sysid,
+                                    target_component = mav.compid
+                                };
+                                await Task.Run(() =>
+                                {
+                                    this.Invoke((MethodInvoker)delegate
+                                    {
+                                        MainV2.comPort.generatePacket(
+                                            (byte)MAVLINK_MSG_ID.SET_POSITION_TARGET_GLOBAL_INT,
+                                            msg, mav.sysid, mav.compid);
+                                    });
+                                });
+
+                                //var msg1 = new mavlink_set_position_target_local_ned_t
+                                //{
+                                //    time_boot_ms = (uint)Environment.TickCount,
+                                //    coordinate_frame = (byte)MAV_FRAME.BODY_NED, // 使用机体坐标系
+
+                                //    // 位置（只设置）
+                                //    x = 0,
+                                //    y = 0,
+                                //    z = 0,
+
+                                //    // 速度（只设置 vx = 0.5 m/s）（被忽略）
+                                //    vx = 5.0f,
+                                //    vy = 0.0f,
+                                //    vz = 0.0f,
+
+                                //    // 加速度（被忽略）
+                                //    afx = 0,
+                                //    afy = 0,
+                                //    afz = 0,
+
+                                //    // 偏航角和偏航速率（被忽略）
+                                //    yaw = 0,
+                                //    yaw_rate = 0,
+
+                                //    // 掩码：忽略位置、加速度、yaw、yaw_rate
+                                //    type_mask = (ushort)(
+                                //        POSITION_TARGET_TYPEMASK.X_IGNORE |
+                                //        POSITION_TARGET_TYPEMASK.Y_IGNORE |
+                                //        POSITION_TARGET_TYPEMASK.Z_IGNORE |
+                                //        POSITION_TARGET_TYPEMASK.AX_IGNORE |
+                                //        POSITION_TARGET_TYPEMASK.AY_IGNORE |
+                                //        POSITION_TARGET_TYPEMASK.AZ_IGNORE |
+                                //        POSITION_TARGET_TYPEMASK.FORCE_SET |
+                                //        POSITION_TARGET_TYPEMASK.YAW_IGNORE |
+                                //        POSITION_TARGET_TYPEMASK.YAW_RATE_IGNORE
+                                //    ),
+
+                                //    target_system = mav.sysid,
+                                //    target_component = mav.compid
+                                //};
+                                //await Task.Run(() =>
+                                //{
+                                //    this.Invoke((MethodInvoker)delegate
+                                //    {
+                                //        MainV2.comPort.generatePacket(
+                                //            (byte)MAVLINK_MSG_ID.SET_POSITION_TARGET_LOCAL_NED,
+                                //            msg1, mav.sysid, mav.compid);
+                                //    });
+                                //});
+                            }
+                            else {
                                 // 返回原点（需安全访问 UI 资源）
                                 await Task.Run(() =>
                                 {
-                                    this.Invoke((MethodInvoker)delegate {
+                                    this.Invoke((MethodInvoker)delegate
+                                    {
                                         setHomeHereToolStripMenuItem_Click(18.4291102, 109.8592257, uav_unconnection);
                                     });
                                 });
                                 return;
-                            }
-                            // 构造控制指令
-                            mavlink_set_position_target_local_ned_t req = new mavlink_set_position_target_local_ned_t(
-                                (uint)Environment.TickCount, 0, 0, 0,
-                                vx_body, vy_body, vz_body, 0, 0, 0, 0, 0,
-                                2503, mav.sysid, mav.compid, 1);
-                            // 发送指令（需安全访问 UI 资源）
-                            await Task.Run(() =>
-                            {
-                                this.Invoke((MethodInvoker)delegate {
-                                    MainV2.comPort.generatePacket(
-                                        (byte)MAVLINK_MSG_ID.SET_POSITION_TARGET_LOCAL_NED,
-                                        req, mav.sysid, mav.compid);
-                                });
-                            });
 
+                            }
+                            //else 
+                            //{
+
+                            //    // 返回原点（需安全访问 UI 资源）
+                            //    await Task.Run(() =>
+                            //    {
+                            //        this.Invoke((MethodInvoker)delegate
+                            //        {
+                            //            setHomeHereToolStripMenuItem_Click(18.4291102, 109.8592257, uav_unconnection);
+                            //        });
+                            //    });
+                            //    return;
+                            //}
+                            /*******************方式二----end*****************************/
+
+                            /*******************方式一----start*****************************/
+                            //if (timeDifferenceSeconds < 5)
+                            //{
+
+                            //    GlobalToBody(speedGlobal, yawAngle, yaw, out vx_body, out vy_body);
+                            //    vz_body = -mav.sysid;
+                            //}
+                            //else if ( timeDifferenceSeconds >= 5 && timeDifferenceSeconds < 20)
+                            //{
+                            //    //GlobalToBody(speedGlobal, yawAngle+time_date, yaw, out vx_body, out vy_body);
+                            //    GlobalToBody(speedGlobal, yawAngle + time_date, yaw, out vx_body, out vy_body);
+
+                            //}
+                            //else
+                            //{
+                            //    // 返回原点（需安全访问 UI 资源）
+                            //    await Task.Run(() =>
+                            //    {
+                            //        this.Invoke((MethodInvoker)delegate {
+                            //            setHomeHereToolStripMenuItem_Click(18.4291102, 109.8592257, uav_unconnection);
+                            //        });
+                            //    });
+                            //    return;
+                            //}
+                            //// 构造控制指令
+                            //mavlink_set_position_target_local_ned_t req = new mavlink_set_position_target_local_ned_t(
+                            //    (uint)Environment.TickCount, 0, 1.52f, 1f,
+                            //    vx_body, vy_body, vz_body, 0, 0, 0, 0, 0,
+                            //    2503, mav.sysid, mav.compid, 1);
+                            //// 发送指令（需安全访问 UI 资源）
+                            //await Task.Run(() =>
+                            //{
+                            //    this.Invoke((MethodInvoker)delegate {
+                            //        MainV2.comPort.generatePacket(
+                            //            (byte)MAVLINK_MSG_ID.SET_POSITION_TARGET_LOCAL_NED,
+                            //            req, mav.sysid, mav.compid);
+                            //    });
+                            //});
+                            /*******************方式二----end*****************************/
                         }
                     }
                    
