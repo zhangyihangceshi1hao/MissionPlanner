@@ -32,6 +32,7 @@ using static Org.BouncyCastle.Asn1.Cmp.Challenge;
 using Org.BouncyCastle.Ocsp;
 using static IronPython.Modules.PythonWeakRef;
 using NetTopologySuite.Utilities;
+using System.Timers;
 
 
 namespace MissionPlanner.Swarm
@@ -84,8 +85,22 @@ namespace MissionPlanner.Swarm
             MessageBox.Show("this is beta, use at own risk");
 
             MissionPlanner.Utilities.Tracking.AddPage(this.GetType().ToString(), this.Text);
-        }
 
+            countdown.Elapsed += sendheartbeat;
+            textBox_uav1.Text = "0,0,0";
+            textBox_uav2.Text = "0,0,0";
+            textBox_uav3.Text = "0,0,0";
+            textBox_uav4.Text = "0,0,0";
+            textBox_uav5.Text = "0,0,0";
+            textBox_uav6.Text = "0,0,0";
+            textBox_uav7.Text = "0,0,0";
+            textBox_uav8.Text = "0,0,0";
+            textBox_uav9.Text = "0,0,0";
+            textBox_uav10.Text = "0,0,0";
+            textBox_uav11.Text = "0,0,0";
+            textBox_uav12.Text = "0,0,0";
+        }
+        System.Timers.Timer countdown = new System.Timers.Timer { Interval = 1000, AutoReset = true };
         void FollowLeaderControl_MouseWheel(object sender, MouseEventArgs e)
         {
             if (e.Delta < 0)
@@ -335,7 +350,7 @@ namespace MissionPlanner.Swarm
 
                     Vector3 offset = getOffsetFromLeader(((Formation)SwarmInterface).getLeader(), mav);
 
-                    if (Math.Abs(offset.x) < 200 && Math.Abs(offset.y) < 200)
+                    if (Math.Abs(offset.x) < 1000 && Math.Abs(offset.y) < 1000)
                     {
                         //此处是控制页面的icon位置
 
@@ -538,7 +553,7 @@ namespace MissionPlanner.Swarm
 
                     Vector3 offset = getOffsetFromLeader(((Formation)SwarmInterface).getLeader(), mav);
 
-                    if (Math.Abs(offset.x) < 200 && Math.Abs(offset.y) < 200)
+                    if (Math.Abs(offset.x) < 1000 && Math.Abs(offset.y) < 1000)
                     {
                         //此处是控制页面的icon位置
                         //grid1.UpdateIcon(mav, (float)offset.y, (float)offset.x, (float)offset.z, true);
@@ -841,18 +856,19 @@ namespace MissionPlanner.Swarm
             public double X { get; }
             public double Y { get; }
             public double Yaw { get; set; } // 偏航角
-
+            public bool IsAlive { get; set; } // 是否存活（用于判断是否遇击）
             public double ChangeYaw { get; set; } //改变的偏航角
-            public Drone(string id, double x, double y, double yaw, double changeYaw)
+            public Drone(string id, double x, double y, double yaw, bool isAlive,double changeYaw)
             {
                 Id = id;
                 X = x;
                 Y = y;
                 Yaw = yaw;
+                IsAlive = isAlive;
                 ChangeYaw = changeYaw;
             }
             public void printDrone() {
-                Console.WriteLine("drone id="+Id + "X="+X+"Y="+Y+"YAW="+Yaw+ "ChangeYaw"+ ChangeYaw);
+                Console.WriteLine("drone id="+Id + "X="+X+"Y="+Y+"YAW="+Yaw+ "IsAlive=" + IsAlive + "ChangeYaw" + ChangeYaw);
             }
         }
 
@@ -861,42 +877,118 @@ namespace MissionPlanner.Swarm
         /// </summary>
         public static class DroneGrouping
         {
-            public static List<List<Drone>> 按X轴分组(List<Drone> drones)
+            public static List<List<Drone>> 按X轴分组(List<Drone> drones, int minClusterSize = 3)
             {
+                
+
+                var groups = new List<List<Drone>>();
                 if (drones == null || drones.Count < 3)
                     return new List<List<Drone>>();
 
                 // 按 X 轴升序排序
-                var sortedDrones = drones.OrderBy(d => d.X).ToList();
-                int n = sortedDrones.Count;
+                //var sortedDrones = drones.OrderBy(d => d.X).ToList();
+                //int n = sortedDrones.Count;
 
+
+                int aliveDroneCount = drones.Count(d => d.IsAlive == true);//统计存活的个数
+                List<Drone> aliveSortedDrones = drones
+                                                .OrderBy(d => d.X)                // 先按 X 轴升序排序
+                                                .Where(d => d.IsAlive)            // 再筛选出存活的无人机
+                                                .ToList();                        // 最后转成 List
+
+                List<Drone> deadDrones = drones .Where(d => d.IsAlive == false)  // 筛选出死亡的无人机
+                                        .ToList();                   // 转成 List
                 // 确定分组数 k
                 int k;
-                if (n >= 9)
-                    k = 3;
-                else if (n >= 6)
-                    k = 2;
-                else
-                    k = 1;
-
-                int baseSize = n / k;
-                int rem = n % k;
-
-                var groups = new List<List<Drone>>();
-                int start = 0;
-
-                for (int i = 0; i < k; i++)
+                if (aliveDroneCount >= 9)
                 {
-                    int currentSize = baseSize + (i < rem ? 1 : 0);
-                    var group = sortedDrones.Skip(start).Take(currentSize).ToList();
-                    groups.Add(group);
-                    start += currentSize;
-                }
+                    k = 3;
 
+                    int rem = aliveDroneCount % k;
+                    int baseSize = (aliveDroneCount - rem) / k;
+                    if (rem == 1)
+                    {
+                        //将drones分组依次是：baseSize+1,baseSize,baseSize,如果依次添加各组IsAlive==false也存入groups，但是个数要从后面下一位补一个存入groups
+                        List<Drone> firstThreeDrones = aliveSortedDrones.Take(baseSize + 1).ToList();
+                        groups.Add(firstThreeDrones);
+                        List<Drone> secondThreeDrones = aliveSortedDrones.Skip(baseSize + 1).Take(baseSize).ToList();
+                        groups.Add(secondThreeDrones);
+                        List<Drone> thirdThreeDrones = aliveSortedDrones.Skip(2*baseSize + 1).Take(baseSize).ToList();
+                        thirdThreeDrones.AddRange(deadDrones);
+                        groups.Add(thirdThreeDrones);
+
+                    }
+                    else if (rem == 2)
+                    {
+                        //将drones分组依次是：baseSize + 1,baseSize+1,baseSize,如果依次添加各组IsAlive==false也存入groups，但是个数要从后面下一位补一个存入groups
+                        //将drones分组依次是：baseSize+1,baseSize,baseSize,如果依次添加各组IsAlive==false也存入groups，但是个数要从后面下一位补一个存入groups
+                        List<Drone> firstThreeDrones = aliveSortedDrones.Take(baseSize + 1).ToList();
+                        groups.Add(firstThreeDrones);
+                        List<Drone> secondThreeDrones = aliveSortedDrones.Skip(baseSize + 1).Take(baseSize+1).ToList();
+                        groups.Add(secondThreeDrones);
+                        List<Drone> thirdThreeDrones = aliveSortedDrones.Skip(2*baseSize + 2).Take(baseSize).ToList();
+                        thirdThreeDrones.AddRange(deadDrones);
+                        groups.Add(thirdThreeDrones);
+                    }
+                    else
+                    {
+                        //将drones分组依次是：baseSize,baseSize,baseSize,如果依次添加各组IsAlive==false也存入groups，但是个数要从后面下一位补一个存入groups
+                        List<Drone> firstThreeDrones = aliveSortedDrones.Take(baseSize).ToList();
+                        groups.Add(firstThreeDrones);
+                        List<Drone> secondThreeDrones = aliveSortedDrones.Skip(baseSize).Take(baseSize).ToList();
+                        groups.Add(secondThreeDrones);
+                        List<Drone> thirdThreeDrones = aliveSortedDrones.Skip(2 * baseSize).Take(baseSize).ToList();
+                        thirdThreeDrones.AddRange(deadDrones);
+                        groups.Add(thirdThreeDrones);
+                    }
+                }
+                else if (aliveDroneCount >= 6)
+                {
+                    k = 2;
+                    int rem = aliveDroneCount % k;
+                    int baseSize = (aliveDroneCount - rem) / k;
+                    if (rem == 1)
+                    {
+                        //将drones分组依次是：baseSize+1,baseSize
+                        List<Drone> firstThreeDrones = aliveSortedDrones.Take(baseSize + 1).ToList();
+                        groups.Add(firstThreeDrones);
+                        List<Drone> secondThreeDrones = aliveSortedDrones.Skip(baseSize + 1).Take(baseSize).ToList();
+                        secondThreeDrones.AddRange(deadDrones);
+                        groups.Add(secondThreeDrones);
+                    }
+                    else {
+                        //将drones分组依次是：baseSize,baseSize
+                        List<Drone> firstThreeDrones = aliveSortedDrones.Take(baseSize ).ToList();
+                        groups.Add(firstThreeDrones);
+                        List<Drone> secondThreeDrones = aliveSortedDrones.Skip(baseSize ).Take(baseSize).ToList();
+                        secondThreeDrones.AddRange(deadDrones);
+                        groups.Add(secondThreeDrones);
+                    }
+                }
+                else
+                {
+                    k = 1;
+                    
+                    groups.Add(drones);
+                }
                 return groups;
+
+
+                //    var groups = new List<List<Drone>>();
+                //    int start = 0;
+
+                //    for (int i = 0; i < k; i++)
+                //    {
+                //        int currentSize = baseSize + (i < rem ? 1 : 0);
+                //        var group = sortedDrones.Skip(start).Take(currentSize).ToList();
+                //        groups.Add(group);
+                //        start += currentSize;
+                //    }
+
+                //    return groups;
+                //}
             }
         }
-
       
 
         public static List<List<Drone>> SplitByYaw(List<List<Drone>> groups,float f_yaw)
@@ -1007,6 +1099,7 @@ namespace MissionPlanner.Swarm
             //}
             if (myButton7.Text == "自动预警")
             {
+                countdown.Start();
                 myButton7.Text = "关闭预警";
 
                 // 清理旧任务
@@ -1026,6 +1119,7 @@ namespace MissionPlanner.Swarm
             }
             else
             {
+                countdown.Stop();
                 myButton7.Text = "自动预警";
                 if (cancellationTokenSource != null && !cancellationTokenSource.IsCancellationRequested)
                 {
@@ -1036,9 +1130,153 @@ namespace MissionPlanner.Swarm
 
 
         }
-        private async void setHomeHereToolStripMenuItem_Click(double lat, double lng,byte[] uav_unconnection)
+        Dictionary<int, updatehome_lat> home_point_list = new Dictionary<int, updatehome_lat>();
+        private void Checkpoint_Click(object sender, EventArgs e)
         {
-            var alt = srtm.getAltitude(lat, lng);
+            try
+            {
+                string[] parts1 = textBox_uav1.Text.Split(',');
+                string[] parts2 = textBox_uav2.Text.Split(',');
+                string[] parts3 = textBox_uav3.Text.Split(',');
+                string[] parts4 = textBox_uav4.Text.Split(',');
+                string[] parts5 = textBox_uav5.Text.Split(',');
+                string[] parts6 = textBox_uav6.Text.Split(',');
+                string[] parts7 = textBox_uav7.Text.Split(',');
+                string[] parts8 = textBox_uav8.Text.Split(',');
+                string[] parts9 = textBox_uav9.Text.Split(',');
+                string[] parts10 = textBox_uav10.Text.Split(',');
+                string[] parts11 = textBox_uav11.Text.Split(',');
+                string[] parts12 = textBox_uav12.Text.Split(',');
+
+                // 转换为 double 数组
+                double[] numbers1 = parts1.Select(p => double.Parse(p)).ToArray();
+                double[] numbers2 = parts2.Select(p => double.Parse(p)).ToArray();
+                double[] numbers3 = parts3.Select(p => double.Parse(p)).ToArray();
+                double[] numbers4 = parts4.Select(p => double.Parse(p)).ToArray();
+                double[] numbers5 = parts5.Select(p => double.Parse(p)).ToArray();
+                double[] numbers6 = parts6.Select(p => double.Parse(p)).ToArray();
+                double[] numbers7 = parts7.Select(p => double.Parse(p)).ToArray();
+                double[] numbers8 = parts8.Select(p => double.Parse(p)).ToArray();
+                double[] numbers9 = parts9.Select(p => double.Parse(p)).ToArray();
+                double[] numbers10 = parts10.Select(p => double.Parse(p)).ToArray();
+                double[] numbers11 = parts11.Select(p => double.Parse(p)).ToArray();
+                double[] numbers12 = parts12.Select(p => double.Parse(p)).ToArray();
+
+
+
+                //List<updatehome_lat> home_point = new List<updatehome_lat>();
+               
+                home_point_list[1] = new updatehome_lat { x = numbers1[0], y = numbers1[1], z = numbers1[2] };
+                home_point_list[2] = new updatehome_lat { x = numbers2[0], y = numbers2[1], z = numbers2[2] };
+                home_point_list[3] = new updatehome_lat { x = numbers3[0], y = numbers3[1], z = numbers3[2] };
+                home_point_list[4] = new updatehome_lat { x = numbers4[0], y = numbers4[1], z = numbers4[2] };
+                home_point_list[5] = new updatehome_lat { x = numbers5[0], y = numbers5[1], z = numbers5[2] };
+                home_point_list[6] = new updatehome_lat { x = numbers6[0], y = numbers6[1], z = numbers6[2] };
+                home_point_list[7] = new updatehome_lat { x = numbers7[0], y = numbers7[1], z = numbers7[2] };
+                home_point_list[8] = new updatehome_lat { x = numbers8[0], y = numbers8[1], z = numbers8[2] };
+                home_point_list[9] = new updatehome_lat { x = numbers9[0], y = numbers9[1], z = numbers9[2] };
+                home_point_list[10] = new updatehome_lat { x = numbers10[0], y = numbers10[1], z = numbers10[2] };
+                home_point_list[11] = new updatehome_lat { x = numbers11[0], y = numbers11[1], z = numbers11[2] };
+                home_point_list[12] = new updatehome_lat { x = numbers12[0], y = numbers12[1], z = numbers12[2] };
+            }
+            catch {
+
+                MessageBox.Show("请认真检查坐标信息！！！" );
+
+            }
+            
+        }
+        public struct updatehome_lat
+        { 
+            public double x; 
+            public double y; 
+            public double z;
+        
+        }
+            private async void setHomeHereToolStripMenuItem_Click(double lat, double lng,byte[] uav_unconnection)
+        {
+
+            //textBox_uav1.Text = "0,0,0";
+            //textBox_uav2.Text = "0,0,0";
+            //textBox_uav3.Text = "0,0,0";
+            //textBox_uav4.Text = "0,0,0";
+            //textBox_uav5.Text = "0,0,0";
+            //textBox_uav6.Text = "0,0,0";
+            //textBox_uav7.Text = "0,0,0";
+            //textBox_uav8.Text = "0,0,0";
+            //textBox_uav9.Text = "0,0,0";
+            //textBox_uav10.Text = "0,0,0";
+            //textBox_uav11.Text = "0,0,0";
+            //textBox_uav12.Text = "0,0,0";
+            //string[] parts1 = textBox_uav1.Text.Split(',');
+            //string[] parts2 = textBox_uav2.Text.Split(',');
+            //string[] parts3 = textBox_uav3.Text.Split(',');
+            //string[] parts4 = textBox_uav4.Text.Split(',');
+            //string[] parts5 = textBox_uav5.Text.Split(',');
+            //string[] parts6 = textBox_uav6.Text.Split(',');
+            //string[] parts7 = textBox_uav7.Text.Split(',');
+            //string[] parts8 = textBox_uav8.Text.Split(',');
+            //string[] parts9 = textBox_uav9.Text.Split(',');
+            //string[] parts10 = textBox_uav10.Text.Split(',');
+            //string[] parts11 = textBox_uav11.Text.Split(',');
+            //string[] parts12 = textBox_uav12.Text.Split(',');
+
+            //// 转换为 double 数组
+            //double[] numbers1 = parts1.Select(p => double.Parse(p)).ToArray();
+            //double[] numbers2 = parts2.Select(p => double.Parse(p)).ToArray();
+            //double[] numbers3 = parts3.Select(p => double.Parse(p)).ToArray();
+            //double[] numbers4 = parts4.Select(p => double.Parse(p)).ToArray();
+            //double[] numbers5 = parts5.Select(p => double.Parse(p)).ToArray();
+            //double[] numbers6 = parts6.Select(p => double.Parse(p)).ToArray();
+            //double[] numbers7 = parts7.Select(p => double.Parse(p)).ToArray();
+            //double[] numbers8 = parts8.Select(p => double.Parse(p)).ToArray();
+            //double[] numbers9 = parts9.Select(p => double.Parse(p)).ToArray();
+            //double[] numbers10 = parts10.Select(p => double.Parse(p)).ToArray();
+            //double[] numbers11 = parts11.Select(p => double.Parse(p)).ToArray();
+            //double[] numbers12 = parts12.Select(p => double.Parse(p)).ToArray();
+
+
+
+            ////List<updatehome_lat> home_point = new List<updatehome_lat>();
+            //Dictionary<int, updatehome_lat> home_point_list = new Dictionary<int, updatehome_lat>();
+            //home_point_list[1] = new updatehome_lat { x = numbers1[0],y = numbers1[1],z = numbers1[2] };
+            //home_point_list[2] = new updatehome_lat { x = numbers1[0],y = numbers1[1],z = numbers1[2] };
+            //home_point_list[3] = new updatehome_lat { x = numbers1[0],y = numbers1[1],z = numbers1[2] };
+            //home_point_list[4] = new updatehome_lat { x = numbers1[0],y = numbers1[1],z = numbers1[2] };
+            //home_point_list[5] = new updatehome_lat { x = numbers1[0],y = numbers1[1],z = numbers1[2] };
+            //home_point_list[6] = new updatehome_lat { x = numbers1[0],y = numbers1[1],z = numbers1[2] };
+            //home_point_list[7] = new updatehome_lat { x = numbers1[0],y = numbers1[1],z = numbers1[2] };
+            //home_point_list[8] = new updatehome_lat { x = numbers1[0],y = numbers1[1],z = numbers1[2] };
+            //home_point_list[9] = new updatehome_lat { x = numbers1[0],y = numbers1[1],z = numbers1[2] };
+            //home_point_list[10] = new updatehome_lat { x = numbers1[0],y = numbers1[1],z = numbers1[2] };
+            //home_point_list[11] = new updatehome_lat { x = numbers1[0],y = numbers1[1],z = numbers1[2] };
+            //home_point_list[12] = new updatehome_lat { x = numbers1[0],y = numbers1[1],z = numbers1[2] };
+
+            //await Task.Run(() =>
+            //{
+            //    this.Invoke((MethodInvoker)delegate {
+            //        foreach (var port in MainV2.Comports)
+            //        {
+            //            foreach (var mav in port.MAVlist)
+            //            {
+            //                yawDict[mav.sysid] = mav.cs.yaw;
+            //            }
+            //        }
+            //    });
+            //});
+            //await Task.Run(() =>
+            //{
+            //    this.Invoke((MethodInvoker)delegate {
+            //        foreach (var port in MainV2.Comports)
+            //        {
+            //            foreach (var mav in port.MAVlist)
+            //            {
+            //                yawDict[mav.sysid] = mav.cs.yaw;
+            //            }
+            //        }
+            //    });
+            //});
+            //var alt = srtm.getAltitude(lat, lng);
             foreach (var port in MainV2.Comports)
             {
                 foreach (var mav in port.MAVlist)
@@ -1058,10 +1296,13 @@ namespace MissionPlanner.Swarm
                     //        "Are you sure?", CustomMessageBox.MessageBoxButtons.OKCancel) ==
                     //    CustomMessageBox.DialogResult.OK)
                     //{
+
+                    
+
                     MainV2.comPort.doCommandInt((byte)mav.sysid,
                         (byte)mav.compid,
-                        MAVLink.MAV_CMD.DO_SET_HOME, 0, 0, 0, 0, (int)(lat * 1e7),
-                        (int)(lng * 1e7), (float)(alt.alt));
+                        MAVLink.MAV_CMD.DO_SET_HOME, 0, 0, 0, 0, (int)(home_point_list[mav.sysid].x * 1e7),
+                        (int)(home_point_list[mav.sysid].y * 1e7), (float)(mav.cs.lat));
 
 
                     port.setMode(mav.sysid, mav.compid, "RTL");
@@ -1069,7 +1310,7 @@ namespace MissionPlanner.Swarm
             }
             //try
             //{
-            
+
             //}
 
             //await MainV2.comPort.getHomePositionAsync((byte)MainV2.comPort.sysidcurrent,
@@ -1080,10 +1321,25 @@ namespace MissionPlanner.Swarm
             //    CustomMessageBox.Show(Strings.CommandFailed, Strings.ERROR);
             //}
 
-           
 
+            //18.4325505,109.8592043,80
         }
-        void GlobalToBody(double speedGlobal, double angleGlobal, float yawAngle, out float vx_body, out float vy_body)
+
+        private void sendheartbeat(object sender, ElapsedEventArgs e)
+        {
+            foreach (var port in MainV2.Comports)
+            {
+                foreach (var mav in port.MAVlist)
+                {
+                    if (Math.Abs(mav.cs.lat - home_point_list[mav.sysid].x) < 0.0001&& Math.Abs(mav.cs.lng - home_point_list[mav.sysid].y) < 0.0001 && mav.cs.altasl <= (home_point_list[mav.sysid].z+20)) {
+                        port.setMode(mav.sysid, mav.compid, "Land");
+
+                    }
+                
+                }
+            }
+        }
+         void GlobalToBody(double speedGlobal, double angleGlobal, float yawAngle, out float vx_body, out float vy_body)
         {
 
             // 计算全局坐标系中的速度分量
@@ -1106,6 +1362,8 @@ namespace MissionPlanner.Swarm
         }
         private static int time_cout;
 
+
+        /********实时监听无人机的状态，如果有一个无人机的心跳包断开，根据时间与上一时间只差来判断是否断链**********/
         async Task updateUAVVXYZAsync(CancellationToken token)
         {
             
@@ -1210,7 +1468,7 @@ namespace MissionPlanner.Swarm
                         foreach (var mav in port.MAVlist)
                         {
                             var vector = SwarmInterface.getOffsets(mav);
-                            drones_1.Add(new Drone(mav.sysid + "", vector.x, vector.y, vector.z, 0));
+                            drones_1.Add(new Drone(mav.sysid + "", vector.x, vector.y, vector.z, uav_unconnection[mav.sysid-1]==0, 0));
                         }
                     }
                 });
@@ -1225,7 +1483,7 @@ namespace MissionPlanner.Swarm
                 timer1.Start();
             });
             // 给定条件
-            double speedGlobal = 20.0; // 飞行器在全局坐标系下的速度，单位 m/s
+            double speedGlobal = 10.0; // 飞行器在全局坐标系下的速度，单位 m/s
             double angleGlobal = 0.0; // 飞行器在全局坐标系下的方向角度（度），即东北方向
             // 飞行控制主循环
             try
@@ -1276,7 +1534,7 @@ namespace MissionPlanner.Swarm
                             }
 
                             /*******************方式二----start*****************************/
-                            double speed = 20.0;            // 期望速度 (m/s)
+                            double speed = 10.0;            // 期望速度 (m/s)
 
                             if (timeDifferenceSeconds < 10)
                             {
@@ -1330,7 +1588,7 @@ namespace MissionPlanner.Swarm
                                 });
 
                             }
-                            else if (timeDifferenceSeconds > 10 && timeDifferenceSeconds < 30)
+                            else if (timeDifferenceSeconds > 10 && timeDifferenceSeconds < 20)
                             {
                                 Console.WriteLine("timeDifferenceSeconds > 20 && timeDifferenceSeconds < 30");
                                 //GlobalToBody(speedGlobal, 0, mav.cs.yaw, out vx_body, out vy_body);
@@ -1728,6 +1986,8 @@ private static Random rand = new Random();  // 随机数生成器
             int randomValue = rand.Next(-30, 30);
             time_date = randomValue;
         }
+
+        
     }
 }
 
