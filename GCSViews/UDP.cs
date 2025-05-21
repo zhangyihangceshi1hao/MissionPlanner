@@ -31,7 +31,7 @@ namespace MissionPlanner.GCSViews
             {
                 is_true = true;
                 endPoint = new IPEndPoint(IPAddress.Parse(UDP_IP), UDP_PORT);
-                udpClient = new UdpClient(16000);
+                udpClient = new UdpClient(16007);
                 // 启动发送数据的工作线程
                 //StartWorker();
                 ThreadPool.QueueUserWorkItem(sendmessage);
@@ -54,10 +54,10 @@ namespace MissionPlanner.GCSViews
         struct PdxpPacket
         {
             public byte VER;              // 协议版本号 (1字节)
-            public byte MID;              // 任务代号 (1字节)
+            public Int16 MID;              // 任务代号 (1字节)
             public ushort SID;            // 发送方地址 (2字节)
             public ushort DID;            // 接收方地址 (2字节)
-            public uint BID;              // 数据包类型标识 (4字节)
+            public Int32 BID;              // 数据包类型标识 (4字节)
             public uint No;               // 包序号 (4字节)
             public ushort L;              // 数据域长度 (2字节)
             public Int16 UAVId;           // 无人机编号 (2字节)
@@ -98,10 +98,10 @@ namespace MissionPlanner.GCSViews
                             PdxpPacket pdxpPacket = new PdxpPacket
                             {
                                 VER = 1,                           // 协议版本
-                                MID = 0x01,                        // 任务代号
+                                MID = 10576,                        // 任务代号
                                 SID = 0x0001,                      // 发送方地址
                                 DID = 0x0002,                      // 接收方地址
-                                BID = 0x00000001,                  // 数据包类型标识
+                                BID = BitConverter.ToInt32(new byte[4] { 0x00, 0xee, 0x2b, mav.sysid }, 0),                  // 数据包类型标识
                                 No = (uint)sequence,                            // 初始包序号
                                 L = 37,                            // 数据域长度（29字节）
                                 UAVId = mav.sysid,                         // 无人机编号

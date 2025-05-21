@@ -33,6 +33,7 @@ using Org.BouncyCastle.Ocsp;
 using static IronPython.Modules.PythonWeakRef;
 using NetTopologySuite.Utilities;
 using System.Timers;
+using static MissionPlanner.Swarm.FormationControl;
 
 
 namespace MissionPlanner.Swarm
@@ -87,6 +88,7 @@ namespace MissionPlanner.Swarm
             MissionPlanner.Utilities.Tracking.AddPage(this.GetType().ToString(), this.Text);
 
             countdown.Elapsed += sendheartbeat;
+            
             textBox_uav1.Text = "0,0,0";
             textBox_uav2.Text = "0,0,0";
             textBox_uav3.Text = "0,0,0";
@@ -99,8 +101,17 @@ namespace MissionPlanner.Swarm
             textBox_uav10.Text = "0,0,0";
             textBox_uav11.Text = "0,0,0";
             textBox_uav12.Text = "0,0,0";
+            foreach (var port in MainV2.Comports)
+            {
+                foreach (var mav in port.MAVlist)
+                {
+                    drone2SecondsAgos.Add(new Drone2SecondsAgo(mav.sysid,mav.cs.alt,mav.cs.roll,mav.cs.pitch));
+                }
+            }
+           
+           countdown2.Elapsed += updatedrone2SecondsAgos;
         }
-        System.Timers.Timer countdown = new System.Timers.Timer { Interval = 1000, AutoReset = true };
+        System.Timers.Timer countdown = new System.Timers.Timer { Interval = 2000, AutoReset = true };
         void FollowLeaderControl_MouseWheel(object sender, MouseEventArgs e)
         {
             if (e.Delta < 0)
@@ -112,7 +123,8 @@ namespace MissionPlanner.Swarm
                 grid1.setScale(grid1.getScale() - 4);
             }
         }
-
+        List<Drone2SecondsAgo> drone2SecondsAgos = new List<Drone2SecondsAgo>();
+        System.Timers.Timer countdown2 = new System.Timers.Timer { Interval = 10000, AutoReset = true };
         void updateicons()
         {
             bindingSource1.ResetBindings(false);
@@ -849,6 +861,28 @@ namespace MissionPlanner.Swarm
             }
 
         }
+
+        public class Drone2SecondsAgo
+        {
+            public int Id { get; }
+            public double Z { get; set; }
+         
+            public double Roll { get; set; } // 俯仰
+            public double Pitch { get; set; } // 翻滚
+           
+            public Drone2SecondsAgo(int id, double z, double roll, double pitch)
+            {
+                Id = id;
+                Z = z;
+                Roll = roll;
+                Pitch = pitch;
+                
+            }
+            public void printDrone()
+            {
+                Console.WriteLine("drone id=" + Id + "Z=" + Z + "Roll=" + Roll + "Pitch=" + Pitch);
+            }
+        }
         // 定义无人机类（包含坐标）
         public class Drone
         {
@@ -1100,6 +1134,7 @@ namespace MissionPlanner.Swarm
             if (myButton7.Text == "自动预警")
             {
                 countdown.Start();
+                countdown2.Start();
                 myButton7.Text = "关闭预警";
 
                 // 清理旧任务
@@ -1120,6 +1155,7 @@ namespace MissionPlanner.Swarm
             else
             {
                 countdown.Stop();
+                countdown2.Stop();
                 myButton7.Text = "自动预警";
                 if (cancellationTokenSource != null && !cancellationTokenSource.IsCancellationRequested)
                 {
@@ -1324,7 +1360,25 @@ namespace MissionPlanner.Swarm
 
             //18.4325505,109.8592043,80
         }
+        private void updatedrone2SecondsAgos(object sender, ElapsedEventArgs e)
+        {
+            foreach (var port in MainV2.Comports)
+            {
+                foreach (var mav in port.MAVlist)
+                {
+                    Drone2SecondsAgo result = drone2SecondsAgos.FirstOrDefault(d => d.Id == mav.sysid);
 
+                    if (result != null) {
+
+                        result.Z = mav.cs.alt;
+                        result.Roll = mav.cs.roll;
+                        result.Pitch = mav.cs.pitch;
+
+                        result.printDrone();
+                    }
+                }
+            }
+        }
         private void sendheartbeat(object sender, ElapsedEventArgs e)
         {
             foreach (var port in MainV2.Comports)
@@ -1380,23 +1434,23 @@ namespace MissionPlanner.Swarm
                         {
                             var currentTime = DateTime.Now;
                             var interval = (currentTime - mav.cs.lastdata1).TotalSeconds;
-
-                            if (interval > 10)
+                            Drone2SecondsAgo result = drone2SecondsAgos.FirstOrDefault(d => d.Id == mav.sysid);
+                            if (interval > 10||mav.cs.gpsstatus < 3 || Math.Abs(mav.cs.alt - result.Z)>30|| Math.Abs(mav.cs.roll) > 45|| Math.Abs(mav.cs.pitch)>45)
                             {
                                 uav_unconnection[mav.sysid - 1] = 1;
                                 isConnection = false;
-                                Console.WriteLine("正在检查连接...数据丢失警告...");
+                                //Console.WriteLine("正在检查连接...数据丢失警告...");
 
 
                             }
 
-                            Console.WriteLine("线程正在执行..." + mav.cs.lastdata);
+                            //Console.WriteLine("线程正在执行..." + mav.cs.lastdata);
 
                             for (int i = 0; i < uav_unconnection.Length; i++)
                             {
                                 int droneNumber = i + 1;
                                 byte parameter = uav_unconnection[i];
-                                Console.WriteLine($"uav {droneNumber} 号无人机 参数是 {parameter}");
+                                //Console.WriteLine($"uav {droneNumber} 号无人机 参数是 {parameter}");
                             }
                         }
                     }

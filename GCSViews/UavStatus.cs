@@ -141,7 +141,7 @@ namespace MissionPlanner.GCSViews
                 }
             }
             // 更新或添加新的无人机信息
-            foreach (var kvp in currentDrones.OrderBy(k => k.Key))
+            foreach (var kvp in currentDrones.OrderBy(k =>int.Parse(k.Key)))
             {
                 string key = kvp.Key;
                 var drone = kvp.Value;
