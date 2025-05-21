@@ -110,6 +110,7 @@ namespace MissionPlanner.Swarm
             }
            
            countdown2.Elapsed += updatedrone2SecondsAgos;
+            countdown2.Start();
         }
         System.Timers.Timer countdown = new System.Timers.Timer { Interval = 2000, AutoReset = true };
         void FollowLeaderControl_MouseWheel(object sender, MouseEventArgs e)
@@ -1358,7 +1359,7 @@ namespace MissionPlanner.Swarm
             //}
 
 
-            //18.4325505,109.8592043,80
+            //18.4325505,109.8592043,10
         }
         private void updatedrone2SecondsAgos(object sender, ElapsedEventArgs e)
         {
@@ -1450,7 +1451,7 @@ namespace MissionPlanner.Swarm
                             {
                                 int droneNumber = i + 1;
                                 byte parameter = uav_unconnection[i];
-                                //Console.WriteLine($"uav {droneNumber} 号无人机 参数是 {parameter}");
+                                Console.WriteLine($"uav {droneNumber} 号无人机 参数是 {parameter}");
                             }
                         }
                     }
