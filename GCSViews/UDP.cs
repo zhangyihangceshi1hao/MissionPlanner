@@ -14,7 +14,7 @@ namespace MissionPlanner.GCSViews
 {
     public class UDP
     {
-        const string UDP_IP = "192.168.0.1";  // 目标IP
+        const string UDP_IP = "192.168.6.203";  // 目标IP
         const int UDP_PORT = 15005;           // 目标端口
         IPEndPoint endPoint;
         IPEndPoint endPointudp;

@@ -32,6 +32,8 @@ using ZedGraph;
 using LogAnalyzer = MissionPlanner.Utilities.LogAnalyzer;
 using TableLayoutPanelCellPosition = System.Windows.Forms.TableLayoutPanelCellPosition;
 using UnauthorizedAccessException = System.UnauthorizedAccessException;
+using static MAVLink;
+using System.Windows.Interop;
 
 // written by michael oborne
 
@@ -1225,7 +1227,10 @@ namespace MissionPlanner.GCSViews
         {
             new JoystickSetup().ShowUserControl();
         }
+        private void UAV_STATUS_Click(object sender, EventArgs e) { }
+
         private Boolean isLink = false;
+        
         private void BUT_UDP_Click(object sender, EventArgs e)
         {
             if (this.BUT_UDP.Text == "send_UDP")
@@ -6342,7 +6347,137 @@ namespace MissionPlanner.GCSViews
             tabControlactions.Multiline = !tabControlactions.Multiline;
             Settings.Instance["tabControlactions_Multiline"] = tabControlactions.Multiline.ToString();
         }
+        private  void uav_status_Click(object sender, EventArgs e)
+        {
+            var form = new UavStatus();
 
+            form.Show();
+
+            //Form temp = new RAW_Sensor();
+            //ThemeManager.ApplyThemeTo(temp);
+            //temp.Show();
+        }
+    
+        public class FlightDataLogger
+        {
+            // CSV 文件存储目录（C盘根目录）
+            private static readonly string LogDirectory = @"C:\FlightLogs\";
+            private static string _currentLogFile = "";
+
+            // 初始化日志目录
+            static FlightDataLogger()
+            {
+                // 确保目录存在
+                Directory.CreateDirectory(LogDirectory);
+            }
+
+            // 创建新日志文件（每次飞行调用一次）
+            public static void StartNewFlightLog()
+            {
+                // 文件名格式：Flight_YYYYMMDD_HHMMSS_fff.csv
+                _currentLogFile = Path.Combine(LogDirectory,
+                    $"Flight_{DateTime.Now:yyyyMMdd_HHmmss_fff}.csv");
+
+                // 写入CSV表头
+                File.WriteAllText(_currentLogFile,
+                    "uavid,FlightDate,BeijingTime,Latitude,Longitude,Altitude,RelativeAlt," +
+                    "Roll,Pitch,Yaw,VertSpeedx,VertSpeedy,VertSpeedz,HorizSpeed,BaroAlt\n");
+            }
+
+            // 记录单行数据（实时调用）
+            public static void LogFlightData(int uavid,
+                double lat, double lng, double alt, double relativeAlt,
+                float roll, float pitch, float yaw,
+                float vertSpeedx, float vertSpeedy, float vertSpeedz, float horizSpeed, double baroAlt)
+            {
+                if (string.IsNullOrEmpty(_currentLogFile))
+                {
+                    throw new InvalidOperationException("必须先调用 StartNewFlightLog()");
+                }
+
+                // 生成北京时间（精确到毫秒）
+                DateTime beijingTime = TimeZoneInfo.ConvertTimeFromUtc(
+                    DateTime.UtcNow,
+                    TimeZoneInfo.FindSystemTimeZoneById("China Standard Time"));
+
+                // 格式化数据行
+                string line = string.Format(CultureInfo.InvariantCulture,
+                    "{0:F7},{1:yyyy-MM-dd},{2:HH:mm:ss.fff},{3:F7},{4:F7},{5:F2},{6:F2}," +
+                    "{7:F2},{8:F2},{9:F2},{10:F2},{11:F2},{12:F2},{13:F2},{14:F2}\n",
+                    uavid,
+                    DateTime.Now,          // 飞行日期（本地日期）
+                    beijingTime,          // 北京时间
+                    lat, lng, alt, relativeAlt,
+                    roll, pitch, yaw,
+                    vertSpeedx, vertSpeedy, vertSpeedz, horizSpeed, baroAlt);
+
+                // 线程安全追加写入
+                lock (_currentLogFile)
+                {
+                    File.AppendAllText(_currentLogFile, line);
+                }
+            }
+        }
+        // 在类级别添加这两个变量
+        private volatile bool _isLogging = false;  // 标记是否正在记录
+        private CancellationTokenSource _cts;      // 用于取消任务
+        private async void myButton4_Click(object sender, EventArgs e)
+        {
+            if (!_isLogging)
+            {
+                // 启动记录
+                _isLogging = true;
+                _cts = new CancellationTokenSource();
+                myButton4.Text = "关闭保存csv";  // 更新按钮文本
+
+                FlightDataLogger.StartNewFlightLog();
+                await Task.Run(() => LogFlightData(_cts.Token), _cts.Token);
+            }
+            else
+            {
+                // 停止记录
+                _cts?.Cancel();
+                _isLogging = false;
+                myButton4.Text = "开始保存csv";  // 恢复按钮文本
+            }
+        }
+
+        // 提取记录逻辑到单独方法
+        private void LogFlightData(CancellationToken token)
+        {
+            try
+            {
+                while (!token.IsCancellationRequested)
+                {
+                    foreach (var port in MainV2.Comports)
+                    {
+                        foreach (var mav in port.MAVlist)
+                        {
+                            FlightDataLogger.LogFlightData(
+                                uavid:mav.sysid,
+                                lat: mav.cs.lat,
+                                lng: mav.cs.lng,
+                                alt: mav.cs.alt,
+                                relativeAlt: mav.cs.altasl,
+                                roll: mav.cs.roll,
+                                pitch: mav.cs.pitch,
+                                yaw: mav.cs.yaw,
+                                vertSpeedx: (float)mav.cs.vx,
+                                vertSpeedy: (float)mav.cs.vy,
+                                vertSpeedz: (float)mav.cs.vz,
+                                horizSpeed: (float)mav.cs.groundspeed,
+                                baroAlt: mav.cs.alt
+                            );
+                        }
+                    }
+                    Thread.Sleep(500);  // 控制采样频率
+                }
+            }
+            catch (OperationCanceledException)
+            {
+                // 正常退出
+            }
+        }
         private void jumpToTagToolStripMenuItem_Click(object sender, EventArgs e)
         {
             string tag_str = "";

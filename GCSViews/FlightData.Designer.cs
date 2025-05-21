@@ -236,6 +236,9 @@ namespace MissionPlanner.GCSViews
             this.scriptChecker = new System.Windows.Forms.Timer(this.components);
             this.Messagetabtimer = new System.Windows.Forms.Timer(this.components);
             this.bindingSourceStatusTab = new System.Windows.Forms.BindingSource(this.components);
+            this.UAV_STATUS = new MissionPlanner.Controls.MyButton();
+
+            this.myButton4 = new MissionPlanner.Controls.MyButton();
             this.jumpToTagToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.MainH)).BeginInit();
             this.MainH.Panel1.SuspendLayout();
@@ -737,6 +740,8 @@ namespace MissionPlanner.GCSViews
             // tableLayoutPanel1
             // 
             resources.ApplyResources(this.tableLayoutPanel1, "tableLayoutPanel1");
+            this.tableLayoutPanel1.Controls.Add(this.UAV_STATUS, 0, 4);
+
             this.tableLayoutPanel1.Controls.Add(this.BUT_UDP, 1, 4);
             this.tableLayoutPanel1.Controls.Add(this.BUT_SendMSG, 2, 4);
             this.tableLayoutPanel1.Controls.Add(this.BUT_abortland, 4, 4);
@@ -2179,6 +2184,7 @@ namespace MissionPlanner.GCSViews
             // tableLayoutPaneltlogs
             // 
             resources.ApplyResources(this.tableLayoutPaneltlogs, "tableLayoutPaneltlogs");
+            this.tableLayoutPaneltlogs.Controls.Add(this.myButton4, 0, 3);
             this.tableLayoutPaneltlogs.Controls.Add(this.panel2, 1, 2);
             this.tableLayoutPaneltlogs.Controls.Add(this.BUT_loadtelem, 0, 0);
             this.tableLayoutPaneltlogs.Controls.Add(this.lbl_playbackspeed, 2, 2);
@@ -2822,6 +2828,29 @@ namespace MissionPlanner.GCSViews
             // bindingSourceStatusTab
             // 
             this.bindingSourceStatusTab.DataSource = typeof(MissionPlanner.CurrentState);
+
+            // 
+            // UAV_STATUS
+            // 
+            this.UAV_STATUS.ColorMouseDown = System.Drawing.Color.Empty;
+            this.UAV_STATUS.ColorMouseOver = System.Drawing.Color.Empty;
+            this.UAV_STATUS.ColorNotEnabled = System.Drawing.Color.Empty;
+            resources.ApplyResources(this.UAV_STATUS, "UAV_STATUS");
+            this.UAV_STATUS.Name = "UAV_STATUS";
+            this.UAV_STATUS.TextColorNotEnabled = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(87)))), ((int)(((byte)(4)))));
+            this.UAV_STATUS.UseVisualStyleBackColor = true;
+            this.UAV_STATUS.Click += new System.EventHandler(this.uav_status_Click);
+            // 
+            // myButton4
+            // 
+            this.myButton4.ColorMouseDown = System.Drawing.Color.Empty;
+            this.myButton4.ColorMouseOver = System.Drawing.Color.Empty;
+            this.myButton4.ColorNotEnabled = System.Drawing.Color.Empty;
+            resources.ApplyResources(this.myButton4, "myButton4");
+            this.myButton4.Name = "myButton4";
+            this.myButton4.TextColorNotEnabled = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(87)))), ((int)(((byte)(4)))));
+            this.myButton4.UseVisualStyleBackColor = true;
+            this.myButton4.Click += new System.EventHandler(this.myButton4_Click);
             // 
             // jumpToTagToolStripMenuItem
             // 
@@ -3140,5 +3169,7 @@ namespace MissionPlanner.GCSViews
         private Controls.RelayOptions relayOptions14;
         private Controls.RelayOptions relayOptions15;
         private Controls.RelayOptions relayOptions16;
+        private Controls.MyButton myButton4;
+        private Controls.MyButton UAV_STATUS;
     }
 }
