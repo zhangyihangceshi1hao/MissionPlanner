@@ -252,7 +252,11 @@ namespace MissionPlanner.Utilities
             }
             return defaultd;
         }
-
+        public string IsSimulation
+        {
+            get { return this["IsSimulation"]; }
+            set { this["IsSimulation"] = value; }
+        }
         public decimal GetDecimal(string key, decimal defaultd = 0)
         {
             decimal result;
@@ -297,7 +301,13 @@ namespace MissionPlanner.Utilities
 
             return badUavId[index];
         }
-
+        public static void ResetBadUavId()
+        {
+            for (int i = 0; i < badUavId.Length; i++)
+            {
+                badUavId[i] = 0;
+            }
+        }
         /// <summary>
         /// 设置 badUavId 中指定索引的字节
         /// </summary>

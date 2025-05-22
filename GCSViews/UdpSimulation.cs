@@ -19,7 +19,7 @@ namespace MissionPlanner.GCSViews
     {
         //const string UDP_IP = "192.168.6.201";  // 目标IP
         const string UDP_IP = "127.0.0.1";  // 目标IP
-        const int UDP_PORT = 15005;           // 目标端口
+        const int UDP_PORT = 15006;           // 目标端口
         //const int UDP_PORT = 24583;           // 目标端口
 
         IPEndPoint endPoint;
@@ -39,6 +39,7 @@ namespace MissionPlanner.GCSViews
             //Console.WriteLine("这是一个日志信息");
             if (isLink)
             {
+                Settings.Instance.IsSimulation = "true";
                 is_true = true;
                 endPoint = new IPEndPoint(IPAddress.Parse(UDP_IP), UDP_PORT);
                 udpClient = new UdpClient(16018);
@@ -50,6 +51,7 @@ namespace MissionPlanner.GCSViews
             }
             else
             {
+                Settings.Instance.IsSimulation = "false";
                 is_true = false;
                 // 关闭UDP客户端并停止线程
                 if (udpClient != null)
@@ -99,9 +101,8 @@ namespace MissionPlanner.GCSViews
             public Int32 DID;            // 接收方地址 (2字节)          
             public Int32 No;               // 包序号 (4字节)         
             public Int32 DATE;             //2000年1月1日累计时间戳0.1ms          
-            public UInt32 L;              // 数据域长度 (2字节)
+            public UInt16 L;              // 数据域长度 (2字节)
             public Int16 UAVId;           // 无人机编号 (2字节)           
-
         }
        
         private void sendmessage(object nothing)
@@ -221,9 +222,12 @@ namespace MissionPlanner.GCSViews
                     if (data[0] == 0x30 && data[1] == 0xEE && data[2] == 0x46 )
                     {
                         PdxpPacket2 packet = ByteArrayToStructure<PdxpPacket2>(data);
-                        if (packet.UAVId >0 )
+                        short uavId = packet.UAVId;
+                        //我想要在这处解析UAVId的数据
+                        if (uavId > 0)
                         {
-                            Settings.SetBadUavId(packet.UAVId - 1, 1);  
+
+                            Settings.SetBadUavId(uavId - 1, 1);
 
 
                         }

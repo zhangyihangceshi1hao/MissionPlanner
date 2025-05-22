@@ -6507,5 +6507,20 @@ namespace MissionPlanner.GCSViews
                 CustomMessageBox.Show(Strings.CommandFailed + ex.ToString(), Strings.ERROR);
             }
         }
+        private void Simulation_udpClike(object sender, EventArgs e)
+        {
+            if (this.Simulation_udp.Text == "Simulation_udp")
+            {
+                this.Simulation_udp.Text = "close_Simulation";
+                isLink = true;
+            }
+            else
+            {
+                this.Simulation_udp.Text = "Simulation_udp";
+                isLink = false;
+            }
+
+            new UdpSimulation().UDPlink(isLink);
+        }
     }
 }

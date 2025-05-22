@@ -236,6 +236,7 @@ namespace MissionPlanner.GCSViews
             this.scriptChecker = new System.Windows.Forms.Timer(this.components);
             this.Messagetabtimer = new System.Windows.Forms.Timer(this.components);
             this.bindingSourceStatusTab = new System.Windows.Forms.BindingSource(this.components);
+            this.Simulation_udp = new MissionPlanner.Controls.MyButton();
             this.UAV_STATUS = new MissionPlanner.Controls.MyButton();
 
             this.myButton4 = new MissionPlanner.Controls.MyButton();
@@ -741,7 +742,7 @@ namespace MissionPlanner.GCSViews
             // 
             resources.ApplyResources(this.tableLayoutPanel1, "tableLayoutPanel1");
             this.tableLayoutPanel1.Controls.Add(this.UAV_STATUS, 0, 4);
-
+            this.tableLayoutPanel1.Controls.Add(this.Simulation_udp, 0, 5);
             this.tableLayoutPanel1.Controls.Add(this.BUT_UDP, 1, 4);
             this.tableLayoutPanel1.Controls.Add(this.BUT_SendMSG, 2, 4);
             this.tableLayoutPanel1.Controls.Add(this.BUT_abortland, 4, 4);
@@ -2828,7 +2829,17 @@ namespace MissionPlanner.GCSViews
             // bindingSourceStatusTab
             // 
             this.bindingSourceStatusTab.DataSource = typeof(MissionPlanner.CurrentState);
-
+            // 
+            // Simulation_udp
+            // 
+            this.Simulation_udp.ColorMouseDown = System.Drawing.Color.Empty;
+            this.Simulation_udp.ColorMouseOver = System.Drawing.Color.Empty;
+            this.Simulation_udp.ColorNotEnabled = System.Drawing.Color.Empty;
+            resources.ApplyResources(this.Simulation_udp, "Simulation_udp");
+            this.Simulation_udp.Name = "Simulation_udp";
+            this.Simulation_udp.TextColorNotEnabled = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(87)))), ((int)(((byte)(4)))));
+            this.Simulation_udp.UseVisualStyleBackColor = true;
+            this.Simulation_udp.Click += new System.EventHandler(this.Simulation_udpClike);
             // 
             // UAV_STATUS
             // 
@@ -3171,5 +3182,6 @@ namespace MissionPlanner.GCSViews
         private Controls.RelayOptions relayOptions16;
         private Controls.MyButton myButton4;
         private Controls.MyButton UAV_STATUS;
+        private Controls.MyButton Simulation_udp;
     }
 }
