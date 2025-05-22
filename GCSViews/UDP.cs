@@ -15,6 +15,7 @@ namespace MissionPlanner.GCSViews
     public class UDP
     {
         const string UDP_IP = "192.168.6.203";  // 目标IP
+        //const string UDP_IP = "127.0.0.1";  // 目标IP
         const int UDP_PORT = 15005;           // 目标端口
         IPEndPoint endPoint;
         IPEndPoint endPointudp;
@@ -55,17 +56,21 @@ namespace MissionPlanner.GCSViews
         {
             public byte VER;              // 协议版本号 (1字节)
             public Int16 MID;              // 任务代号 (1字节)
-            public ushort SID;            // 发送方地址 (2字节)
-            public ushort DID;            // 接收方地址 (2字节)
+            public Int32 SID;            // 发送方地址 (2字节)
+            public Int32 DID;            // 接收方地址 (2字节)
             public Int32 BID;              // 数据包类型标识 (4字节)
-            public uint No;               // 包序号 (4字节)
+            public Int32 No;               // 包序号 (4字节)
+            public byte FLAG;
+            public Int32 R;
+            public ushort DATE;             //2000年1月1日累计天数
+            public Int32 TIME;             //北京时间，单位0.1ms（时间戳）
             public ushort L;              // 数据域长度 (2字节)
             public Int16 UAVId;           // 无人机编号 (2字节)
             public Int32 Longitude;         // 经度 (4字节)
             public Int32 Latitude;          // 纬度 (4字节)
             public Int16 RelativeHeight;  // 相对高度 (2字节)
             public Int16 Altitude;        // 海拔高度 (2字节)
-            public Int64 GPSTime;           // GPS时间 (8字节)
+            public Int32 GPSTime;           // GPS时间 (8字节)
             public Int32 Heading;           // 方向角 (4字节)
             public Int16 EastVelocity;    // 东向速度 (2字节)
             public Int16 NorthVelocity;   // 北向速度 (2字节)
@@ -73,7 +78,7 @@ namespace MissionPlanner.GCSViews
             public sbyte GPSSatellites;   // GPS搜星数量 (1字节)		_battery_voltage	12.587000937804632	double
             public Int16 Batteruy_V;      //电压(2字节)
             public byte Failsafe;          //是否进入故障安全模式（当前未触发）(1字节)
-            public byte Gpsstatus;         //GPS 状态（6 表示正常，具体值需查 MAVLink 协议）(1字节)
+            
         }
 
 
@@ -91,26 +96,48 @@ namespace MissionPlanner.GCSViews
                         foreach (var mav in port.MAVlist)
                         {
                         sequence++;
-                            DateTime gpsEpoch = new DateTime(1980, 1, 6, 0, 0, 0, DateTimeKind.Utc);
-                            TimeSpan elapsed = mav.cs.gpstime.ToUniversalTime() - gpsEpoch;
-                            Int64 ticks = (Int64)(elapsed.TotalMilliseconds * 10); // 转换为 0.1 毫秒单位
-                            // 初始化PDXP数据包并填充默认值
-                            PdxpPacket pdxpPacket = new PdxpPacket
+                            //DateTime gpsEpoch = new DateTime(2000, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+                            
+                           
+
+
+                            // 设置基准时间：2000年1月1日 UTC
+                            DateTime baseTime = new DateTime(2000, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+
+                            // 获取当前 UTC 时间
+                            DateTime nowUtc = DateTime.UtcNow;
+
+                            // 计算时间差
+                            TimeSpan difference = nowUtc - baseTime;
+                            //TimeSpan elapsed = mav.cs.gpstime.ToUniversalTime() - gpsEpoch;
+                            // 获取总天数（整数天）
+                            int daysSince2000 = (int)difference.TotalDays;
+
+                            Int32 timestamp_0_1ms = (Int32)(DateTime.UtcNow.TimeOfDay.TotalMilliseconds * 10);
+                        //Int32 ticks = (Int32)(elapsed.TotalMilliseconds * 10); // 转换为 0.1 毫秒单位
+                        Int32 gpstimestamp_0_1ms = (Int32)(mav.cs.gpstime.TimeOfDay.TotalSeconds * 10000);
+                        //mav.cs.gpstime
+
+                        // 初始化PDXP数据包并填充默认值
+                        PdxpPacket pdxpPacket = new PdxpPacket
                             {
-                                VER = 1,                           // 协议版本
+                                VER = 0x80,                           // 协议版本
                                 MID = 10576,                        // 任务代号
-                                SID = 0x0001,                      // 发送方地址
-                                DID = 0x0002,                      // 接收方地址
+                                SID = BitConverter.ToInt32(new byte[4] {0x7e, 0x11, 0x01, 0x01 }, 0),                      // 发送方地址
+                                DID = BitConverter.ToInt32(new byte[4] { 0x21, 0x01, 0x01, 0x01 }, 0),                      // 接收方地址
                                 BID = BitConverter.ToInt32(new byte[4] { 0x00, 0xee, 0x2b, mav.sysid }, 0),                  // 数据包类型标识
-                                No = (uint)sequence,                            // 初始包序号
-                                L = 37,                            // 数据域长度（29字节）
-                                UAVId = mav.sysid,                         // 无人机编号
-                                Longitude = (int)(mav.cs.lng * 1e6),     // 经度：东经116.4度
-                                Latitude = (int)(mav.cs.lat * 1e6),       // 纬度：北纬40.0度
+                                No = (Int32)sequence,                            // 初始包序号
+                                FLAG = 0,
+                                R = 0,
+                                DATE = (ushort)daysSince2000,
+                                TIME = (Int32)timestamp_0_1ms,
+                                L = 32,                            // 数据域长度（32字节）
+                                UAVId = (Int16)mav.sysid,                         // 无人机编号
+                                Longitude = (Int32)(mav.cs.lng * 1e6),     // 经度：东经116.4度
+                                Latitude = (Int32)(mav.cs.lat * 1e6),       // 纬度：北纬40.0度
                                 RelativeHeight = (Int16)(mav.cs.alt * 10),                // 相对高度（0.1m单位）
-                                Altitude = ConvertVelocity(mav.cs.altasl),                   // 海拔高度（0.1m单位）
-                                //Altitude = ConvertVelocity(5),                   // 海拔高度（0.1m单位）
-                                GPSTime = (Int64)ticks,               // GPS时间：103.44小时（示例值）
+                                Altitude = ConvertVelocity(mav.cs.altasl),                   // 海拔高度（0.1m单位）                               
+                                GPSTime = (Int32)gpstimestamp_0_1ms,               // GPS时间：103.44小时（示例值）
                                 Heading = (Int32)(mav.cs.yaw * 10),                     // 方向角（0.1度单位）
                                 //EastVelocity = ConvertVelocity(-2.00),                // 东向速度（0.1单位）
                                 //NorthVelocity = ConvertVelocity(-2),                // 北向速度（0.1单位）
@@ -121,7 +148,7 @@ namespace MissionPlanner.GCSViews
                                 GPSSatellites = (sbyte)(mav.cs.satcount) ,              // GPS搜星数量
                                 Batteruy_V = (Int16)(mav.cs.battery_voltage * 100),     //单位 *100
                                 Failsafe = (byte)(((bool)mav.cs.failsafe) == true ? 1 : 0),
-                                Gpsstatus = (byte)(mav.cs.gpsstatus)     //gps状态,大于等于3就可以了
+                                
 
                             };
                             // 打印参数日志

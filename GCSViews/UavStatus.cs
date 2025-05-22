@@ -127,6 +127,7 @@ namespace MissionPlanner.GCSViews
                 foreach (var mav in port.MAVlist.OrderBy(m => m.sysid))
                 {
                     string key = mav.sysid.ToString();
+                   
                     currentDrones[key] = new DroneData
                     {
                         Id = key,
@@ -136,7 +137,7 @@ namespace MissionPlanner.GCSViews
                         Altitude = mav.cs.alt,
                         AbsoluteAltitude = mav.cs.altasl,
                         FlightMode = mav.cs.mode,
-                        GpsStatus = mav.cs.gpsstatus.ToString()
+                        GpsStatus = mav.cs.satcount.ToString()
                     };
                 }
             }
