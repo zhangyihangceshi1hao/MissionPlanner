@@ -6381,14 +6381,14 @@ namespace MissionPlanner.GCSViews
                 // 写入CSV表头
                 File.WriteAllText(_currentLogFile,
                     "uavid,FlightDate,BeijingTime,Latitude,Longitude,Altitude,RelativeAlt," +
-                    "Roll,Pitch,Yaw,VertSpeedx,VertSpeedy,VertSpeedz,HorizSpeed,BaroAlt\n");
+                    "Roll,Pitch,Yaw,VertSpeedx,VertSpeedy,VertSpeedz,HorizSpeed\n");
             }
 
             // 记录单行数据（实时调用）
             public static void LogFlightData(int uavid,
                 double lat, double lng, double alt, double relativeAlt,
                 float roll, float pitch, float yaw,
-                float vertSpeedx, float vertSpeedy, float vertSpeedz, float horizSpeed, double baroAlt)
+                float vertSpeedx, float vertSpeedy, float vertSpeedz, float horizSpeed)
             {
                 if (string.IsNullOrEmpty(_currentLogFile))
                 {
@@ -6403,13 +6403,13 @@ namespace MissionPlanner.GCSViews
                 // 格式化数据行
                 string line = string.Format(CultureInfo.InvariantCulture,
                     "{0:F7},{1:yyyy-MM-dd},{2:HH:mm:ss.fff},{3:F7},{4:F7},{5:F2},{6:F2}," +
-                    "{7:F2},{8:F2},{9:F2},{10:F2},{11:F2},{12:F2},{13:F2},{14:F2}\n",
+                    "{7:F2},{8:F2},{9:F2},{10:F2},{11:F2},{12:F2},{13:F2}\n",
                     uavid,
                     DateTime.Now,          // 飞行日期（本地日期）
                     beijingTime,          // 北京时间
                     lat, lng, alt, relativeAlt,
                     roll, pitch, yaw,
-                    vertSpeedx, vertSpeedy, vertSpeedz, horizSpeed, baroAlt);
+                    vertSpeedx, vertSpeedy, vertSpeedz, horizSpeed);
 
                 // 线程安全追加写入
                 lock (_currentLogFile)
@@ -6465,8 +6465,8 @@ namespace MissionPlanner.GCSViews
                                 vertSpeedx: (float)mav.cs.vx,
                                 vertSpeedy: (float)mav.cs.vy,
                                 vertSpeedz: (float)mav.cs.vz,
-                                horizSpeed: (float)mav.cs.groundspeed,
-                                baroAlt: mav.cs.alt
+                                horizSpeed: (float)mav.cs.groundspeed
+                              
                             );
                         }
                     }

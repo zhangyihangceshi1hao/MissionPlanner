@@ -105,7 +105,7 @@ namespace MissionPlanner.Maps
             get => Settings.Instance.GetBoolean("Propagation_RFmap");
             set => Settings.Instance["Propagation_RFmap"] = value.ToString();
         }
-
+       
         public float alt { get; set; }
         public float altasl { get; set; }
         public PointLatLngAlt HomeLocation { get; set; } = PointLatLngAlt.Zero;

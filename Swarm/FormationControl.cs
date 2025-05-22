@@ -1074,7 +1074,7 @@ namespace MissionPlanner.Swarm
         }
 
         private static bool isConnection = true;
-        private byte[] uav_unconnection = new byte[20];
+        private byte[] uav_unconnection = new byte[30];
         private int unconn_count = 0;
         private int un_index_id = 0;
         private Vector3 un_vector =new Vector3();
@@ -1436,6 +1436,10 @@ namespace MissionPlanner.Swarm
                             var currentTime = DateTime.Now;
                             var interval = (currentTime - mav.cs.lastdata1).TotalSeconds;
                             Drone2SecondsAgo result = drone2SecondsAgos.FirstOrDefault(d => d.Id == mav.sysid);
+
+                            
+
+
                             if (interval > 10||mav.cs.gpsstatus < 3 || Math.Abs(mav.cs.alt - result.Z)>30|| Math.Abs(mav.cs.roll) > 45|| Math.Abs(mav.cs.pitch)>45)
                             {
                                 uav_unconnection[mav.sysid - 1] = 1;
@@ -1455,11 +1459,15 @@ namespace MissionPlanner.Swarm
                             }
                         }
                     }
+                    //如果此处判断byte[] copy = Settings.BadUavId;这个数组有值==1，就copy到uav_unconnection数组，专门用于给模拟环境用的
+                    MergeByteArraysInPlace(uav_unconnection, Settings.BadUavId);
+
 
                     // 添加延迟避免 CPU 过载
                     await Task.Delay(100, token);
                 }
             }, token);
+
 
            
 
@@ -1490,7 +1498,20 @@ namespace MissionPlanner.Swarm
 
             }
         }
+        //对比两个数组，同下标下有一个值为1，直接修改其中一个数组为1
+        public static void MergeByteArraysInPlace(byte[] array1, byte[] array2)
+        {
+            if (array1 == null || array2 == null)
+                throw new ArgumentNullException("Input arrays cannot be null");
 
+            if (array1.Length != array2.Length)
+                throw new ArgumentException("Arrays must be of the same length");
+
+            for (int i = 0; i < array1.Length; i++)
+            {
+                array1[i] |= array2[i];  // 原地更新
+            }
+        }
         // 继续补全 HandleDroneGroupingAndFlightAsync 方法
         private async Task HandleDroneGroupingAndFlightAsync(CancellationToken token)
         {

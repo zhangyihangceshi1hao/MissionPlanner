@@ -96,7 +96,7 @@ namespace MissionPlanner.Utilities
             get { return this["APMFirmware"]; }
             set { this["APMFirmware"] = value; }
         }
-
+        
         public string GetString(string key, string @default = "")
         {
             string result = @default;
@@ -263,6 +263,54 @@ namespace MissionPlanner.Utilities
             }
             return defaultd;
         }
+        private static byte[] badUavId = new byte[30];
+
+        /// <summary>
+        /// 获取或设置整个 badUavId 数组
+        /// </summary>
+        public static byte[] BadUavId
+        {
+            get
+            {
+                return (byte[])badUavId.Clone(); // 返回副本防止外部修改
+            }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentNullException(nameof(value));
+
+                if (value.Length != badUavId.Length)
+                    throw new ArgumentException($"Length must be {badUavId.Length}");
+
+                value.CopyTo(badUavId, 0);
+            }
+        }
+
+        /// <summary>
+        /// 获取或设置 badUavId 中指定索引的字节
+        /// </summary>
+        /// <param name="index">数组下标</param>
+        public static byte GetBadUavId(int index)
+        {
+            if (index < 0 || index >= badUavId.Length)
+                throw new IndexOutOfRangeException("Index out of range");
+
+            return badUavId[index];
+        }
+
+        /// <summary>
+        /// 设置 badUavId 中指定索引的字节
+        /// </summary>
+        /// <param name="index">数组下标</param>
+        /// <param name="value">要设置的值</param>
+        public static void SetBadUavId(int index, byte value)
+        {
+            if (index < 0 || index >= badUavId.Length)
+                throw new IndexOutOfRangeException("Index out of range");
+
+            badUavId[index] = value;
+        }
+
 
         public byte GetByte(string key, byte defaultb = 0)
         {
