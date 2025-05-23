@@ -17,8 +17,8 @@ namespace MissionPlanner.GCSViews
 {
     public class UdpSimulation
     {
-        //const string UDP_IP = "192.168.6.201";  // 目标IP
-        const string UDP_IP = "127.0.0.1";  // 目标IP
+        const string UDP_IP = "192.168.228.219";  // 目标IP
+        //const string UDP_IP = "127.0.0.1";  // 目标IP
         const int UDP_PORT = 15006;           // 目标端口
         //const int UDP_PORT = 24583;           // 目标端口
 
@@ -176,7 +176,7 @@ namespace MissionPlanner.GCSViews
                 }
 
 
-                System.Threading.Thread.Sleep(1000);  // 每 100ms 发送一次
+                System.Threading.Thread.Sleep(200);  // 每 100ms 发送一次
 
             }
             // 线程停止时的清理工作
@@ -229,7 +229,18 @@ namespace MissionPlanner.GCSViews
 
                             Settings.SetBadUavId(uavId - 1, 1);
 
+                            foreach (var port in MainV2.Comports)
+                            {
+                                foreach (var mav in port.MAVlist)
+                                {
+                                    if (mav.sysid == uavId)
+                                    {
+                                        port.setMode(mav.sysid, mav.compid, "Brake");
+                                    }
 
+
+                                }
+                            }
                         }
 
 
@@ -247,6 +258,7 @@ namespace MissionPlanner.GCSViews
             IntPtr ptr = Marshal.AllocHGlobal(data.Length);
             try
             {
+                
                 Marshal.Copy(data, 0, ptr, data.Length);
                 return (T)Marshal.PtrToStructure(ptr, typeof(T));
             }
