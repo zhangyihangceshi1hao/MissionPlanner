@@ -6381,14 +6381,14 @@ namespace MissionPlanner.GCSViews
                 // 写入CSV表头
                 File.WriteAllText(_currentLogFile,
                     "uavid,FlightDate,BeijingTime,Latitude,Longitude,Altitude,RelativeAlt," +
-                    "Roll,Pitch,Yaw,VertSpeedx,VertSpeedy,VertSpeedz,HorizSpeed\n");
+                    "Roll,Pitch,Yaw,VertSpeedx,VertSpeedy,VertSpeedz,HorizSpeed,GPSCount,GPStype\n");
             }
-
+          
             // 记录单行数据（实时调用）
             public static void LogFlightData(int uavid,
                 double lat, double lng, double alt, double relativeAlt,
                 float roll, float pitch, float yaw,
-                float vertSpeedx, float vertSpeedy, float vertSpeedz, float horizSpeed)
+                float vertSpeedx, float vertSpeedy, float vertSpeedz, float horizSpeed,int gpscount,string gpstype)
             {
                 if (string.IsNullOrEmpty(_currentLogFile))
                 {
@@ -6403,13 +6403,13 @@ namespace MissionPlanner.GCSViews
                 // 格式化数据行
                 string line = string.Format(CultureInfo.InvariantCulture,
                     "{0:F7},{1:yyyy-MM-dd},{2:HH:mm:ss.fff},{3:F7},{4:F7},{5:F2},{6:F2}," +
-                    "{7:F2},{8:F2},{9:F2},{10:F2},{11:F2},{12:F2},{13:F2}\n",
+                    "{7:F2},{8:F2},{9:F2},{10:F2},{11:F2},{12:F2},{13:F2},{14:F2},{15}\n",
                     uavid,
                     DateTime.Now,          // 飞行日期（本地日期）
                     beijingTime,          // 北京时间
                     lat, lng, alt, relativeAlt,
                     roll, pitch, yaw,
-                    vertSpeedx, vertSpeedy, vertSpeedz, horizSpeed);
+                    vertSpeedx, vertSpeedy, vertSpeedz, horizSpeed, gpscount, gpstype);
 
                 // 线程安全追加写入
                 lock (_currentLogFile)
@@ -6453,6 +6453,14 @@ namespace MissionPlanner.GCSViews
                     {
                         foreach (var mav in port.MAVlist)
                         {
+
+                            int gpstype = (int)mav.cs.gpsstatus; // 假设这是从 MAVLink 获取的状态值
+
+                            // 将整数转换为枚举类型
+                            GPS_FIX_TYPE fixType = (GPS_FIX_TYPE)gpstype;
+
+                            // 转换为字符串（完整名称）
+                            string enumName = fixType.ToString(); // 如 "GPS_FIX_TYPE_3D_FIX"
                             FlightDataLogger.LogFlightData(
                                 uavid:mav.sysid,
                                 lat: mav.cs.lat,
@@ -6465,8 +6473,11 @@ namespace MissionPlanner.GCSViews
                                 vertSpeedx: (float)mav.cs.vx,
                                 vertSpeedy: (float)mav.cs.vy,
                                 vertSpeedz: (float)mav.cs.vz,
-                                horizSpeed: (float)mav.cs.groundspeed
-                              
+                                horizSpeed: (float)mav.cs.groundspeed,
+                                gpscount: (int)mav.cs.satcount,
+                                gpstype: enumName
+
+
                             );
                         }
                     }
@@ -6477,6 +6488,19 @@ namespace MissionPlanner.GCSViews
             {
                 // 正常退出
             }
+        }
+
+        public enum GPS_FIX_TYPE
+        {
+            GPS_FIX_TYPE_NO_GPS = 0,          // No GPS connected
+            GPS_FIX_TYPE_NO_FIX = 1,          // No position information, GPS is connected
+            GPS_FIX_TYPE_2D_FIX = 2,          // 2D position
+            GPS_FIX_TYPE_3D_FIX = 3,          // 3D position
+            GPS_FIX_TYPE_DGPS = 4,            // DGPS / SBAS aided 3D position
+            GPS_FIX_TYPE_RTK_FLOAT = 5,       // RTK float, 3D position
+            GPS_FIX_TYPE_RTK_FIXED = 6,       // RTK Fixed, 3D position
+            GPS_FIX_TYPE_STATIC = 7,          // Static fixed, typically used for base stations
+            GPS_FIX_TYPE_PPP = 8              // PPP, 3D position
         }
         private void jumpToTagToolStripMenuItem_Click(object sender, EventArgs e)
         {
