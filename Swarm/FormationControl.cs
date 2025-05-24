@@ -1318,9 +1318,9 @@ namespace MissionPlanner.Swarm
             {
                 foreach (var mav in port.MAVlist)
                 {
-                    if (uav_unconnection[mav.sysid-1]==1) {
-                        continue;
-                    }
+                    //if (uav_unconnection[mav.sysid-1]==1) {
+                    //    continue;
+                    //}
 
                     //if (alt.currenttype != srtm.tiletype.valid && alt.currenttype != srtm.tiletype.ocean)
                     //{
@@ -1333,16 +1333,27 @@ namespace MissionPlanner.Swarm
                     //        "Are you sure?", CustomMessageBox.MessageBoxButtons.OKCancel) ==
                     //    CustomMessageBox.DialogResult.OK)
                     //{
+                    await Task.Run(() =>
+                    {
+                        this.Invoke((MethodInvoker)delegate
+                        {
+                            
+                     
+                            try
+                            {
 
-                    
-
-                    MainV2.comPort.doCommandInt((byte)mav.sysid,
-                        (byte)mav.compid,
-                        MAVLink.MAV_CMD.DO_SET_HOME, 0, 0, 0, 0, (int)(home_point_list[mav.sysid].x * 1e7),
-                        (int)(home_point_list[mav.sysid].y * 1e7), (float)(mav.cs.lat));
+                                MainV2.comPort.doCommandInt((byte)mav.sysid,
+                                    (byte)mav.compid,
+                                    MAVLink.MAV_CMD.DO_SET_HOME, 0, 0, 0, 0, (int)(home_point_list[mav.sysid].x * 1e7),
+                                    (int)(home_point_list[mav.sysid].y * 1e7), (float)(mav.cs.lat));
 
 
-                    port.setMode(mav.sysid, mav.compid, "RTL");
+                                port.setMode(mav.sysid, mav.compid, "RTL");
+                            }
+                            catch { }
+
+                        });
+                    });
                 }
             }
             //try
@@ -1450,33 +1461,36 @@ namespace MissionPlanner.Swarm
                     }
                     else
                     {
-                        foreach (var port in MainV2.Comports)
-                        {
-                            foreach (var mav in port.MAVlist)
+                        int count = 0;
+                        while (count<2) {
+                            foreach (var port in MainV2.Comports)
                             {
-                                var currentTime = DateTime.Now;
-                                var interval = (currentTime - mav.cs.lastdata1).TotalSeconds;
-                                Drone2SecondsAgo result = drone2SecondsAgos.FirstOrDefault(d => d.Id == mav.sysid);
-
-
-
-
-                                if (interval > 10 || mav.cs.gpsstatus < 3 || Math.Abs(mav.cs.alt - result.Z) > 30 || Math.Abs(mav.cs.roll) > 45 || Math.Abs(mav.cs.pitch) > 45)
+                                foreach (var mav in port.MAVlist)
                                 {
-                                    uav_unconnection[mav.sysid - 1] = 1;
-                                    isConnection = false;
-                                    //Console.WriteLine("正在检查连接...数据丢失警告...");
+                                    var currentTime = DateTime.Now;
+                                    var interval = (currentTime - mav.cs.lastdata1).TotalSeconds;
+                                    Drone2SecondsAgo result = drone2SecondsAgos.FirstOrDefault(d => d.Id == mav.sysid);
 
 
-                                }
 
-                                //Console.WriteLine("线程正在执行..." + mav.cs.lastdata);
 
-                                for (int i = 0; i < uav_unconnection.Length; i++)
-                                {
-                                    int droneNumber = i + 1;
-                                    byte parameter = uav_unconnection[i];
-                                    Console.WriteLine($"uav {droneNumber} 号无人机 参数是 {parameter}");
+                                    if (interval > 10 || mav.cs.gpsstatus < 3 || Math.Abs(mav.cs.alt - result.Z) > 30 || Math.Abs(mav.cs.roll) > 45 || Math.Abs(mav.cs.pitch) > 45)
+                                    {
+                                        uav_unconnection[mav.sysid - 1] = 1;
+                                        isConnection = false;
+                                        //Console.WriteLine("正在检查连接...数据丢失警告...");
+                                        count++;
+
+                                    }
+
+                                    //Console.WriteLine("线程正在执行..." + mav.cs.lastdata);
+
+                                    for (int i = 0; i < uav_unconnection.Length; i++)
+                                    {
+                                        int droneNumber = i + 1;
+                                        byte parameter = uav_unconnection[i];
+                                        Console.WriteLine($"uav {droneNumber} 号无人机 参数是 {parameter}");
+                                    }
                                 }
                             }
                         }
@@ -1496,13 +1510,13 @@ namespace MissionPlanner.Swarm
             {
                 Settings.Instance.IsSimulation = "false";
                 Settings.ResetBadUavId();
-                //foreach (var port in MainV2.Comports)
-                //{
-                //    foreach (var mav in port.MAVlist)
-                //    { 
-
-                //    }
-                //}
+                foreach (var port in MainV2.Comports)
+                {
+                    foreach (var mav in port.MAVlist)
+                    {
+                        port.setMode(mav.sysid, mav.compid, "Guided");
+                    }
+                }
 
 
                 threadrun = false;
@@ -1580,13 +1594,14 @@ namespace MissionPlanner.Swarm
                 timer1.Start();
             });
             // 给定条件
-            double speedGlobal = 10.0; // 飞行器在全局坐标系下的速度，单位 m/s
+            double speedGlobal = 5.0; // 飞行器在全局坐标系下的速度，单位 m/s
             double angleGlobal = 0.0; // 飞行器在全局坐标系下的方向角度（度），即东北方向
             // 飞行控制主循环
             try
             {
                 long startTimestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
-
+                // 生成一个 1 到 5 之间的随机数
+                
                 while (!token.IsCancellationRequested)
                 {
                     //// 获取当前无人机位置信息（需安全访问 UI 资源）
@@ -1603,7 +1618,7 @@ namespace MissionPlanner.Swarm
                     //        }
                     //    });
                     //});
-
+                    
                     // 计算飞行指令
                     long endTimestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
                     double timeDifferenceSeconds = (endTimestamp - startTimestamp) / 1000.0;
@@ -1614,27 +1629,94 @@ namespace MissionPlanner.Swarm
                     {
                         foreach (var mav in port.MAVlist)
                         {
-                           
+                            //int randomValueyaw = rand.Next(-15, 15);
+                            int randomValueV = rand.Next(10, 50)/10;
+                            //if (mav.cs.yaw > 0 && mav.cs.yaw < 90)
+                            //{
+                            //    randomValueV = rand.Next(1, 5);
+                            //}
+                            //else if (mav.cs.yaw >= 90 && mav.cs.yaw < 180)
+                            //{
+                            //    randomValueV = rand.Next(-1, -5);
+                            //}
+                            //else if (mav.cs.yaw >= 180 && mav.cs.yaw < 270)
+                            //{
+                            //    randomValueV = rand.Next(-1, -5);
+                            //}
+                            //else {
+                            //    randomValueV = rand.Next(-1, -5);
+                            //}
 
-                            // 查找无人机分组信息
-                            foreach (var group in drones)
-                            {
-                                foreach (var drone in group)
+
+                                // 查找无人机分组信息
+                                foreach (var group in drones)
                                 {
-                                    if (drone.Id == mav.sysid.ToString())
+                                    foreach (var drone in group)
                                     {
-                                        yawAngle = (float)drone.ChangeYaw;
-                                        yaw = (float)drone.Yaw;
-                                        break;
+                                        if (drone.Id == mav.sysid.ToString())
+                                        {
+                                            yawAngle = (float)drone.ChangeYaw;
+                                            yaw = (float)drone.Yaw;
+                                            break;
+                                        }
                                     }
                                 }
-                            }
 
                             /*******************方式二----start*****************************/
-                            double speed = 10.0;            // 期望速度 (m/s)
+                            double speed = 5.0;            // 期望速度 (m/s)
+                            if (timeDifferenceSeconds < 20) {
+                                //Console.WriteLine("timeDifferenceSeconds < 10" );
+                                GlobalToBody(speedGlobal, yawAngle, yaw, out vx_body, out vy_body);
 
-                            if (timeDifferenceSeconds < 10)
+                                // 1. 构造 SET_POSITION_TARGET_GLOBAL_INT 消息
+                                var msg = new mavlink_set_position_target_global_int_t
+                                {
+                                    time_boot_ms = (uint)Environment.TickCount, // 当前时间戳
+                                    coordinate_frame = (byte)MAV_FRAME.GLOBAL_RELATIVE_ALT_INT, // 使用相对海拔的全局坐标系
+                                    lat_int = (int)(mav.cs.lat * 1e7), // 纬度（例如 30.0 度，转换为 int）
+                                    lon_int = (int)(mav.cs.lng * 1e7), // 经度（例如 120.0 度，转换为 int）
+                                    alt = mav.cs.alt, // 相对高度（米）
+                                    //vx = (float)2, // 北向速度
+                                    //vy = (float)2, // 东向速度
+                                    vx = (float)vx_body* randomValueV, // 北向速度
+                                    vy = (float)vy_body* randomValueV, // 东向速度
+                                    vz = 0, // 忽略 z 方向速度
+
+                                    afx = 0, // 忽略 x 方向加速度
+                                    afy = 0, // 忽略 y 方向加速度
+                                    afz = 0, // 忽略 z 方向加速度
+
+                                    //yaw = (float)(Math.PI / 2), // 偏航角（弧度，这里设置为 0，表示朝北）
+                                    yaw = (float)((yawAngle) * Math.PI / 180.0), // 偏航角（弧度，这里设置为 0，表示朝北）
+                                    yaw_rate = 0, // 忽略偏航角速率
+
+                                    type_mask = (ushort)(
+                                        POSITION_TARGET_TYPEMASK.X_IGNORE | // 忽略位置
+                                        POSITION_TARGET_TYPEMASK.Y_IGNORE |      // 忽略速度
+                                        POSITION_TARGET_TYPEMASK.Z_IGNORE |   // 忽略加速度
+                                        POSITION_TARGET_TYPEMASK.AX_IGNORE |  // 忽略偏航角速率
+                                        POSITION_TARGET_TYPEMASK.AY_IGNORE |
+                                        POSITION_TARGET_TYPEMASK.AZ_IGNORE |
+                                        POSITION_TARGET_TYPEMASK.YAW_RATE_IGNORE |
+                                        POSITION_TARGET_TYPEMASK.FORCE_SET
+                                    ),
+
+                                    target_system = mav.sysid,
+                                    target_component = mav.compid
+                                };
+                                await Task.Run(() =>
+                                {
+                                    this.Invoke((MethodInvoker)delegate
+                                    {
+                                        MainV2.comPort.generatePacket(
+                                            (byte)MAVLINK_MSG_ID.SET_POSITION_TARGET_GLOBAL_INT,
+                                            msg, mav.sysid, mav.compid);
+                                    });
+                                });
+                            }
+                            else if (timeDifferenceSeconds > 20 && timeDifferenceSeconds < 40)
                             {
+
                                 //Console.WriteLine("timeDifferenceSeconds < 10" );
                                 GlobalToBody(speedGlobal, yawAngle, yaw, out vx_body, out vy_body);
 
@@ -1685,7 +1767,7 @@ namespace MissionPlanner.Swarm
                                 });
 
                             }
-                            else if (timeDifferenceSeconds > 10 && timeDifferenceSeconds < 20)
+                            else if (timeDifferenceSeconds > 40 && timeDifferenceSeconds < 60)
                             {
                                 Console.WriteLine("timeDifferenceSeconds > 20 && timeDifferenceSeconds < 30");
                                 //GlobalToBody(speedGlobal, 0, mav.cs.yaw, out vx_body, out vy_body);
@@ -1786,7 +1868,8 @@ namespace MissionPlanner.Swarm
                                 //    });
                                 //});
                             }
-                            else {
+                            else
+                            {
                                 // 返回原点（需安全访问 UI 资源）
                                 await Task.Run(() =>
                                 {
