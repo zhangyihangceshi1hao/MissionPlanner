@@ -262,10 +262,13 @@ namespace MissionPlanner.Swarm
                         SwarmInterface.setOffsets(mav, (float)(vector.x - vectorlead.x),
                             (float)(vector.y - vectorlead.y),
                             (float)(vector.z - vectorlead.z));
+
+                        
                     }
                 }
 
                 SwarmInterface.setLeader(MainV2.comPort.MAV);
+                Settings.Instance.SwarmLeader = MainV2.comPort.MAV.sysid + "";
                 updateicons();
                 BUT_Start.Enabled = true;
                 BUT_Updatepos.Enabled = true;

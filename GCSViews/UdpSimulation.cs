@@ -11,6 +11,7 @@ using System.Drawing;
 using Xamarin.Essentials;
 using System.Timers;
 using MissionPlanner.Utilities;
+using MissionPlanner.Swarm;
 
 
 namespace MissionPlanner.GCSViews
@@ -89,7 +90,8 @@ namespace MissionPlanner.GCSViews
             public Int32 Yaw;           // 偏航角 (4字节)
             public Int16 EastVelocity;    // 东向速度 (2字节)
             public Int16 NorthVelocity;   // 北向速度 (2字节)
-            public Int16 VerticalVelocity;// 垂向速度 (2字节)           
+            public Int16 VerticalVelocity;// 垂向速度 (2字节)
+            public Int16 Leader;
 
         }
         [StructLayout(LayoutKind.Sequential, Pack = 1)]
@@ -153,7 +155,7 @@ namespace MissionPlanner.GCSViews
                             DID = BitConverter.ToInt32(new byte[4] { 0x01, 0x01, 0x01, 0x4F }, 0),                      // 接收方地址                         
                             No = (Int32)sequence,                            // 初始包序号
                             DATE = (ushort)timestampIn0_1ms,
-                            L = 32,                            // 数据域长度（32字节）
+                            L = 34,                            // 数据域长度（32字节）
                             UAVId = (Int16)mav.sysid,                         // 无人机编号
                             Longitude = (Int32)(mav.cs.lng * 1e6),     // 经度：东经116.4度
                             Latitude = (Int32)(mav.cs.lat * 1e6),       // 纬度：北纬40.0度
@@ -162,7 +164,7 @@ namespace MissionPlanner.GCSViews
                             EastVelocity = ConvertVelocity(mav.cs.vy),                // 东向速度（0.1单位）
                             NorthVelocity = ConvertVelocity(mav.cs.vx),                // 北向速度（0.1单位）
                             VerticalVelocity = ConvertVelocity(mav.cs.vz),             // 垂向速度（0.1单位）
-
+                            Leader = (Int16)int.Parse(Settings.Instance.SwarmLeader)
 
                         };
                       

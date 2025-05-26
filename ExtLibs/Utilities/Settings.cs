@@ -257,6 +257,14 @@ namespace MissionPlanner.Utilities
             get { return this["IsSimulation"]; }
             set { this["IsSimulation"] = value; }
         }
+
+        public string SwarmLeader
+        {
+            get { return this["SwarmLeader"]; }
+            set { this["SwarmLeader"] = value; }
+        }
+
+
         public decimal GetDecimal(string key, decimal defaultd = 0)
         {
             decimal result;
