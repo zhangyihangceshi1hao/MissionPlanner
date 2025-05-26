@@ -2839,7 +2839,7 @@ namespace MissionPlanner.GCSViews
             this.Simulation_udp.Name = "Simulation_udp";
             this.Simulation_udp.TextColorNotEnabled = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(87)))), ((int)(((byte)(4)))));
             this.Simulation_udp.UseVisualStyleBackColor = true;
-            //this.Simulation_udp.Visible = false;
+            this.Simulation_udp.Visible = false;
             this.Simulation_udp.Click += new System.EventHandler(this.Simulation_udpClike);
             // 
             // UAV_STATUS
