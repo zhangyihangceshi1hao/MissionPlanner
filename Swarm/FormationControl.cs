@@ -87,7 +87,7 @@ namespace MissionPlanner.Swarm
 
             MissionPlanner.Utilities.Tracking.AddPage(this.GetType().ToString(), this.Text);
 
-            countdown.Elapsed += sendheartbeat;
+            //countdown.Elapsed += sendheartbeat;
             
             textBox_uav1.Text = "0,0,0";
             textBox_uav2.Text = "0,0,0";
@@ -1030,8 +1030,8 @@ namespace MissionPlanner.Swarm
         {
             //取[f_yaw-60,f_yaw+60] 为偏航角范围
             // 计算偏航角的范围： [f_yaw - 60, f_yaw + 60]
-            double lowerBound = f_yaw - 60;
-            double upperBound = f_yaw + 60;
+            double lowerBound = f_yaw - 40;
+            double upperBound = f_yaw + 40;
 
             int a = groups.Count();
 
@@ -1230,7 +1230,21 @@ namespace MissionPlanner.Swarm
             public double z;
         
         }
-            private async void setHomeHereToolStripMenuItem_Click(double lat, double lng,byte[] uav_unconnection)
+        private async void setModeInfo( byte[] uav_unconnection) {
+            foreach (var port in MainV2.Comports)
+            {
+                foreach (var mav in port.MAVlist)
+                {
+                    if (uav_unconnection[mav.sysid - 1] == 1)
+                    {
+                        continue;
+                    }
+                    port.setMode(mav.sysid, mav.compid, "Auto");
+
+                }
+            }
+        }
+        private async void setHomeHereToolStripMenuItem_Click(double lat, double lng,byte[] uav_unconnection)
         {
 
             //textBox_uav1.Text = "0,0,0";
@@ -1405,14 +1419,27 @@ namespace MissionPlanner.Swarm
                 }
             }
         }
-         void GlobalToBody(double speedGlobal, double angleGlobal, float yawAngle, out float vx_body, out float vy_body)
-        {
 
-            // 计算全局坐标系中的速度分量
-            double vGlobalX = speedGlobal * Math.Cos(DegreeToRadian(angleGlobal));  // 全局坐标系中的 X 速度分量
-            double vGlobalY = speedGlobal * Math.Sin(DegreeToRadian(angleGlobal));  // 全局坐标系中的 Y 速度分量
-            vx_body = (float)(vGlobalX * Math.Cos(DegreeToRadian(yawAngle)) + vGlobalY * Math.Sin(DegreeToRadian(yawAngle)));
-            vy_body = (float)(-vGlobalX * Math.Sin(DegreeToRadian(yawAngle)) + vGlobalY * Math.Cos(DegreeToRadian(yawAngle)));
+        private double DegreeToRadian1(double angle)
+        {
+            return Math.PI * angle / 180.0;
+        }
+
+        private void GlobalToBody(double speedGlobal, double angleGlobal, float yawAngle, out float vx_body, out float vy_body)
+        {
+            double rad_global = DegreeToRadian1(angleGlobal);
+            vx_body = (float)(speedGlobal * Math.Cos(rad_global));  // 全局 X 分量
+            vy_body = (float)(speedGlobal * Math.Sin(rad_global));  // 全局 Y 分量
+
+                                                                   //// 计算全局坐标系中的速度分量
+                                                                   //double vGlobalX = speedGlobal * Math.Cos(DegreeToRadian(angleGlobal));  // 全局坐标系中的 X 速度分量
+                                                                   //double vGlobalY = speedGlobal * Math.Sin(DegreeToRadian(angleGlobal));  // 全局坐标系中的 Y 速度分量
+                                                                   //vx_body = (float)(vGlobalX * Math.Cos(DegreeToRadian(yawAngle)) + vGlobalY * Math.Sin(DegreeToRadian(yawAngle)));
+                                                                   //vy_body = (float)(-vGlobalX * Math.Sin(DegreeToRadian(yawAngle)) + vGlobalY * Math.Cos(DegreeToRadian(yawAngle)));
+
+
+
+
         }
         private float[] uav_yaw = new float[20];
 
@@ -1579,7 +1606,7 @@ namespace MissionPlanner.Swarm
                         foreach (var mav in port.MAVlist)
                         {
                             var vector = SwarmInterface.getOffsets(mav);
-                            drones_1.Add(new Drone(mav.sysid + "", vector.x, vector.y, vector.z, uav_unconnection[mav.sysid-1]==0, 0));
+                            drones_1.Add(new Drone(mav.sysid + "", vector.x, vector.y, f_yaw, uav_unconnection[mav.sysid-1]==0, 0));
                         }
                     }
                 });
@@ -1594,7 +1621,8 @@ namespace MissionPlanner.Swarm
                 timer1.Start();
             });
             // 给定条件
-            double speedGlobal = 5.0; // 飞行器在全局坐标系下的速度，单位 m/s
+            double speedGlobal1 = 10.0; // 飞行器在全局坐标系下的速度，单位 m/s
+            double speedGlobal = 10.0; // 飞行器在全局坐标系下的速度，单位 m/s
             double angleGlobal = 0.0; // 飞行器在全局坐标系下的方向角度（度），即东北方向
             // 飞行控制主循环
             try
@@ -1630,7 +1658,10 @@ namespace MissionPlanner.Swarm
                         foreach (var mav in port.MAVlist)
                         {
                             //int randomValueyaw = rand.Next(-15, 15);
-                            int randomValueV = rand.Next(10, 50)/10;
+                            Random rand = new Random();
+                            int[] options = { 1, 10 };
+                            int randomValueV = options[rand.Next(options.Length)]/2;
+                            //int randomValueV = rand.Next(5, 50)/10;
                             //if (mav.cs.yaw > 0 && mav.cs.yaw < 90)
                             //{
                             //    randomValueV = rand.Next(1, 5);
@@ -1663,10 +1694,10 @@ namespace MissionPlanner.Swarm
                                 }
 
                             /*******************方式二----start*****************************/
-                            double speed = 5.0;            // 期望速度 (m/s)
+                            double speed = 10.0;            // 期望速度 (m/s)
                             if (timeDifferenceSeconds < 20) {
                                 //Console.WriteLine("timeDifferenceSeconds < 10" );
-                                GlobalToBody(speedGlobal, yawAngle, yaw, out vx_body, out vy_body);
+                                GlobalToBody(speedGlobal1, yawAngle, yaw, out vx_body, out vy_body);
 
                                 // 1. 构造 SET_POSITION_TARGET_GLOBAL_INT 消息
                                 var msg = new mavlink_set_position_target_global_int_t
@@ -1714,7 +1745,7 @@ namespace MissionPlanner.Swarm
                                     });
                                 });
                             }
-                            else if (timeDifferenceSeconds > 20 && timeDifferenceSeconds < 40)
+                            else if (timeDifferenceSeconds >= 20 && timeDifferenceSeconds < 40)
                             {
 
                                 //Console.WriteLine("timeDifferenceSeconds < 10" );
@@ -1767,11 +1798,11 @@ namespace MissionPlanner.Swarm
                                 });
 
                             }
-                            else if (timeDifferenceSeconds > 40 && timeDifferenceSeconds < 60)
+                            else if (timeDifferenceSeconds >= 40 && timeDifferenceSeconds < 60)
                             {
                                 Console.WriteLine("timeDifferenceSeconds > 20 && timeDifferenceSeconds < 30");
                                 //GlobalToBody(speedGlobal, 0, mav.cs.yaw, out vx_body, out vy_body);
-
+                                GlobalToBody(speedGlobal, yaw, yaw, out vx_body, out vy_body);
                                 // 1. 构造 SET_POSITION_TARGET_GLOBAL_INT 消息
                                 var msg = new mavlink_set_position_target_global_int_t
                                 {
@@ -1782,8 +1813,8 @@ namespace MissionPlanner.Swarm
                                     alt = mav.cs.alt, // 相对高度（米）
                                     //vx = (float)2, // 北向速度
                                     //vy = (float)2, // 东向速度
-                                    vx = (float)5, // 北向速度
-                                    vy = (float)0, // 东向速度
+                                    vx = (float)vx_body, // 北向速度
+                                    vy = (float)vy_body, // 东向速度
                                     vz = 0, // 忽略 z 方向速度
 
                                     afx = 0, // 忽略 x 方向加速度
@@ -1791,7 +1822,7 @@ namespace MissionPlanner.Swarm
                                     afz = 0, // 忽略 z 方向加速度
 
                                     //yaw = (float)(Math.PI / 2), // 偏航角（弧度，这里设置为 0，表示朝北）
-                                    yaw = (float)0, // 偏航角（弧度，这里设置为 0，表示朝北）
+                                    yaw = (float)(yaw * Math.PI / 180.0), // 偏航角（弧度，这里设置为 0，表示朝北）
                                     yaw_rate = 0, // 忽略偏航角速率
 
                                     type_mask = (ushort)(
@@ -1875,7 +1906,9 @@ namespace MissionPlanner.Swarm
                                 {
                                     this.Invoke((MethodInvoker)delegate
                                     {
-                                        setHomeHereToolStripMenuItem_Click(18.4291102, 109.8592257, uav_unconnection);
+                                        //setHomeHereToolStripMenuItem_Click(18.4291102, 109.8592257, uav_unconnection);
+                                        setModeInfo(uav_unconnection);
+
                                     });
                                 });
                                 return;
