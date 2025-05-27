@@ -1498,13 +1498,13 @@ namespace MissionPlanner.Swarm
                                 foreach (var mav in port.MAVlist)
                                 {
                                     var currentTime = DateTime.Now;
-                                    var interval = (currentTime - mav.cs.lastdata1).TotalSeconds;
+                                    //var interval = (currentTime - mav.cs.lastdata1).TotalSeconds;
                                     Drone2SecondsAgo result = drone2SecondsAgos.FirstOrDefault(d => d.Id == mav.sysid);
 
 
 
 
-                                    if (interval > 10 || mav.cs.gpsstatus < 3 || Math.Abs(mav.cs.alt - result.Z) > 30 || Math.Abs(mav.cs.roll) > 45 || Math.Abs(mav.cs.pitch) > 45)
+                                    if (mav.cs.linkqualitygcs == 0 || mav.cs.gpsstatus < 3 || Math.Abs(mav.cs.alt - result.Z) > 30 || Math.Abs(mav.cs.roll) > 45 || Math.Abs(mav.cs.pitch) > 45)
                                     {
                                         uav_unconnection[mav.sysid - 1] = 1;
                                         isConnection = false;
@@ -1699,9 +1699,9 @@ namespace MissionPlanner.Swarm
                             /*******************方式二----start*****************************/
                             double speed = 10.0;            // 期望速度 (m/s)
                             if (timeDifferenceSeconds < 20) {
-                                //Console.WriteLine("timeDifferenceSeconds < 10" );
+                                Console.WriteLine("timeDifferenceSeconds < 10  mav.sysid ="+mav.sysid );
                                 GlobalToBody(speedGlobal1, yawAngle, yaw, out vx_body, out vy_body);
-
+                                //Console.WriteLine("timeDifferenceSeconds < 20" );
                                 // 1. 构造 SET_POSITION_TARGET_GLOBAL_INT 消息
                                 var msg = new mavlink_set_position_target_global_int_t
                                 {
@@ -1742,15 +1742,17 @@ namespace MissionPlanner.Swarm
                                 {
                                     this.Invoke((MethodInvoker)delegate
                                     {
-                                        MainV2.comPort.generatePacket(
-                                            (byte)MAVLINK_MSG_ID.SET_POSITION_TARGET_GLOBAL_INT,
+                                        port.generatePacket((byte)MAVLINK_MSG_ID.SET_POSITION_TARGET_GLOBAL_INT,
                                             msg, mav.sysid, mav.compid);
+                                        //MainV2.comPort.generatePacket(
+                                        //    (byte)MAVLINK_MSG_ID.SET_POSITION_TARGET_GLOBAL_INT,
+                                        //    msg, mav.sysid, mav.compid);
                                     });
                                 });
                             }
                             else if (timeDifferenceSeconds >= 20 && timeDifferenceSeconds < 40)
                             {
-
+                                Console.WriteLine("timeDifferenceSeconds > 20 <40mav.sysid =" + mav.sysid);
                                 //Console.WriteLine("timeDifferenceSeconds < 10" );
                                 GlobalToBody(speedGlobal, yawAngle, yaw, out vx_body, out vy_body);
 
@@ -1794,16 +1796,19 @@ namespace MissionPlanner.Swarm
                                 {
                                     this.Invoke((MethodInvoker)delegate
                                     {
-                                        MainV2.comPort.generatePacket(
-                                            (byte)MAVLINK_MSG_ID.SET_POSITION_TARGET_GLOBAL_INT,
+                                        port.generatePacket((byte)MAVLINK_MSG_ID.SET_POSITION_TARGET_GLOBAL_INT,
                                             msg, mav.sysid, mav.compid);
+                                        //MainV2.comPort.generatePacket(
+                                        //    (byte)MAVLINK_MSG_ID.SET_POSITION_TARGET_GLOBAL_INT,
+                                        //    msg, mav.sysid, mav.compid);
                                     });
                                 });
 
                             }
                             else if (timeDifferenceSeconds >= 40 && timeDifferenceSeconds < 60)
                             {
-                                Console.WriteLine("timeDifferenceSeconds > 20 && timeDifferenceSeconds < 30");
+                                //Console.WriteLine("timeDifferenceSeconds >40 <60" );
+                                Console.WriteLine("timeDifferenceSeconds > 20 && timeDifferenceSeconds < 30mav.sysid =" + mav.sysid);
                                 //GlobalToBody(speedGlobal, 0, mav.cs.yaw, out vx_body, out vy_body);
                                 GlobalToBody(speedGlobal, yaw, yaw, out vx_body, out vy_body);
                                 // 1. 构造 SET_POSITION_TARGET_GLOBAL_INT 消息
@@ -1846,9 +1851,11 @@ namespace MissionPlanner.Swarm
                                 {
                                     this.Invoke((MethodInvoker)delegate
                                     {
-                                        MainV2.comPort.generatePacket(
-                                            (byte)MAVLINK_MSG_ID.SET_POSITION_TARGET_GLOBAL_INT,
+                                        port.generatePacket((byte)MAVLINK_MSG_ID.SET_POSITION_TARGET_GLOBAL_INT,
                                             msg, mav.sysid, mav.compid);
+                                        //MainV2.comPort.generatePacket(
+                                        //    (byte)MAVLINK_MSG_ID.SET_POSITION_TARGET_GLOBAL_INT,
+                                        //    msg, mav.sysid, mav.compid);
                                     });
                                 });
 
@@ -1909,6 +1916,8 @@ namespace MissionPlanner.Swarm
                                 {
                                     this.Invoke((MethodInvoker)delegate
                                     {
+                                        Console.WriteLine("setModeInfo(uav_unconnection);=" );
+
                                         //setHomeHereToolStripMenuItem_Click(18.4291102, 109.8592257, uav_unconnection);
                                         setModeInfo(uav_unconnection);
 

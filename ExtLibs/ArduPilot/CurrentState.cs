@@ -2761,8 +2761,8 @@ namespace MissionPlanner
                     case (uint)MAVLink.MAVLINK_MSG_ID.HEARTBEAT:
 
                         {
-
-                            lastdata1 = DateTime.Now;
+                           
+                            //lastdata1 = DateTime.Now;
                             var hb = mavLinkMessage.ToStructure<MAVLink.mavlink_heartbeat_t>();
 
                             if (hb.type == (byte)MAVLink.MAV_TYPE.GCS)
