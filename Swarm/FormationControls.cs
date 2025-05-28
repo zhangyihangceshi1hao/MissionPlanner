@@ -7,6 +7,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using GeoAPI.CoordinateSystems;
 using GeoAPI.CoordinateSystems.Transformations;
+using System.Text.RegularExpressions;
 
 namespace MissionPlanner.Swarm
 {
@@ -54,18 +55,55 @@ namespace MissionPlanner.Swarm
 
         void FollowLeaderControl_MouseWheel(object sender, MouseEventArgs e)
         {
+            int number1 = ExtractNumber(tabControl1.SelectedTab.Name);
 
-            
-            if (e.Delta < 0)
+
+            // 假设 grid1 是添加在某个容器中的控件（如 this 或 tabPage1）
+            string controlName = "grid"+ number1;
+            //int scaleValue = 100;
+
+            // 查找控件
+            Control[] foundControls = this.Controls.Find(controlName, true);
+
+            if (foundControls.Length > 0 && foundControls[0] is Grid targetGrid)
             {
-                grid1.setScale(grid1.getScale() + 4);
+                if (e.Delta < 0)
+                {
+                    targetGrid.setScale(targetGrid.getScale() + 4);
+                }
+                else
+                {
+                    targetGrid.setScale(targetGrid.getScale() - 4);
+                }
             }
             else
             {
-                grid1.setScale(grid1.getScale() - 4);
+                MessageBox.Show($"未找到名为 {controlName} 的 Grid 控件");
+            }
+
+            //if (e.Delta < 0)
+            //{
+            //    grid1.setScale(grid1.getScale() + 4);
+            //}
+            //else
+            //{
+            //    grid1.setScale(grid1.getScale() - 4);
+            //}
+        }
+        public static int ExtractNumber(string input)
+        {
+            // 匹配字符串结尾的数字部分
+            Match match = Regex.Match(input, @"\d+$");
+
+            if (match.Success)
+            {
+                return int.Parse(match.Value);
+            }
+            else
+            {
+                throw new ArgumentException("字符串中未找到数字部分");
             }
         }
-
         void updateicons()
         {
             bindingSource1.ResetBindings(false);
@@ -397,7 +435,7 @@ namespace MissionPlanner.Swarm
             // 创建新标签页
             System.Windows.Forms.TabPage tabPage = new System.Windows.Forms.TabPage();
             tabPage.Text = "编队" + (maxIndex + 1);
-            tabPage.Name = "formationTabPage" + (maxIndex + 1);
+            tabPage.Name = "tabPage" + (maxIndex + 1);
 
           
 
