@@ -712,39 +712,24 @@ namespace MissionPlanner.Swarm
                 Label label = new Label();
                 label.Text = $"无人机{sysid}号";
                 label.AutoSize = true;
-                label.Name = "select_checkBox_uav" + sysid;
-
-                // 创建删除按钮（可选）
-                Button deleteBtn = new Button();
-                deleteBtn.Text = "X";
-                deleteBtn.Width = 30;
-                deleteBtn.Height = 20;
-                deleteBtn.Click += (s, ev) =>
-                {
-                    RemoveUAVFromFlowLayoutPanel(sysid);
-                };
-
-                // 组合布局
-                FlowLayoutPanel clusterPanel = new FlowLayoutPanel();
-                clusterPanel.FlowDirection = FlowDirection.LeftToRight;
-                clusterPanel.AutoSize = true;
-                clusterPanel.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-                clusterPanel.Padding = new Padding(5);
-                clusterPanel.Margin = new Padding(0);
-                clusterPanel.Controls.Add(label);
-                clusterPanel.Controls.Add(deleteBtn);
-
-                // 分隔线
-                Label separator = new Label();
-                separator.BackColor = Color.LightGray;
-                separator.Height = 2;
-                separator.Dock = DockStyle.Fill;
+                label.Name = "select_checkBox_uav" + sysid;                 
 
                 // 添加到主容器
-                flowLayoutPanel2.Controls.Add(clusterPanel);
+                flowLayoutPanel2.Controls.Add(label);       
+            }
+            // 添加分隔符（如果至少有一个无人机）
+            if (flowLayoutPanel2.Controls.Count > 0)
+            {
+                Panel separator = new Panel();
+                separator.BackColor = Color.LightGray;
+                separator.Height = 2;
+                separator.AutoSize = false;
+                separator.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+                separator.MinimumSize = new Size(flowLayoutPanel2.Width - 3, 2);
+                separator.Margin = new Padding(0);
+
                 flowLayoutPanel2.Controls.Add(separator);
             }
-
             // 更新布局
             flowLayoutPanel2.ResumeLayout();
             flowLayoutPanel2.PerformLayout();
@@ -764,17 +749,15 @@ namespace MissionPlanner.Swarm
 
             foreach (Control ctl in flowLayoutPanel2.Controls)
             {
-                if (ctl is FlowLayoutPanel clusterPanel)
-                {
-                    foreach (Control subCtl in clusterPanel.Controls)
+               
                     {
-                        if (subCtl is Label cb && cb.Name == $"select_checkBox_uav{sysid}")
+                        if (ctl is Label cb && cb.Name == $"select_checkBox_uav{sysid}")
                         {
-                            flowLayoutPanel2.Controls.Remove(clusterPanel);
+                            flowLayoutPanel2.Controls.Remove(ctl);
                             return;
                         }
                     }
-                }
+                
             }
         }
         private void RemoveUAVFromFlowLayoutPanelList(object sender, EventArgs e)
