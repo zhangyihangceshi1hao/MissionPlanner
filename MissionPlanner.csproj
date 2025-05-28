@@ -346,9 +346,7 @@
     <Compile Update="Joystick\JoystickAxis.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Update="Swarm\FormationControls.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Update="Swarm\FormationControls.cs" />
     <None Update="Drivers\amd64\WdfCoInstaller01009.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

@@ -12,12 +12,18 @@ using static IronPython.Modules.PythonRegex;
 using Match = System.Text.RegularExpressions.Match;
 using System.Linq;
 using DotSpatial.Data;
+using Accord.Imaging.Filters;
 
 namespace MissionPlanner.Swarm
 {
+    
+  
     [PreventTheming]
     public partial class FormationControls : Form
     {
+
+        public Dictionary<int,Swarms> swarmsDictionary = new Dictionary<int,Swarms>();
+
         Formation SwarmInterface = null;
         bool threadrun = false;
         
@@ -49,6 +55,8 @@ namespace MissionPlanner.Swarm
             CMB_mavs.DisplayMember = "Key";
 
             updateicons();
+            //初始化Swarms类
+            swarmsDictionary.Add(1,new Swarms(1, grid1, new List<MAVState>()));
 
             this.MouseWheel += new MouseEventHandler(FollowLeaderControl_MouseWheel);
 
@@ -197,14 +205,7 @@ namespace MissionPlanner.Swarm
             // 假设 flowLayoutPanel1 已经存在并初始化
             flowLayoutPanel1.Controls.Clear(); // 清空原有控件
             flowLayoutPanel1.FlowDirection = FlowDirection.TopDown;
-            //flowLayoutPanel1.AutoSize = true;
-            //flowLayoutPanel1.AutoScroll = true;
             flowLayoutPanel1.AutoSize = false;  // 关键！
-            //flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            //flowLayoutPanel1.Location = new System.Drawing.Point(12, 12);
-            //flowLayoutPanel1.Name = "flowLayoutPanel1";
-            //flowLayoutPanel1.Size = new System.Drawing.Size(250, 400); // 固定尺寸
-            //flowLayoutPanel1.TabIndex = 0;
             flowLayoutPanel1.WrapContents = false; // 禁用换行
             // 收集所有 MAV 并按 sysid 排序
             var allMavs = MainV2.Comports
@@ -645,7 +646,22 @@ namespace MissionPlanner.Swarm
             tabControl1.TabPages.Insert(insertIndex, tabPage);
 
             AddNewItemToComboBox(maxIndex + 1);
+            List<MAVState> mavStateList = new List<MAVState>();
+           
             //CollectiveFormationNumber();
+            //添加到swarmsDictionary集合中
+            //foreach (var port in MainV2.Comports)
+            //{
+            //    foreach (var mav in port.MAVlist)
+            //    {
+            //        if () {
+                        //mavStateList.Add(mav);
+                        //mavStates.Add(port.BaseStream.PortName + " " + mav.sysid + " " + mav.compid, mav);
+                        swarmsDictionary.Add((maxIndex + 1), new Swarms((maxIndex + 1), grid, mavStateList));
+                    //}
+                //}
+            //}
+            
 
         }
 
@@ -665,7 +681,9 @@ namespace MissionPlanner.Swarm
                 if (tabControl1.TabPages[i].Text.StartsWith("编队"))
                 {
                     lastPage = tabControl1.TabPages[i];
+                    swarmsDictionary.Remove(i+1);
                     RemoveItemFromComboBox(i+1);
+                    RemovePanel(i+1);
                     break;
                 }
             }
@@ -675,7 +693,7 @@ namespace MissionPlanner.Swarm
                 tabControl1.TabPages.Remove(lastPage);
             }
 
-            
+           
             //CollectiveFormationNumber();
 
         }
@@ -794,6 +812,11 @@ namespace MissionPlanner.Swarm
                     item.panel.Height = flowLayoutPanel2.Height;
                 };
             }
+
+
+            //保存swarmsDictionary
+
+            swarmsDictionary[tabPageNumber].SwarmList = filteredMavs;
         }
         //private void myButton3_Click(object sender, EventArgs e)
         //{
@@ -930,6 +953,8 @@ namespace MissionPlanner.Swarm
         private void RemoveUAVFromFlowLayoutPanelList(object sender, EventArgs e)
         {
             RemovePanel(int.Parse(comboBox2.Text));
+            //swarmsDictionary.Remove(int.Parse(comboBox2.Text));
+            swarmsDictionary[int.Parse(comboBox2.Text)].SwarmList = new List<MAVState>();
 
         }
         /// <summary>
@@ -1001,6 +1026,40 @@ namespace MissionPlanner.Swarm
             }
 
             return selectedSysIds;
+        }
+
+        public class Swarms
+        {
+            private int swarm_id;
+            private Grid grid;
+            private List<MAVState> swarmList;
+            // 构造函数
+            public Swarms(int swarmId, Grid grid, List<MAVState> swarmList)
+            {
+                SwarmId = swarmId;
+                Grid = grid;
+                SwarmList = swarmList ?? new List<MAVState>(); // 防止 null
+            }
+            // 属性：SwarmId
+            public int SwarmId
+            {
+                get { return swarm_id; }
+                set { swarm_id = value; }
+            }
+
+            // 属性：Grid
+            public Grid Grid
+            {
+                get { return grid; }
+                set { grid = value; }
+            }
+
+            // 属性：SwarmList
+            public List<MAVState> SwarmList
+            {
+                get { return swarmList; }
+                set { swarmList = value; }
+            }
         }
     }
 }
