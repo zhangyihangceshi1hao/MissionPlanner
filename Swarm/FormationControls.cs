@@ -8,6 +8,9 @@ using System.Windows.Forms;
 using GeoAPI.CoordinateSystems;
 using GeoAPI.CoordinateSystems.Transformations;
 using System.Text.RegularExpressions;
+using static IronPython.Modules.PythonRegex;
+using Match = System.Text.RegularExpressions.Match;
+using System.Linq;
 
 namespace MissionPlanner.Swarm
 {
@@ -16,7 +19,7 @@ namespace MissionPlanner.Swarm
     {
         Formation SwarmInterface = null;
         bool threadrun = false;
-        public static int swarms_id = 1;
+        
         public FormationControls()
         {
             InitializeComponent();
@@ -51,8 +54,53 @@ namespace MissionPlanner.Swarm
             MessageBox.Show("this is beta, use at own risk");
 
             MissionPlanner.Utilities.Tracking.AddPage(this.GetType().ToString(), this.Text);
+
+         
+            AddCheckboxesToFlowLayoutPanel();
+        }
+        private void AddCheckboxesToFlowLayoutPanel()
+        {
+            // 假设 flowLayoutPanel1 已经存在并初始化
+            flowLayoutPanel1.Controls.Clear(); // 清空原有控件
+            flowLayoutPanel1.FlowDirection = FlowDirection.TopDown;
+            //flowLayoutPanel1.AutoSize = true;
+            //flowLayoutPanel1.AutoScroll = true;
+            flowLayoutPanel1.AutoSize = false;  // 关键！
+            //flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            //flowLayoutPanel1.Location = new System.Drawing.Point(12, 12);
+            //flowLayoutPanel1.Name = "flowLayoutPanel1";
+            //flowLayoutPanel1.Size = new System.Drawing.Size(250, 400); // 固定尺寸
+            //flowLayoutPanel1.TabIndex = 0;
+            flowLayoutPanel1.WrapContents = false; // 禁用换行
+            // 收集所有 MAV 并按 sysid 排序
+            var allMavs = MainV2.Comports
+                .SelectMany(port => port.MAVlist)
+                .OrderBy(mav => mav.sysid)
+                .ToList();
+            // 按排序后的顺序添加 CheckBox
+            foreach (var mav in allMavs)
+            {
+                CheckBox checkBox = new CheckBox();
+                checkBox.Text = "无人机" + mav.sysid + "号";
+                checkBox.AutoSize = true;
+                checkBox.Name = "checkBox" + mav.sysid;
+                checkBox.CheckedChanged += CheckBox_CheckedChanged;             
+
+                flowLayoutPanel1.Controls.Add(checkBox);
+                flowLayoutPanel1.Controls.Add(checkBox);
+                flowLayoutPanel1.Controls.Add(checkBox);
+            }
+            
+            flowLayoutPanel1.ResumeLayout(); // 恢复布局更新
         }
 
+        private void CheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (sender is CheckBox cb)
+            {
+                Console.WriteLine($"CheckBox {cb.Name} 状态: {cb.Checked}");
+            }
+        }
         void FollowLeaderControl_MouseWheel(object sender, MouseEventArgs e)
         {
             int number1 = ExtractNumber(tabControl1.SelectedTab.Name);
@@ -80,15 +128,6 @@ namespace MissionPlanner.Swarm
             {
                 MessageBox.Show($"未找到名为 {controlName} 的 Grid 控件");
             }
-
-            //if (e.Delta < 0)
-            //{
-            //    grid1.setScale(grid1.getScale() + 4);
-            //}
-            //else
-            //{
-            //    grid1.setScale(grid1.getScale() - 4);
-            //}
         }
         public static int ExtractNumber(string input)
         {
