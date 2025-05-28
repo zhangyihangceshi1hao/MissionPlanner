@@ -1750,7 +1750,7 @@ namespace MissionPlanner.Swarm
                                     });
                                 });
                             }
-                            else if (timeDifferenceSeconds >= 20 && timeDifferenceSeconds < 40)
+                            else if (timeDifferenceSeconds >= 20 && timeDifferenceSeconds < 30)
                             {
                                 Console.WriteLine("timeDifferenceSeconds > 20 <40mav.sysid =" + mav.sysid);
                                 //Console.WriteLine("timeDifferenceSeconds < 10" );

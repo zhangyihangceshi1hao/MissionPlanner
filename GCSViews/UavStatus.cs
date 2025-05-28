@@ -86,7 +86,7 @@ namespace MissionPlanner.GCSViews
             var panel = new Panel
             {
                 Width = 110,
-                MinimumSize = new Size(90, 150),
+                MinimumSize = new Size(90, 200),
                 Padding = new Padding(10),
                 Margin = new Padding(5),
                 BorderStyle = BorderStyle.FixedSingle,
@@ -96,7 +96,7 @@ namespace MissionPlanner.GCSViews
             var label = new Label
             {
                 AutoSize = true,
-                Text = $"ID: {drone.Id}\n解锁: {drone.Arm}\n纬度: {drone.Latitude:F4}\n经度: {drone.Longitude:F4}\n海拔: {drone.Altitude:F2} m\n绝对高度: {drone.AbsoluteAltitude:F2} m\n模式: {drone.FlightMode}\nGPS数量: {drone.GpsStatus}\n信号强度: {drone.GpsStrength}%",
+                Text = $"ID: {drone.Id}\n解锁: {drone.Arm}\n纬度: {drone.Latitude:F4}\n经度: {drone.Longitude:F4}\n海拔: {drone.Altitude:F2} m\n高度: {drone.AbsoluteAltitude:F2} m\n模式: {drone.FlightMode}\n地速：{drone.Groundspeed:F1}m/s\n空速：{drone.Airspeed:F1}m/s\n电量：{drone.StateOfCharge:F2}v\nGPS数量: {drone.GpsStatus}\n信号强度: {drone.GpsStrength}%",
                 Font = new Font("微软雅黑", 9F)
             };
 
@@ -114,6 +114,9 @@ namespace MissionPlanner.GCSViews
             public double Altitude { get; set; }      // 海拔高度（AMSL）
             public double AbsoluteAltitude { get; set; }  // 绝对高度（可能是相对于 home 点的高度）
             public string FlightMode { get; set; }    // 当前飞行模式（如 RTL、GUIDED、AUTO 等）
+            public float Groundspeed { get; set; }  // 地速
+            public float Airspeed { get; set; }  // 空速
+            public float StateOfCharge { get; set; }  //剩余电量
             public string GpsStatus { get; set; }     // GPS 状态（如 "3D Fix", "No Fix"）
             public string GpsStrength { get; set; }     // GPS  强度
         }
@@ -139,7 +142,12 @@ namespace MissionPlanner.GCSViews
                         AbsoluteAltitude = mav.cs.alt,
                         FlightMode = mav.cs.mode,
                         GpsStatus = mav.cs.satcount.ToString(),
-                        GpsStrength = mav.cs.linkqualitygcs+""
+                        GpsStrength = mav.cs.linkqualitygcs+"",
+                        StateOfCharge =(float) mav.cs.battery_voltage,
+                        Groundspeed = mav.cs.groundspeed,
+                        Airspeed = mav.cs.airspeed,
+
+
                     };
                 }
             }
@@ -155,7 +163,7 @@ namespace MissionPlanner.GCSViews
                     {
                         // 更新已有 Panel 中的 Label 内容
                         var label = (Label)panel.Controls[0];
-                        label.Text = $"ID: {drone.Id}\n解锁: {drone.Arm}\n纬度: {drone.Latitude:F6}\n经度: {drone.Longitude:F6}\n海拔: {drone.Altitude:F2} m\n绝对高度: {drone.AbsoluteAltitude:F2} m\n模式: {drone.FlightMode}\nGPS数量: {drone.GpsStatus}\n信号强度：{drone.GpsStrength}%";
+                        label.Text = $"ID: {drone.Id}\n解锁: {drone.Arm}\n纬度: {drone.Latitude:F6}\n经度: {drone.Longitude:F6}\n海拔: {drone.Altitude:F2} m\n高度: {drone.AbsoluteAltitude:F2} m\n模式: {drone.FlightMode}\n地速：{drone.Groundspeed:F1}m/s\n空速：{drone.Airspeed:F1}m/s\n电量：{drone.StateOfCharge:F2}v\nGPS数量: {drone.GpsStatus}\n信号强度：{drone.GpsStrength}%";
                     }
                     }
                 else
