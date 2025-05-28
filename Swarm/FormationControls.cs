@@ -11,6 +11,7 @@ using System.Text.RegularExpressions;
 using static IronPython.Modules.PythonRegex;
 using Match = System.Text.RegularExpressions.Match;
 using System.Linq;
+using DotSpatial.Data;
 
 namespace MissionPlanner.Swarm
 {
@@ -42,7 +43,7 @@ namespace MissionPlanner.Swarm
                 return;
 
             bindingSource1.DataSource = mavStates;
-
+            comboxitem_Load();
             CMB_mavs.DataSource = bindingSource1;
             CMB_mavs.ValueMember = "Value";
             CMB_mavs.DisplayMember = "Key";
@@ -55,8 +56,141 @@ namespace MissionPlanner.Swarm
 
             MissionPlanner.Utilities.Tracking.AddPage(this.GetType().ToString(), this.Text);
 
-         
             AddCheckboxesToFlowLayoutPanel();
+        }
+      
+        // 添加新数据的方法
+        private void AddNewItemToComboBox(int newItem)
+        {
+            // 确保操作在UI线程上执行
+            if (comboBox1.InvokeRequired)
+            {
+                comboBox1.Invoke(new Action<int>(AddNewItemToComboBox), newItem);
+                return;
+            }
+
+            // 获取当前数据源
+            var dataSource = bindingSource2.DataSource as List<int>;
+
+            // 如果数据源不存在则创建
+            if (dataSource == null)
+            {
+                dataSource = new List<int>();
+            }
+
+            // 添加新项（如果不存在）
+            if (!dataSource.Contains(newItem))
+            {
+                // 挂起UI更新
+                comboBox1.BeginUpdate();
+                bindingSource2.SuspendBinding();
+
+                try
+                {
+                    // 添加新项
+                    dataSource.Add(newItem);
+
+                    // 重新排序（可选）
+                    dataSource = dataSource.OrderBy(x => x).ToList();
+
+                    // 重新绑定数据源
+                    bindingSource2.DataSource = null;
+                    bindingSource2.DataSource = dataSource;
+
+                    // 设置选中新添加的项
+                    comboBox1.SelectedItem = newItem;
+                }
+                finally
+                {
+                    // 恢复UI更新
+                    bindingSource2.ResumeBinding();
+                    comboBox1.EndUpdate();
+                }
+            }
+            else
+            {
+                // 如果已存在，直接选中该项
+                comboBox1.SelectedItem = newItem;
+            }
+        }
+        private void RemoveItemFromComboBox(int itemToRemove)
+        {
+            if (comboBox1.InvokeRequired)
+            {
+                comboBox1.Invoke(new Action<int>(RemoveItemFromComboBox), itemToRemove);
+                return;
+            }
+
+            var dataSource = bindingSource2.DataSource as List<int>;
+
+            if (dataSource != null)
+            {
+                // 挂起UI更新
+                comboBox1.BeginUpdate();
+                bindingSource2.SuspendBinding();
+
+                try
+                {
+                    // 移除指定项
+                    if (dataSource.Contains(itemToRemove))
+                    {
+                        dataSource.Remove(itemToRemove);
+                    }
+
+                    // 重新绑定数据源
+                    bindingSource2.DataSource = null;
+                    bindingSource2.DataSource = dataSource;
+
+                    // 设置默认选中项（如第一个）
+                    if (comboBox1.Items.Count > 0)
+                    {
+                        comboBox1.SelectedIndex = 0;
+                    }
+                }
+                finally
+                {
+                    // 恢复UI更新
+                    bindingSource2.ResumeBinding();
+                    comboBox1.EndUpdate();
+                }
+            }
+        }
+        // 修改后的加载方法（添加默认项）
+        private void comboxitem_Load()
+        {
+            // 获取当前数据源
+            var dataSource = bindingSource2.DataSource as List<int>;
+
+            // 初始化或添加默认值
+            if (dataSource == null)
+            {
+                dataSource = new List<int>();
+            }
+
+            // 添加默认值1（如果不存在）
+            if (!dataSource.Contains(1))
+            {
+                dataSource.Add(1);
+            }
+
+            // 重新绑定
+            bindingSource2.DataSource = null;
+            bindingSource2.DataSource = dataSource;
+
+            // 设置选中项
+            comboBox1.SelectedItem = 1;
+        }
+
+        // 示例调用 - 在需要添加新数据的地方调用
+        private void buttonAdd_Click(object sender, EventArgs e)
+        {
+            // 示例：添加新数字5
+            AddNewItemToComboBox(5);
+        
+        }
+        private void buttonDelete_Click(object sender, EventArgs e)
+        {
+            RemoveItemFromComboBox(2);
         }
         private void AddCheckboxesToFlowLayoutPanel()
         {
@@ -83,7 +217,7 @@ namespace MissionPlanner.Swarm
                 CheckBox checkBox = new CheckBox();
                 checkBox.Text = "无人机" + mav.sysid + "号";
                 checkBox.AutoSize = true;
-                checkBox.Name = "checkBox" + mav.sysid;
+                checkBox.Name = "checkBox_uav" + mav.sysid;
                 checkBox.CheckedChanged += CheckBox_CheckedChanged;             
 
                 flowLayoutPanel1.Controls.Add(checkBox);
@@ -510,6 +644,9 @@ namespace MissionPlanner.Swarm
             tabPage.Controls.Add(grid);
             tabControl1.TabPages.Insert(insertIndex, tabPage);
 
+            AddNewItemToComboBox(maxIndex + 1);
+            //CollectiveFormationNumber();
+
         }
 
         private void RemoveFormationButton_Click(object sender, EventArgs e)
@@ -528,6 +665,7 @@ namespace MissionPlanner.Swarm
                 if (tabControl1.TabPages[i].Text.StartsWith("编队"))
                 {
                     lastPage = tabControl1.TabPages[i];
+                    RemoveItemFromComboBox(i+1);
                     break;
                 }
             }
@@ -537,6 +675,136 @@ namespace MissionPlanner.Swarm
                 tabControl1.TabPages.Remove(lastPage);
             }
 
+            
+            //CollectiveFormationNumber();
+
+        }
+
+        private void myButton3_Click(object sender, EventArgs e)
+        {
+            // 获取当前选中的编队编号
+            int selectedComBox = int.Parse(comboBox1.Text);
+
+            // 获取选中的无人机ID列表
+            List<int> selectedUAVIds = GetSelectedUAVs();
+
+            if (selectedUAVIds == null || !selectedUAVIds.Any())
+            {
+                return; // 如果没有选中任何 UAV，直接返回
+            }
+
+            // 筛选符合要求的无人机，并排序
+            var filteredMavs = MainV2.Comports
+                .SelectMany(port => port.MAVlist)
+                .Where(mav => selectedUAVIds.Contains(mav.sysid))
+                .OrderBy(mav => mav.sysid) // 按 sysid 排序
+                .ToList();
+
+            // ✅ 清空原有布局
+            flowLayoutPanel2.Controls.Clear();
+
+            // 开始添加新的 UAV 显示项
+            foreach (var mav in filteredMavs)
+            {
+                int sysid = mav.sysid;
+
+                // 创建 Label
+                Label label = new Label();
+                label.Text = $"无人机{sysid}号";
+                label.AutoSize = true;
+                label.Name = "select_checkBox_uav" + sysid;
+
+                // 创建删除按钮（可选）
+                Button deleteBtn = new Button();
+                deleteBtn.Text = "X";
+                deleteBtn.Width = 30;
+                deleteBtn.Height = 20;
+                deleteBtn.Click += (s, ev) =>
+                {
+                    RemoveUAVFromFlowLayoutPanel(sysid);
+                };
+
+                // 组合布局
+                FlowLayoutPanel clusterPanel = new FlowLayoutPanel();
+                clusterPanel.FlowDirection = FlowDirection.LeftToRight;
+                clusterPanel.AutoSize = true;
+                clusterPanel.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+                clusterPanel.Padding = new Padding(5);
+                clusterPanel.Margin = new Padding(0);
+                clusterPanel.Controls.Add(label);
+                clusterPanel.Controls.Add(deleteBtn);
+
+                // 分隔线
+                Label separator = new Label();
+                separator.BackColor = Color.LightGray;
+                separator.Height = 2;
+                separator.Dock = DockStyle.Fill;
+
+                // 添加到主容器
+                flowLayoutPanel2.Controls.Add(clusterPanel);
+                flowLayoutPanel2.Controls.Add(separator);
+            }
+
+            // 更新布局
+            flowLayoutPanel2.ResumeLayout();
+            flowLayoutPanel2.PerformLayout();
+        }
+
+        // 删除指定sysid的无人机
+        private void RemoveUAVFromFlowLayoutPanel(int sysid)
+        {
+            List<int> selectedUAVIds = GetSelectedUAVs();
+
+            // 筛选符合要求的无人机
+            var filteredMavs = MainV2.Comports
+                .SelectMany(port => port.MAVlist)
+                .Where(mav => selectedUAVIds.Contains(mav.sysid))
+                .OrderBy(mav => mav.sysid)
+                .ToList();
+
+            foreach (Control ctl in flowLayoutPanel2.Controls)
+            {
+                if (ctl is FlowLayoutPanel clusterPanel)
+                {
+                    foreach (Control subCtl in clusterPanel.Controls)
+                    {
+                        if (subCtl is Label cb && cb.Name == $"select_checkBox_uav{sysid}")
+                        {
+                            flowLayoutPanel2.Controls.Remove(clusterPanel);
+                            return;
+                        }
+                    }
+                }
+            }
+        }
+        private void RemoveUAVFromFlowLayoutPanelList(object sender, EventArgs e)
+        {
+            List<int> selectedUAVIds = GetSelectedUAVs();
+            foreach (int sysid in selectedUAVIds)
+            {
+                RemoveUAVFromFlowLayoutPanel(sysid);
+            }
+
+
+        }
+        // 获取选中的无人机ID列表
+        private List<int> GetSelectedUAVs()
+        {
+            List<int> selectedSysIds = new List<int>();
+
+            foreach (Control control in flowLayoutPanel1.Controls)
+            {
+                if (control is CheckBox checkBox && checkBox.Checked)
+                {
+                    string name = checkBox.Name;
+                    if (name.StartsWith("checkBox_uav") && int.TryParse(name.Substring(12), out int sysid))
+                    {
+                        selectedSysIds.Add(sysid);
+                    }
+                }
+            }
+
+            return selectedSysIds;
         }
     }
 }

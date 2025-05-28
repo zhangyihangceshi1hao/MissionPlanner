@@ -48,9 +48,16 @@
             this.myButton1 = new MissionPlanner.Controls.MyButton();
             this.myButton2 = new MissionPlanner.Controls.MyButton();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
+            this.myButton3 = new MissionPlanner.Controls.MyButton();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.bindingSource2 = new System.Windows.Forms.BindingSource(this.components);
+            this.myButton4 = new MissionPlanner.Controls.MyButton();
+            this.comboBox2 = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.bindingSource2)).BeginInit();
             this.SuspendLayout();
             // 
             // CMB_mavs
@@ -58,7 +65,7 @@
             this.CMB_mavs.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.CMB_mavs.DataSource = this.bindingSource1;
             this.CMB_mavs.FormattingEnabled = true;
-            this.CMB_mavs.Location = new System.Drawing.Point(351, 657);
+            this.CMB_mavs.Location = new System.Drawing.Point(254, 570);
             this.CMB_mavs.Name = "CMB_mavs";
             this.CMB_mavs.Size = new System.Drawing.Size(121, 26);
             this.CMB_mavs.TabIndex = 4;
@@ -69,7 +76,7 @@
             this.grid1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.grid1.Location = new System.Drawing.Point(3, 3);
             this.grid1.Name = "grid1";
-            this.grid1.Size = new System.Drawing.Size(708, 533);
+            this.grid1.Size = new System.Drawing.Size(697, 503);
             this.grid1.TabIndex = 8;
             this.grid1.Vertical = false;
             this.grid1.UpdateOffsets += new MissionPlanner.Swarm.Grid.UpdateOffsetsEvent(this.grid1_UpdateOffsets);
@@ -78,7 +85,7 @@
             // 
             this.BUT_Start.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.BUT_Start.Enabled = false;
-            this.BUT_Start.Location = new System.Drawing.Point(802, 657);
+            this.BUT_Start.Location = new System.Drawing.Point(174, 649);
             this.BUT_Start.Name = "BUT_Start";
             this.BUT_Start.Size = new System.Drawing.Size(75, 23);
             this.BUT_Start.TabIndex = 6;
@@ -90,7 +97,7 @@
             // BUT_leader
             // 
             this.BUT_leader.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.BUT_leader.Location = new System.Drawing.Point(478, 657);
+            this.BUT_leader.Location = new System.Drawing.Point(92, 609);
             this.BUT_leader.Name = "BUT_leader";
             this.BUT_leader.Size = new System.Drawing.Size(75, 23);
             this.BUT_leader.TabIndex = 5;
@@ -102,7 +109,7 @@
             // BUT_Land
             // 
             this.BUT_Land.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.BUT_Land.Location = new System.Drawing.Point(270, 657);
+            this.BUT_Land.Location = new System.Drawing.Point(173, 570);
             this.BUT_Land.Name = "BUT_Land";
             this.BUT_Land.Size = new System.Drawing.Size(75, 23);
             this.BUT_Land.TabIndex = 3;
@@ -114,7 +121,7 @@
             // BUT_Takeoff
             // 
             this.BUT_Takeoff.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.BUT_Takeoff.Location = new System.Drawing.Point(189, 657);
+            this.BUT_Takeoff.Location = new System.Drawing.Point(12, 609);
             this.BUT_Takeoff.Name = "BUT_Takeoff";
             this.BUT_Takeoff.Size = new System.Drawing.Size(75, 23);
             this.BUT_Takeoff.TabIndex = 2;
@@ -126,7 +133,7 @@
             // BUT_Disarm
             // 
             this.BUT_Disarm.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.BUT_Disarm.Location = new System.Drawing.Point(108, 657);
+            this.BUT_Disarm.Location = new System.Drawing.Point(92, 570);
             this.BUT_Disarm.Name = "BUT_Disarm";
             this.BUT_Disarm.Size = new System.Drawing.Size(75, 23);
             this.BUT_Disarm.TabIndex = 1;
@@ -138,7 +145,7 @@
             // BUT_Arm
             // 
             this.BUT_Arm.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.BUT_Arm.Location = new System.Drawing.Point(27, 657);
+            this.BUT_Arm.Location = new System.Drawing.Point(11, 570);
             this.BUT_Arm.Name = "BUT_Arm";
             this.BUT_Arm.Size = new System.Drawing.Size(75, 23);
             this.BUT_Arm.TabIndex = 0;
@@ -153,11 +160,11 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Location = new System.Drawing.Point(450, 61);
+            this.tabControl1.Location = new System.Drawing.Point(399, 12);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(722, 571);
-            this.tabControl1.TabIndex = 9;
+            this.tabControl1.Size = new System.Drawing.Size(711, 541);
+            this.tabControl1.TabIndex = 3;
             // 
             // tabPage1
             // 
@@ -165,7 +172,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 28);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(714, 539);
+            this.tabPage1.Size = new System.Drawing.Size(703, 509);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "编队 1";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -174,7 +181,7 @@
             // 
             this.BUT_Updatepos.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.BUT_Updatepos.Enabled = false;
-            this.BUT_Updatepos.Location = new System.Drawing.Point(721, 657);
+            this.BUT_Updatepos.Location = new System.Drawing.Point(93, 649);
             this.BUT_Updatepos.Name = "BUT_Updatepos";
             this.BUT_Updatepos.Size = new System.Drawing.Size(75, 23);
             this.BUT_Updatepos.TabIndex = 10;
@@ -188,9 +195,9 @@
             this.PNL_status.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.PNL_status.AutoScroll = true;
-            this.PNL_status.Location = new System.Drawing.Point(10, 89);
+            this.PNL_status.Location = new System.Drawing.Point(12, 40);
             this.PNL_status.Name = "PNL_status";
-            this.PNL_status.Size = new System.Drawing.Size(158, 536);
+            this.PNL_status.Size = new System.Drawing.Size(158, 509);
             this.PNL_status.TabIndex = 11;
             // 
             // timer_status
@@ -202,7 +209,7 @@
             // but_guided
             // 
             this.but_guided.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.but_guided.Location = new System.Drawing.Point(559, 657);
+            this.but_guided.Location = new System.Drawing.Point(173, 609);
             this.but_guided.Name = "but_guided";
             this.but_guided.Size = new System.Drawing.Size(75, 23);
             this.but_guided.TabIndex = 12;
@@ -214,7 +221,7 @@
             // but_auto
             // 
             this.but_auto.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.but_auto.Location = new System.Drawing.Point(640, 657);
+            this.but_auto.Location = new System.Drawing.Point(12, 649);
             this.but_auto.Name = "but_auto";
             this.but_auto.Size = new System.Drawing.Size(75, 23);
             this.but_auto.TabIndex = 13;
@@ -249,15 +256,75 @@
             // 
             this.flowLayoutPanel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.flowLayoutPanel1.AutoScroll = true;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(1318, 92);
+            this.flowLayoutPanel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(1367, 40);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(158, 550);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(109, 506);
             this.flowLayoutPanel1.TabIndex = 17;
+            // 
+            // flowLayoutPanel2
+            // 
+            this.flowLayoutPanel2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.flowLayoutPanel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.flowLayoutPanel2.Location = new System.Drawing.Point(176, 40);
+            this.flowLayoutPanel2.Name = "flowLayoutPanel2";
+            this.flowLayoutPanel2.Size = new System.Drawing.Size(132, 506);
+            this.flowLayoutPanel2.TabIndex = 18;
+            // 
+            // myButton3
+            // 
+            this.myButton3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.myButton3.Location = new System.Drawing.Point(1274, 567);
+            this.myButton3.Name = "myButton3";
+            this.myButton3.Size = new System.Drawing.Size(75, 23);
+            this.myButton3.TabIndex = 19;
+            this.myButton3.Text = "加入编队";
+            this.myButton3.TextColorNotEnabled = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(87)))), ((int)(((byte)(4)))));
+            this.myButton3.UseVisualStyleBackColor = true;
+            this.myButton3.Click += new System.EventHandler(this.myButton3_Click);
+            // 
+            // comboBox1
+            // 
+            this.comboBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.comboBox1.DataSource = this.bindingSource2;
+            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Location = new System.Drawing.Point(1355, 567);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(121, 26);
+            this.comboBox1.TabIndex = 20;
+            // 
+            // myButton4
+            // 
+            this.myButton4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.myButton4.Location = new System.Drawing.Point(1274, 596);
+            this.myButton4.Name = "myButton4";
+            this.myButton4.Size = new System.Drawing.Size(75, 23);
+            this.myButton4.TabIndex = 19;
+            this.myButton4.Text = "删除编队";
+            this.myButton4.TextColorNotEnabled = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(87)))), ((int)(((byte)(4)))));
+            this.myButton4.UseVisualStyleBackColor = true;
+            this.myButton4.Click += new System.EventHandler(this.RemoveUAVFromFlowLayoutPanelList);
+            // 
+            // comboBox2
+            // 
+            this.comboBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.comboBox2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox2.FormattingEnabled = true;
+            this.comboBox2.Location = new System.Drawing.Point(1355, 596);
+            this.comboBox2.Name = "comboBox2";
+            this.comboBox2.Size = new System.Drawing.Size(121, 26);
+            this.comboBox2.TabIndex = 20;
             // 
             // FormationControls
             // 
             this.ClientSize = new System.Drawing.Size(1478, 744);
+            this.Controls.Add(this.comboBox2);
+            this.Controls.Add(this.comboBox1);
+            this.Controls.Add(this.myButton4);
+            this.Controls.Add(this.myButton3);
+            this.Controls.Add(this.flowLayoutPanel2);
             this.Controls.Add(this.flowLayoutPanel1);
             this.Controls.Add(this.myButton1);
             this.Controls.Add(this.myButton2);
@@ -280,6 +347,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).EndInit();
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.bindingSource2)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -307,5 +375,11 @@
         private Controls.MyButton myButton1;
         private Controls.MyButton myButton2;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel2;
+        private Controls.MyButton myButton3;
+        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.BindingSource bindingSource2;
+        private Controls.MyButton myButton4;
+        private System.Windows.Forms.ComboBox comboBox2;
     }
 }
