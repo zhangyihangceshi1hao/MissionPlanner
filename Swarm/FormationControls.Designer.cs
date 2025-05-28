@@ -41,7 +41,6 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.BUT_Updatepos = new MissionPlanner.Controls.MyButton();
-            this.PNL_status = new System.Windows.Forms.FlowLayoutPanel();
             this.timer_status = new System.Windows.Forms.Timer(this.components);
             this.but_guided = new MissionPlanner.Controls.MyButton();
             this.but_auto = new MissionPlanner.Controls.MyButton();
@@ -54,6 +53,7 @@
             this.bindingSource2 = new System.Windows.Forms.BindingSource(this.components);
             this.myButton4 = new MissionPlanner.Controls.MyButton();
             this.comboBox2 = new System.Windows.Forms.ComboBox();
+            this.highlightTextRenderer1 = new BrightIdeasSoftware.HighlightTextRenderer();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -190,21 +190,10 @@
             this.BUT_Updatepos.UseVisualStyleBackColor = true;
             this.BUT_Updatepos.Click += new System.EventHandler(this.BUT_Updatepos_Click);
             // 
-            // PNL_status
-            // 
-            this.PNL_status.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.PNL_status.AutoScroll = true;
-            this.PNL_status.Location = new System.Drawing.Point(12, 40);
-            this.PNL_status.Name = "PNL_status";
-            this.PNL_status.Size = new System.Drawing.Size(158, 509);
-            this.PNL_status.TabIndex = 11;
-            // 
             // timer_status
             // 
             this.timer_status.Enabled = true;
             this.timer_status.Interval = 200;
-            this.timer_status.Tick += new System.EventHandler(this.timer_status_Tick);
             // 
             // but_guided
             // 
@@ -266,11 +255,13 @@
             // 
             this.flowLayoutPanel2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
+            this.flowLayoutPanel2.AutoScroll = true;
             this.flowLayoutPanel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.flowLayoutPanel2.Location = new System.Drawing.Point(176, 40);
+            this.flowLayoutPanel2.Location = new System.Drawing.Point(12, 40);
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
-            this.flowLayoutPanel2.Size = new System.Drawing.Size(132, 506);
+            this.flowLayoutPanel2.Size = new System.Drawing.Size(381, 506);
             this.flowLayoutPanel2.TabIndex = 18;
+            this.flowLayoutPanel2.WrapContents = false;
             // 
             // myButton3
             // 
@@ -330,7 +321,6 @@
             this.Controls.Add(this.myButton2);
             this.Controls.Add(this.but_auto);
             this.Controls.Add(this.but_guided);
-            this.Controls.Add(this.PNL_status);
             this.Controls.Add(this.BUT_Updatepos);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.BUT_Start);
@@ -368,7 +358,6 @@
         private System.Windows.Forms.TabPage tabPage1;
         //private System.Windows.Forms.TabPage tabPage2;
         private Controls.MyButton BUT_Updatepos;
-        private System.Windows.Forms.FlowLayoutPanel PNL_status;
         private System.Windows.Forms.Timer timer_status;
         private Controls.MyButton but_guided;
         private Controls.MyButton but_auto;
@@ -381,5 +370,6 @@
         private System.Windows.Forms.BindingSource bindingSource2;
         private Controls.MyButton myButton4;
         private System.Windows.Forms.ComboBox comboBox2;
+        private BrightIdeasSoftware.HighlightTextRenderer highlightTextRenderer1;
     }
 }

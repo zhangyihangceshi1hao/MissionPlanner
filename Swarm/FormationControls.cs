@@ -506,68 +506,68 @@ namespace MissionPlanner.Swarm
             }
         }
 
-        private void timer_status_Tick(object sender, EventArgs e)
-        {
-            // clean up old
-            foreach (Control ctl in PNL_status.Controls)
-            {
-                bool match = false;
-                foreach (var port in MainV2.Comports)
-                {
-                    foreach (var mav in port.MAVlist)
-                    {
-                        if (mav == (MAVState)ctl.Tag)
-                        {
-                            match = true;
+        //private void timer_status_Tick(object sender, EventArgs e)
+        //{
+        //    // clean up old
+        //    foreach (Control ctl in PNL_status.Controls)
+        //    {
+        //        bool match = false;
+        //        foreach (var port in MainV2.Comports)
+        //        {
+        //            foreach (var mav in port.MAVlist)
+        //            {
+        //                if (mav == (MAVState)ctl.Tag)
+        //                {
+        //                    match = true;
 
-                        }
-                    }
-                }
+        //                }
+        //            }
+        //        }
 
-                if (match == false)
-                    ctl.Dispose();
-            }
+        //        if (match == false)
+        //            ctl.Dispose();
+        //    }
 
-            // setup new
-            foreach (var port in MainV2.Comports)
-            {
-                foreach (var mav in port.MAVlist)
-                {
-                    bool exists = false;
-                    foreach (Control ctl in PNL_status.Controls)
-                    {
-                        if (ctl is Status && ctl.Tag == mav)
-                        {
-                            exists = true;
-                            ((Status)ctl).GPS.Text = mav.cs.gpsstatus >= 3 ? "OK" : "Bad";
-                            ((Status)ctl).Armed.Text = mav.cs.armed.ToString();
-                            ((Status)ctl).Mode.Text = mav.cs.mode;
-                            ((Status)ctl).MAV.Text = mav.ToString();
-                            ((Status)ctl).Guided.Text = mav.GuidedMode.x / 1e7 + "," + mav.GuidedMode.y / 1e7 + "," +
-                                                         mav.GuidedMode.z;
-                            ((Status)ctl).Location1.Text = mav.cs.lat + "," + mav.cs.lng + "," +
-                                                            mav.cs.alt;
+        //    // setup new
+        //    foreach (var port in MainV2.Comports)
+        //    {
+        //        foreach (var mav in port.MAVlist)
+        //        {
+        //            bool exists = false;
+        //            foreach (Control ctl in PNL_status.Controls)
+        //            {
+        //                if (ctl is Status && ctl.Tag == mav)
+        //                {
+        //                    exists = true;
+        //                    ((Status)ctl).GPS.Text = mav.cs.gpsstatus >= 3 ? "OK" : "Bad";
+        //                    ((Status)ctl).Armed.Text = mav.cs.armed.ToString();
+        //                    ((Status)ctl).Mode.Text = mav.cs.mode;
+        //                    ((Status)ctl).MAV.Text = mav.ToString();
+        //                    ((Status)ctl).Guided.Text = mav.GuidedMode.x / 1e7 + "," + mav.GuidedMode.y / 1e7 + "," +
+        //                                                 mav.GuidedMode.z;
+        //                    ((Status)ctl).Location1.Text = mav.cs.lat + "," + mav.cs.lng + "," +
+        //                                                    mav.cs.alt;
 
-                            if (mav == SwarmInterface.Leader)
-                            {
-                                ((Status)ctl).ForeColor = Color.Red;
-                            }
-                            else
-                            {
-                                ((Status)ctl).ForeColor = Color.Black;
-                            }
-                        }
-                    }
+        //                    if (mav == SwarmInterface.Leader)
+        //                    {
+        //                        ((Status)ctl).ForeColor = Color.Red;
+        //                    }
+        //                    else
+        //                    {
+        //                        ((Status)ctl).ForeColor = Color.Black;
+        //                    }
+        //                }
+        //            }
 
-                    if (!exists)
-                    {
-                        Status newstatus = new Status();
-                        newstatus.Tag = mav;
-                        PNL_status.Controls.Add(newstatus);
-                    }
-                }
-            }
-        }
+        //            if (!exists)
+        //            {
+        //                Status newstatus = new Status();
+        //                newstatus.Tag = mav;
+        //                PNL_status.Controls.Add(newstatus);
+        //            }
+        //        }
+        //    }
+        //}
 
         private void but_guided_Click(object sender, EventArgs e)
         {
@@ -679,11 +679,46 @@ namespace MissionPlanner.Swarm
             //CollectiveFormationNumber();
 
         }
+        // 定义一个类级变量来保存所有 Panel 和其对应编号
+        private List<(int tabId, Panel panel)> panelList = new List<(int, Panel)>();
 
         private void myButton3_Click(object sender, EventArgs e)
         {
             // 获取当前选中的编队编号
-            int selectedComBox = int.Parse(comboBox1.Text);
+            if (!int.TryParse(comboBox1.Text, out int tabPageNumber))
+                return;
+
+            // 尝试从 panelList 中查找是否已存在该编队 Panel
+            var existing = panelList.FirstOrDefault(x => x.tabId == tabPageNumber);
+
+            // 创建新的分隔 Panel（无论是否存在都新建）
+            Panel separator = new Panel();
+            separator.BackColor = Color.LightGray;
+            separator.AutoSize = false;
+            separator.Name = "panel_uav" + tabPageNumber;
+            separator.Width = flowLayoutPanel2.Width / 4;
+            separator.Height = flowLayoutPanel2.Height;
+            separator.Padding = new Padding(5);
+            separator.BorderStyle = BorderStyle.FixedSingle;
+
+            // 创建 FlowLayoutPanel 用于垂直排列内容
+            FlowLayoutPanel contentPanel = new FlowLayoutPanel();
+            contentPanel.FlowDirection = FlowDirection.TopDown; // 从上往下排
+            contentPanel.WrapContents = false;                 // 不换行
+            contentPanel.Dock = DockStyle.Fill;                // 填满容器
+            contentPanel.AutoSize = true;
+            contentPanel.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+
+            // 创建 Label 显示编队编号
+            Label label = new Label();
+            label.Text = $"编队 {tabPageNumber}";
+            label.AutoSize = true;
+            label.Font = new Font("微软雅黑", 9, FontStyle.Bold);
+            label.ForeColor = Color.DarkBlue;
+            label.TextAlign = ContentAlignment.MiddleLeft;
+
+            // 添加到 FlowLayoutPanel
+            contentPanel.Controls.Add(label);
 
             // 获取选中的无人机ID列表
             List<int> selectedUAVIds = GetSelectedUAVs();
@@ -697,11 +732,8 @@ namespace MissionPlanner.Swarm
             var filteredMavs = MainV2.Comports
                 .SelectMany(port => port.MAVlist)
                 .Where(mav => selectedUAVIds.Contains(mav.sysid))
-                .OrderBy(mav => mav.sysid) // 按 sysid 排序
+                .OrderBy(mav => mav.sysid)
                 .ToList();
-
-            // ✅ 清空原有布局
-            flowLayoutPanel2.Controls.Clear();
 
             // 开始添加新的 UAV 显示项
             foreach (var mav in filteredMavs)
@@ -709,32 +741,167 @@ namespace MissionPlanner.Swarm
                 int sysid = mav.sysid;
 
                 // 创建 Label
-                Label label = new Label();
-                label.Text = $"无人机{sysid}号";
-                label.AutoSize = true;
-                label.Name = "select_checkBox_uav" + sysid;                 
+                Label label_uav = new Label();
+                label_uav.Text = $"无人机{sysid}号";
+                label_uav.AutoSize = true;
+                label_uav.Name = "select_checkBox_uav" + sysid;
 
-                // 添加到主容器
-                flowLayoutPanel2.Controls.Add(label);       
+                // 添加到 FlowLayoutPanel
+                contentPanel.Controls.Add(label_uav);
             }
-            // 添加分隔符（如果至少有一个无人机）
-            if (flowLayoutPanel2.Controls.Count > 0)
+
+            // 将 FlowLayoutPanel 添加到 Panel 中
+            separator.Controls.Add(contentPanel);
+
+            // 判断是否已存在该编队 Panel
+            if (existing.panel != null)
             {
-                Panel separator = new Panel();
-                separator.BackColor = Color.LightGray;
-                separator.Height = 2;
-                separator.AutoSize = false;
-                separator.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-                separator.MinimumSize = new Size(flowLayoutPanel2.Width - 3, 2);
-                separator.Margin = new Padding(0);
+                // 存在：移除旧的 Panel
+                panelList.Remove(existing);
 
-                flowLayoutPanel2.Controls.Add(separator);
+                // 可选：从 flowLayoutPanel2 中移除控件
+                if (flowLayoutPanel2.Controls.Contains(existing.panel))
+                {
+                    flowLayoutPanel2.Controls.Remove(existing.panel);
+                }
             }
+
+            // 添加新的 Panel
+            panelList.Add((tabPageNumber, separator));
+
+            // 对 panelList 按 tabId 升序排序
+            var sortedList = panelList.OrderBy(x => x.tabId).ToList();
+
+            // 清空 flowLayoutPanel2
+            flowLayoutPanel2.Controls.Clear();
+
+            // 按照排序后的顺序重新添加 Panel
+            foreach (var item in sortedList)
+            {
+                flowLayoutPanel2.Controls.Add(item.panel);
+            }
+
             // 更新布局
             flowLayoutPanel2.ResumeLayout();
             flowLayoutPanel2.PerformLayout();
-        }
 
+            // 绑定 Resize 事件（可选）
+            foreach (var item in sortedList)
+            {
+                flowLayoutPanel2.Resize += (s, ev) =>
+                {
+                    item.panel.Width = flowLayoutPanel2.Width / 4;
+                    item.panel.Height = flowLayoutPanel2.Height;
+                };
+            }
+        }
+        //private void myButton3_Click(object sender, EventArgs e)
+        //{
+        //    //int tabPageNumber = tabControl1.TabPages.Count;
+
+        //    int tabPageNumber  =  int.Parse(comboBox1.Text);
+        //    //for(int i = 1; i <= tabPageNumber; i++) {
+        //    Panel separator = new Panel();
+        //    separator.BackColor = Color.LightGray;
+        //    separator.AutoSize = false;
+        //    separator.Name = "pannel_uav" + tabPageNumber;
+        //    // 初始设置
+        //    separator.Width = flowLayoutPanel2.Width / 4;
+        //    separator.Height = flowLayoutPanel2.Height;
+        //    // 创建 Label 显示编队编号
+        //    Label label = new Label();
+        //    label.Text = $"编队 { tabPageNumber }";
+        //    label.AutoSize = true;
+        //    label.Font = new Font("微软雅黑", 9, FontStyle.Bold);
+        //    label.ForeColor = Color.DarkBlue;
+
+        //    // 将 Label 添加到 Panel 中
+        //    separator.Controls.Add(label);
+        //    // 添加到 flowLayoutPanel2
+        //    flowLayoutPanel2.Controls.Add(separator);
+
+        //    // 监听 flowLayoutPanel2 的 Resize 事件
+        //    flowLayoutPanel2.Resize += (s, ev) =>
+        //    {
+        //        separator.Width = flowLayoutPanel2.Width/4;
+        //        separator.Height = flowLayoutPanel2.Height;
+        //    };
+
+
+        //    //}
+        //    /***
+        //    // 获取当前选中的编队编号
+        //    int selectedComBox = int.Parse(comboBox1.Text);
+
+        //    // 获取选中的无人机ID列表
+        //    List<int> selectedUAVIds = GetSelectedUAVs();
+
+        //    if (selectedUAVIds == null || !selectedUAVIds.Any())
+        //    {
+        //        return; // 如果没有选中任何 UAV，直接返回
+        //    }
+
+        //    // 筛选符合要求的无人机，并排序
+        //    var filteredMavs = MainV2.Comports
+        //        .SelectMany(port => port.MAVlist)
+        //        .Where(mav => selectedUAVIds.Contains(mav.sysid))
+        //        .OrderBy(mav => mav.sysid) // 按 sysid 排序
+        //        .ToList();
+
+        //    // ✅ 清空原有布局
+        //    flowLayoutPanel2.Controls.Clear();
+        //    //// 创建 Label
+        //    //Label labelbase = new Label();
+        //    //labelbase.Text = $"集群{selectedComBox}";
+        //    //labelbase.AutoSize = true;
+        //    //labelbase.Name = "select_checkBox_uav";
+        //    //labelbase.BackColor = Color.Blue; // 偶数时的背景色
+        //    //flowLayoutPanel2.Controls.Add(labelbase);
+        //    // 开始添加新的 UAV 显示项
+        //    foreach (var mav in filteredMavs)
+        //    {
+        //        int sysid = mav.sysid;
+
+        //        // 创建 Label
+        //        Label label = new Label();
+        //        label.Text = $"无人机{sysid}号";
+        //        label.AutoSize = true;
+        //        label.Name = "select_checkBox_uav" + sysid;
+        //        // 根据 selectedComBox 的奇偶性设置背景色
+        //        SetLabelBackgroundColor(label, selectedComBox);
+        //        // 添加到主容器
+        //        flowLayoutPanel2.Controls.Add(label);       
+        //    }
+        //    // 添加分隔符（如果至少有一个无人机）
+        //    if (flowLayoutPanel2.Controls.Count > 0)
+        //    {
+        //        Panel separator = new Panel();
+        //        separator.BackColor = Color.LightGray;
+        //        separator.Height = 2;
+        //        separator.AutoSize = false;
+        //        separator.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+        //        separator.MinimumSize = new Size(flowLayoutPanel2.Width - 3, 2);
+        //        separator.Margin = new Padding(0);
+
+        //        flowLayoutPanel2.Controls.Add(separator);
+        //    }
+        //    // 更新布局
+        //    flowLayoutPanel2.ResumeLayout();
+        //    flowLayoutPanel2.PerformLayout();
+        //    ***/
+        //}
+        // 辅助方法：根据 selectedComBox 的奇偶性设置 Label 的背景色
+        private void SetLabelBackgroundColor(Label label, int selectedComBox)
+        {
+            if (selectedComBox % 2 == 0)
+            {
+                label.BackColor = Color.LightBlue; // 偶数时的背景色
+            }
+            else
+            {
+                label.BackColor = Color.LightYellow; // 奇数时的背景色
+            }
+        }
         // 删除指定sysid的无人机
         private void RemoveUAVFromFlowLayoutPanel(int sysid)
         {
