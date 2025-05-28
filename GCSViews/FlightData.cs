@@ -32,6 +32,7 @@ using ZedGraph;
 using LogAnalyzer = MissionPlanner.Utilities.LogAnalyzer;
 using TableLayoutPanelCellPosition = System.Windows.Forms.TableLayoutPanelCellPosition;
 using UnauthorizedAccessException = System.UnauthorizedAccessException;
+using MissionPlanner.Swarm;
 
 // written by michael oborne
 
@@ -5189,7 +5190,14 @@ namespace MissionPlanner.GCSViews
                 }
             }
         }
+        private void Swarms_Click(object sender, EventArgs e) { 
+        
 
+            new FormationControls().Show();
+            //new FormationControls1().Show();
+
+        }
+        
         private void ZedGraphTimer_Tick(object sender, EventArgs e)
         {
             try

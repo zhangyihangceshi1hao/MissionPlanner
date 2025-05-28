@@ -346,6 +346,9 @@
     <Compile Update="Joystick\JoystickAxis.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Update="Swarm\FormationControls.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <None Update="Drivers\amd64\WdfCoInstaller01009.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -1180,5 +1183,14 @@
     <Compile Include="SikRadio\RFDLib\IO\SerialPort\SerialPort.cs" />
     <Compile Include="SikRadio\RFDLib\RFDLib.cs" />
     <Compile Include="SikRadio\RFDLib\Text.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Swarm\FormationControls.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
 </Project>

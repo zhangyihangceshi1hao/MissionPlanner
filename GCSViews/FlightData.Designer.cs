@@ -235,6 +235,7 @@ namespace MissionPlanner.GCSViews
             this.scriptChecker = new System.Windows.Forms.Timer(this.components);
             this.Messagetabtimer = new System.Windows.Forms.Timer(this.components);
             this.bindingSourceStatusTab = new System.Windows.Forms.BindingSource(this.components);
+            this.Swarms = new MissionPlanner.Controls.MyButton();
             this.jumpToTagToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.MainH)).BeginInit();
             this.MainH.Panel1.SuspendLayout();
@@ -736,6 +737,7 @@ namespace MissionPlanner.GCSViews
             // tableLayoutPanel1
             // 
             resources.ApplyResources(this.tableLayoutPanel1, "tableLayoutPanel1");
+            this.tableLayoutPanel1.Controls.Add(this.Swarms, 1, 4);
             this.tableLayoutPanel1.Controls.Add(this.BUT_SendMSG, 2, 4);
             this.tableLayoutPanel1.Controls.Add(this.BUT_abortland, 4, 4);
             this.tableLayoutPanel1.Controls.Add(this.modifyandSetLoiterRad, 4, 2);
@@ -2810,6 +2812,17 @@ namespace MissionPlanner.GCSViews
             // 
             this.bindingSourceStatusTab.DataSource = typeof(MissionPlanner.CurrentState);
             // 
+            // Swarms
+            // 
+            this.Swarms.ColorMouseDown = System.Drawing.Color.Empty;
+            this.Swarms.ColorMouseOver = System.Drawing.Color.Empty;
+            this.Swarms.ColorNotEnabled = System.Drawing.Color.Empty;
+            resources.ApplyResources(this.Swarms, "Swarms");
+            this.Swarms.Name = "Swarms";
+            this.Swarms.TextColorNotEnabled = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(87)))), ((int)(((byte)(4)))));
+            this.Swarms.UseVisualStyleBackColor = true;
+            this.Swarms.Click += new System.EventHandler(this.Swarms_Click);
+            // 
             // jumpToTagToolStripMenuItem
             // 
             this.jumpToTagToolStripMenuItem.Name = "jumpToTagToolStripMenuItem";
@@ -3126,5 +3139,8 @@ namespace MissionPlanner.GCSViews
         private Controls.RelayOptions relayOptions14;
         private Controls.RelayOptions relayOptions15;
         private Controls.RelayOptions relayOptions16;
+        private Controls.MyButton Swarms;
+
+
     }
 }
