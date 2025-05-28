@@ -929,13 +929,59 @@ namespace MissionPlanner.Swarm
         }
         private void RemoveUAVFromFlowLayoutPanelList(object sender, EventArgs e)
         {
-            List<int> selectedUAVIds = GetSelectedUAVs();
-            foreach (int sysid in selectedUAVIds)
+            RemovePanel(int.Parse(comboBox2.Text));
+
+        }
+        /// <summary>
+        /// 删除指定编队编号的 Panel
+        /// </summary>
+        /// <param name="tabId">要删除的编队编号</param>
+        private void RemovePanel(int tabId)
+        {
+            // 查找是否存在该 Panel
+            var itemToRemove = panelList.FirstOrDefault(x => x.tabId == tabId);
+
+            if (itemToRemove.panel != null)
             {
-                RemoveUAVFromFlowLayoutPanel(sysid);
+                // 从 flowLayoutPanel2 控件集合中移除
+                if (flowLayoutPanel2.Controls.Contains(itemToRemove.panel))
+                {
+                    flowLayoutPanel2.Controls.Remove(itemToRemove.panel);
+                }
+
+                // 从 panelList 中移除
+                panelList.Remove(itemToRemove);
+
+                // 刷新布局
+                RefreshFlowLayoutPanel();
+            }
+            else
+            {
+                // 可选：提示用户未找到该 Panel
+                // MessageBox.Show($"未找到编队 {tabId} 的面板");
+            }
+        }
+
+        /// <summary>
+        /// 刷新 flowLayoutPanel2，按 tabId 排序显示 panelList 中的内容
+        /// </summary>
+        private void RefreshFlowLayoutPanel()
+        {
+            // 清空当前所有控件
+            flowLayoutPanel2.Controls.Clear();
+
+            // 按 tabId 升序排序
+            var sortedList = panelList.OrderBy(x => x.tabId).ToList();
+
+            // 重新添加 Panel
+            foreach (var item in sortedList)
+            {
+                flowLayoutPanel2.Controls.Add(item.panel);
             }
 
-
+            // 更新布局
+            flowLayoutPanel2.ResumeLayout();
+            flowLayoutPanel2.PerformLayout();
         }
         // 获取选中的无人机ID列表
         private List<int> GetSelectedUAVs()
