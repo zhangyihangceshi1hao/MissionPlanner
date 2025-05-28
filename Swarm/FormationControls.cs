@@ -56,7 +56,7 @@ namespace MissionPlanner.Swarm
 
             updateicons();
             //初始化Swarms类
-            swarmsDictionary.Add(1,new Swarms(1, grid1, new List<MAVState>()));
+            swarmsDictionary.Add(1,new Swarms(1, grid1,new Formation(), new List<MAVState>()));
 
             this.MouseWheel += new MouseEventHandler(FollowLeaderControl_MouseWheel);
 
@@ -657,7 +657,7 @@ namespace MissionPlanner.Swarm
             //        if () {
                         //mavStateList.Add(mav);
                         //mavStates.Add(port.BaseStream.PortName + " " + mav.sysid + " " + mav.compid, mav);
-                        swarmsDictionary.Add((maxIndex + 1), new Swarms((maxIndex + 1), grid, mavStateList));
+                        swarmsDictionary.Add((maxIndex + 1), new Swarms((maxIndex + 1), grid,new Formation(), mavStateList));
                     //}
                 //}
             //}
@@ -1030,14 +1030,17 @@ namespace MissionPlanner.Swarm
 
         public class Swarms
         {
+        
             private int swarm_id;
             private Grid grid;
+            Formation swarmsInterface;
             private List<MAVState> swarmList;
             // 构造函数
-            public Swarms(int swarmId, Grid grid, List<MAVState> swarmList)
+            public Swarms(int swarmId, Grid grid, Formation swarmsInterface, List<MAVState> swarmList)
             {
                 SwarmId = swarmId;
                 Grid = grid;
+                SwarmsInterface = swarmsInterface
                 SwarmList = swarmList ?? new List<MAVState>(); // 防止 null
             }
             // 属性：SwarmId
@@ -1052,6 +1055,11 @@ namespace MissionPlanner.Swarm
             {
                 get { return grid; }
                 set { grid = value; }
+            }
+             Formation SwarmsInterface
+            {
+                get { return swarmsInterface; }
+                set { swarmsInterface = value; }
             }
 
             // 属性：SwarmList
