@@ -26,7 +26,8 @@ namespace MissionPlanner.Swarm
 
         Formation SwarmInterface = null;
         bool threadrun = false;
-        
+        public bool Vertical { get; set; }
+        public bool Vertical2 { get; set; }
         public FormationControls()
         {
             InitializeComponent();
@@ -446,10 +447,17 @@ namespace MissionPlanner.Swarm
             //swarmsDictionary[swarm_id].SwarmList.Contains(mav)
             if (swarmsDictionary[swarm_id].SwarmsInterface != null)
             {
-                swarmsDictionary[swarm_id].SwarmsInterface.ArmSwarms(swarmsDictionary[swarm_id].SwarmList);
+                swarmsDictionary[swarm_id].SwarmsInterface.ArmSwarms(swarmsDictionary[swarm_id].SwarmList, Vertical, Vertical2);
             }
         }
-
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            Vertical = checkBox1.Checked;
+        }
+        private void checkBox2_CheckedChanged(object sender, EventArgs e)
+        {
+            Vertical2 = checkBox2.Checked;
+        }
         private void BUT_Disarm_Click(object sender, EventArgs e)
         {
             int swarm_id = int.Parse(comboBox1.Text == "" ? "1" : comboBox1.Text);
@@ -458,7 +466,7 @@ namespace MissionPlanner.Swarm
             //swarmsDictionary[swarm_id].SwarmsInterface.Leader.cs.rateattitude = 10;
             if (swarmsDictionary[swarm_id].SwarmsInterface != null)
             {
-                swarmsDictionary[swarm_id].SwarmsInterface.DisarmSwarms(swarmsDictionary[swarm_id].SwarmList);
+                swarmsDictionary[swarm_id].SwarmsInterface.DisarmSwarms(swarmsDictionary[swarm_id].SwarmList, Vertical, Vertical2);
             }
         }
 
@@ -470,7 +478,7 @@ namespace MissionPlanner.Swarm
             //swarmsDictionary[swarm_id].SwarmsInterface.Leader.cs.rateattitude = 10;
             if (swarmsDictionary[swarm_id].SwarmsInterface != null)
             {
-                swarmsDictionary[swarm_id].SwarmsInterface.TakeoffSwarms(swarmsDictionary[swarm_id].SwarmList);
+                swarmsDictionary[swarm_id].SwarmsInterface.TakeoffSwarms(swarmsDictionary[swarm_id].SwarmList, Vertical, Vertical2);
             }
         }
 
@@ -482,7 +490,7 @@ namespace MissionPlanner.Swarm
             //swarmsDictionary[swarm_id].SwarmsInterface.Leader.cs.rateattitude = 10;
             if (swarmsDictionary[swarm_id].SwarmsInterface != null)
             {
-                swarmsDictionary[swarm_id].SwarmsInterface.LandSwarms(swarmsDictionary[swarm_id].SwarmList);
+                swarmsDictionary[swarm_id].SwarmsInterface.LandSwarms(swarmsDictionary[swarm_id].SwarmList, Vertical, Vertical2);
             }
         }
 
@@ -861,7 +869,7 @@ namespace MissionPlanner.Swarm
             separator.BackColor = Color.LightGray;
             separator.AutoSize = false;
             separator.Name = "panel_uav" + tabPageNumber;
-            separator.Width = flowLayoutPanel2.Width / 4;
+            separator.Width = flowLayoutPanel2.Width / 3;
             separator.Height = flowLayoutPanel2.Height;
             separator.Padding = new Padding(5);
             separator.BorderStyle = BorderStyle.FixedSingle;
@@ -964,7 +972,7 @@ namespace MissionPlanner.Swarm
             {
                 flowLayoutPanel2.Resize += (s, ev) =>
                 {
-                    item.panel.Width = flowLayoutPanel2.Width / 4;
+                    item.panel.Width = flowLayoutPanel2.Width / 3;
                     item.panel.Height = flowLayoutPanel2.Height;
                 };
             }

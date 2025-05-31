@@ -1,4 +1,5 @@
 ﻿using log4net;
+using Org.BouncyCastle.Asn1.Esf;
 using System.Collections.Generic;
 using System.Reflection;
 
@@ -32,18 +33,32 @@ namespace MissionPlanner.Swarm
                 }
             }
         }
-        public void ArmSwarms(List<MAVState> mavSwarmsList)
+        public void ArmSwarms(List<MAVState> mavSwarmsList, bool vertical, bool vertica2)
         {
             foreach (var port in MainV2.Comports)
             {
                 foreach (var mav in port.MAVlist)
                 {
-                    if (mavSwarmsList.Contains(mav))
+                    if (vertica2)
                     {
-                        if (mav == Leader)
-                            continue;
-
+                        if (!vertical)
+                        {
+                            if (mav == Leader)
+                                continue;
+                        }
                         port.doARM(mav.sysid, mav.compid, true);
+                    }
+                    else
+                    {
+                        if (mavSwarmsList.Contains(mav))
+                        {
+                            if (!vertical)
+                            {
+                                if (mav == Leader)
+                                    continue;
+                            }
+                            port.doARM(mav.sysid, mav.compid, true);
+                        }
                     }
                 }
             }
@@ -62,18 +77,30 @@ namespace MissionPlanner.Swarm
                 }
             }
         }    
-        public void DisarmSwarms(List<MAVState> mavSwarmsList)
+        public void DisarmSwarms(List<MAVState> mavSwarmsList, bool vertical, bool vertica2)
         {
             foreach (var port in MainV2.Comports)
             {
                 foreach (var mav in port.MAVlist)
                 {
-                    if (mavSwarmsList.Contains(mav))
-                    {
-                        if (mav == Leader)
-                            continue;
-
+                    if (vertica2) {
+                        if (!vertical)
+                        {
+                            if (mav == Leader)
+                                continue;
+                        }
                         port.doARM(mav.sysid, mav.compid, false);
+                    }
+                    else {
+                        if (mavSwarmsList.Contains(mav))
+                        {
+                            if (!vertical)
+                            {
+                                if (mav == Leader)
+                                    continue;
+                            }
+                            port.doARM(mav.sysid, mav.compid, false);
+                        }
                     }
                 }
             }
@@ -94,20 +121,34 @@ namespace MissionPlanner.Swarm
                 }
             }
         }   
-        public void TakeoffSwarms(List<MAVState> mavSwarmsList)
+        public void TakeoffSwarms(List<MAVState> mavSwarmsList, bool vertical, bool vertica2)
         {
             foreach (var port in MainV2.Comports)
             {
                 foreach (var mav in port.MAVlist)
                 {
-                    if (mavSwarmsList.Contains(mav))
-                    {
-                        if (mav == Leader)
-                            continue;
-
+                    if (vertica2) {
+                        if (!vertical)
+                        {
+                            if (mav == Leader)
+                                continue;
+                        }
                         port.setMode(mav.sysid, mav.compid, "GUIDED");
 
                         port.doCommand(mav.sysid, mav.compid, MAVLink.MAV_CMD.TAKEOFF, 0, 0, 0, 0, 0, 0, 5);
+                    }
+                    else {
+                        if (mavSwarmsList.Contains(mav))
+                        {
+                            if (!vertical)
+                            {
+                                if (mav == Leader)
+                                    continue;
+                            }
+                            port.setMode(mav.sysid, mav.compid, "GUIDED");
+
+                            port.doCommand(mav.sysid, mav.compid, MAVLink.MAV_CMD.TAKEOFF, 0, 0, 0, 0, 0, 0, 5);
+                        }
                     }
                 }
             }
@@ -123,15 +164,30 @@ namespace MissionPlanner.Swarm
                 }
             }
         } 
-        public void LandSwarms(List<MAVState> mavSwarmsList)
+        public void LandSwarms(List<MAVState> mavSwarmsList, bool vertical, bool vertica2)
         {
             foreach (var port in MainV2.Comports)
             {
                 foreach (var mav in port.MAVlist)
                 {
-                    if (mavSwarmsList.Contains(mav))
-                    {
+                    if (vertica2) {
+                        if (!vertical)
+                        {
+                            if (mav == Leader)
+                                continue;
+                        }
                         port.setMode(mav.sysid, mav.compid, "Land");
+                    }
+                    else {
+                        if (mavSwarmsList.Contains(mav))
+                        {
+                            if (!vertical)
+                            {
+                                if (mav == Leader)
+                                    continue;
+                            }
+                            port.setMode(mav.sysid, mav.compid, "Land");
+                        }
                     }
                 }
             }
@@ -154,18 +210,34 @@ namespace MissionPlanner.Swarm
                 }
             }
         }
-        public void GuidedModeSwarms(List<MAVState> mavSwarmsList)
+        public void GuidedModeSwarms(List<MAVState> mavSwarmsList, bool vertical, bool vertica2)
         {
             foreach (var port in MainV2.Comports)
             {
                 foreach (var mav in port.MAVlist)
                 {
-                    if (mavSwarmsList.Contains(mav))
+                    if (vertica2)
                     {
-                        if (mav == Leader)
-                            continue;
+                        if (!vertical)
+                        {
+                            if (mav == Leader)
+                                continue;
+                        }
 
                         port.setMode(mav.sysid, mav.compid, "GUIDED");
+                    }
+                    else
+                    {
+                        if (mavSwarmsList.Contains(mav))
+                        {
+                            if (!vertical)
+                            {
+                                if (mav == Leader)
+                                    continue;
+                            }
+
+                            port.setMode(mav.sysid, mav.compid, "GUIDED");
+                        }
                     }
                 }
             }
@@ -184,18 +256,34 @@ namespace MissionPlanner.Swarm
                 }
             }
         }
-        public void AutoModeSwarms(List<MAVState> mavSwarmsList)
+        public void AutoModeSwarms(List<MAVState> mavSwarmsList, bool vertical, bool vertica2)
         {
             foreach (var port in MainV2.Comports)
             {
                 foreach (var mav in port.MAVlist)
                 {
-                    if (mavSwarmsList.Contains(mav))
+                    if (vertica2)
                     {
-                        if (mav == Leader)
-                            continue;
+                        if (!vertical)
+                        {
+                            if (mav == Leader)
+                                continue;
+                        }
 
                         port.setMode(mav.sysid, mav.compid, "AUTO");
+                    }
+                    else
+                    {
+                        if (mavSwarmsList.Contains(mav))
+                        {
+                            if (!vertical)
+                            {
+                                if (mav == Leader)
+                                    continue;
+                            }
+
+                            port.setMode(mav.sysid, mav.compid, "AUTO");
+                        }
                     }
                 }
             }
