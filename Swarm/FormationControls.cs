@@ -286,15 +286,20 @@ namespace MissionPlanner.Swarm
             {
                 foreach (var mav in port.MAVlist)
                 {
-                    if (mav == CMB_mavs.SelectedValue) {
 
-                        swarmsDictionary[swarm_id].SwarmsInterface.setLeader(mav);
+                    if (swarmsDictionary[swarm_id].SwarmList.Contains(mav))
+                    {
+                        //swarmsDictionary[swarm_id].SwarmsInterface.setLeader(mav);
 
                         if (mav == swarmsDictionary[swarm_id].SwarmsInterface.getLeader())
                         {
-                            ((Formation)swarmsDictionary[swarm_id].SwarmsInterface).setOffsets(mav, 0, 0, 0);
-                            var vector = swarmsDictionary[swarm_id].SwarmsInterface.getOffsets(mav);
-                            swarmsDictionary[swarm_id].Grid.UpdateIcon(mav, (float)vector.x, (float)vector.y, (float)vector.z, false);
+                            if (mav == CMB_mavs.SelectedValue)
+                            {
+                                ((Formation)swarmsDictionary[swarm_id].SwarmsInterface).setOffsets(mav, 0, 0, 0);
+                                var vector = swarmsDictionary[swarm_id].SwarmsInterface.getOffsets(mav);
+                                swarmsDictionary[swarm_id].Grid.UpdateIcon(mav, (float)vector.x, (float)vector.y, (float)vector.z, false);
+
+                            }
                         }
                         else
                         {
@@ -362,20 +367,64 @@ namespace MissionPlanner.Swarm
 
         void mainloop()
         {
+
+            //bindingSource1.ResetBindings(false);
+            //int swarm_id = int.Parse(comboBox1.Text == "" ? "1" : comboBox1.Text);
+            //foreach (var port in MainV2.Comports)
+            //{
+            //    foreach (var mav in port.MAVlist)
+            //    {
+
+            //        if (swarmsDictionary[swarm_id].SwarmList.Contains(mav))
+            //        {
+            //            //swarmsDictionary[swarm_id].SwarmsInterface.setLeader(mav);
+
+            //            if (mav == swarmsDictionary[swarm_id].SwarmsInterface.getLeader())
+            //            {
+            //                if (mav == CMB_mavs.SelectedValue)
+            //                {
+            //                    ((Formation)swarmsDictionary[swarm_id].SwarmsInterface).setOffsets(mav, 0, 0, 0);
+            //                    var vector = swarmsDictionary[swarm_id].SwarmsInterface.getOffsets(mav);
+            //                    swarmsDictionary[swarm_id].Grid.UpdateIcon(mav, (float)vector.x, (float)vector.y, (float)vector.z, false);
+
+            //                }
+            //            }
+            //            else
+            //            {
+            //                var vector = swarmsDictionary[swarm_id].SwarmsInterface.getOffsets(mav);
+            //                swarmsDictionary[swarm_id].Grid.UpdateIcon(mav, (float)vector.x, (float)vector.y, (float)vector.z, true);
+            //            }
+            //        }
+            //    }
+            //}
+            //swarmsDictionary[swarm_id].Grid.Invalidate();
+
+
+            //if (mav == SwarmInterface.Leader)
+            //{
+            //    CustomMessageBox.Show("Can not move Leader");
+            //    ico.z = 0;
+            //}
+            //else
+            //{
+            //    ((Formation)SwarmInterface).setOffsets(mav, x, y, z);
+            //}
+
             threadrun = true;
 
             // make sure leader is high freq updates
-            SwarmInterface.Leader.parent.requestDatastream(MAVLink.MAV_DATA_STREAM.POSITION, 10, SwarmInterface.Leader.sysid, SwarmInterface.Leader.compid);
-            SwarmInterface.Leader.cs.rateposition = 10;
-            SwarmInterface.Leader.cs.rateattitude = 10;
+            int swarm_id = int.Parse(comboBox1.Text == "" ? "1" : comboBox1.Text);
+            swarmsDictionary[swarm_id].SwarmsInterface.Leader.parent.requestDatastream(MAVLink.MAV_DATA_STREAM.POSITION, 10, swarmsDictionary[swarm_id].SwarmsInterface.Leader.sysid, swarmsDictionary[swarm_id].SwarmsInterface.Leader.compid);
+            swarmsDictionary[swarm_id].SwarmsInterface.Leader.cs.rateposition = 10;
+            swarmsDictionary[swarm_id].SwarmsInterface.Leader.cs.rateattitude = 10;
 
             while (threadrun && !this.IsDisposed)
             {
                 // update leader pos
-                SwarmInterface.Update();
+                swarmsDictionary[swarm_id].SwarmsInterface.Update();
 
                 // update other mavs
-                SwarmInterface.SendCommand();
+                swarmsDictionary[swarm_id].SwarmsInterface.SendCommand();
 
                 // 10 hz
                 System.Threading.Thread.Sleep(100);
@@ -416,6 +465,29 @@ namespace MissionPlanner.Swarm
 
         private void BUT_leader_Click(object sender, EventArgs e)
         {
+
+            //if (SwarmInterface != null)
+            //{
+            //    var vectorlead = SwarmInterface.getOffsets(MainV2.comPort.MAV);
+
+            //    foreach (var port in MainV2.Comports)
+            //    {
+            //        foreach (var mav in port.MAVlist)
+            //        {
+            //            var vector = SwarmInterface.getOffsets(mav);
+
+            //            SwarmInterface.setOffsets(mav, (float)(vector.x - vectorlead.x),
+            //                (float)(vector.y - vectorlead.y),
+            //                (float)(vector.z - vectorlead.z));
+            //        }
+            //    }
+
+            //    SwarmInterface.setLeader(MainV2.comPort.MAV);
+            //    updateicons();
+            //    BUT_Start.Enabled = true;
+            //    BUT_Updatepos.Enabled = true;
+            //}
+
             int swarm_id = int.Parse(comboBox1.Text);
             MAVState targetMav = MainV2.Comports
                  .SelectMany(port => port.MAVlist)  // 合并所有 MAVlist 列表
@@ -425,14 +497,18 @@ namespace MissionPlanner.Swarm
             {
                 var vectorlead = swarmsDictionary[swarm_id].SwarmsInterface.getOffsets(targetMav);
 
-                
-                var vector = SwarmInterface.getOffsets(targetMav);
+                foreach (var port in MainV2.Comports)
+                {
+                    foreach (var mav in port.MAVlist)
+                    {
+                        var vector = swarmsDictionary[swarm_id].SwarmsInterface.getOffsets(mav);
 
-                SwarmInterface.setOffsets(targetMav, (float)(vector.x - vectorlead.x),
-                    (float)(vector.y - vectorlead.y),
-                    (float)(vector.z - vectorlead.z));
+                        swarmsDictionary[swarm_id].SwarmsInterface.setOffsets(mav, (float)(vector.x - vectorlead.x),
+                            (float)(vector.y - vectorlead.y),
+                            (float)(vector.z - vectorlead.z));
 
-
+                    }
+                }
                 swarmsDictionary[swarm_id].SwarmsInterface.setLeader(targetMav);
                 updateicons();
                 BUT_Start.Enabled = true;
@@ -497,15 +573,17 @@ namespace MissionPlanner.Swarm
 
         private void grid1_UpdateOffsets(MAVState mav, float x, float y, float z, Grid.icon ico)
         {
-         
-            if (mav == SwarmInterface.Leader)
+
+
+           
+            int swarm_id = int.Parse(comboBox1.Text == "" ? "1" : comboBox1.Text);
+            if (mav == swarmsDictionary[swarm_id].SwarmsInterface.Leader)
             {
                 CustomMessageBox.Show("Can not move Leader");
                 ico.z = 0;
             }
-            else
-            {
-                ((Formation)SwarmInterface).setOffsets(mav, x, y, z);
+            else {
+                ((Formation)swarmsDictionary[swarm_id].SwarmsInterface).setOffsets(mav, x, y, z);
             }
         }
 
@@ -687,11 +765,13 @@ namespace MissionPlanner.Swarm
                         //mavStateList.Add(mav);
                         //mavStates.Add(port.BaseStream.PortName + " " + mav.sysid + " " + mav.compid, mav);
                         swarmsDictionary.Add((maxIndex + 1), new Swarms((maxIndex + 1), grid,new Formation(), mavStateList));
-                    //}
-                //}
             //}
-            
+            //}
+            //}
 
+
+            
+            updateicons();
         }
 
         private void RemoveFormationButton_Click(object sender, EventArgs e)
@@ -774,7 +854,16 @@ namespace MissionPlanner.Swarm
             {
                 return; // 如果没有选中任何 UAV，直接返回
             }
-
+            foreach (var port in MainV2.Comports)
+            {
+                foreach (var mav in port.MAVlist)
+                {
+                    if (selectedUAVIds.Contains(mav.sysid))
+                    {
+                        swarmsDictionary[int.Parse(comboBox1.Text)].SwarmList.Add(mav);
+                    }
+                }
+            }
             // 筛选符合要求的无人机，并排序
             var filteredMavs = MainV2.Comports
                 .SelectMany(port => port.MAVlist)
@@ -846,6 +935,9 @@ namespace MissionPlanner.Swarm
             //保存swarmsDictionary
 
             swarmsDictionary[tabPageNumber].SwarmList = filteredMavs;
+
+         
+            
         }
         //private void myButton3_Click(object sender, EventArgs e)
         //{
