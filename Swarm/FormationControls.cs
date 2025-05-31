@@ -351,6 +351,10 @@ namespace MissionPlanner.Swarm
 
         private void BUT_Start_Click(object sender, EventArgs e)
         {
+            int swarm_id = int.Parse(comboBox1.Text == "" ? "1" : comboBox1.Text);
+            //swarmsDictionary[swarm_id].SwarmsInterface.Leader.parent.requestDatastream(MAVLink.MAV_DATA_STREAM.POSITION, 10, swarmsDictionary[swarm_id].SwarmsInterface.Leader.sysid, swarmsDictionary[swarm_id].SwarmsInterface.Leader.compid);
+            //swarmsDictionary[swarm_id].SwarmsInterface.Leader.cs.rateposition = 10;
+            //swarmsDictionary[swarm_id].SwarmsInterface.Leader.cs.rateattitude = 10;
             if (threadrun == true)
             {
                 threadrun = false;
@@ -358,7 +362,7 @@ namespace MissionPlanner.Swarm
                 return;
             }
 
-            if (SwarmInterface != null)
+            if (swarmsDictionary[swarm_id].SwarmsInterface != null)
             {
                 new System.Threading.Thread(mainloop) { IsBackground = true }.Start();
                 BUT_Start.Text = Strings.Stop;
@@ -421,10 +425,10 @@ namespace MissionPlanner.Swarm
             while (threadrun && !this.IsDisposed)
             {
                 // update leader pos
-                swarmsDictionary[swarm_id].SwarmsInterface.Update();
+                swarmsDictionary[swarm_id].SwarmsInterface.UpdateSwarms(swarmsDictionary[swarm_id].SwarmsInterface.Leader);
 
                 // update other mavs
-                swarmsDictionary[swarm_id].SwarmsInterface.SendCommand();
+                swarmsDictionary[swarm_id].SwarmsInterface.SendCommandSwarms(swarmsDictionary[swarm_id].SwarmList);
 
                 // 10 hz
                 System.Threading.Thread.Sleep(100);
@@ -433,33 +437,52 @@ namespace MissionPlanner.Swarm
 
         private void BUT_Arm_Click(object sender, EventArgs e)
         {
-            if (SwarmInterface != null)
+            int swarm_id = int.Parse(comboBox1.Text == "" ? "1" : comboBox1.Text);
+
+
+            //swarmsDictionary[swarm_id].SwarmsInterface.Leader.parent.requestDatastream(MAVLink.MAV_DATA_STREAM.POSITION, 10, swarmsDictionary[swarm_id].SwarmsInterface.Leader.sysid, swarmsDictionary[swarm_id].SwarmsInterface.Leader.compid);
+            //swarmsDictionary[swarm_id].SwarmsInterface.Leader.cs.rateposition = 10;
+            //swarmsDictionary[swarm_id].swarmList.Contains();
+            //swarmsDictionary[swarm_id].SwarmList.Contains(mav)
+            if (swarmsDictionary[swarm_id].SwarmsInterface != null)
             {
-                SwarmInterface.Arm();
+                swarmsDictionary[swarm_id].SwarmsInterface.ArmSwarms(swarmsDictionary[swarm_id].SwarmList);
             }
         }
 
         private void BUT_Disarm_Click(object sender, EventArgs e)
         {
-            if (SwarmInterface != null)
+            int swarm_id = int.Parse(comboBox1.Text == "" ? "1" : comboBox1.Text);
+            //swarmsDictionary[swarm_id].SwarmsInterface.Leader.parent.requestDatastream(MAVLink.MAV_DATA_STREAM.POSITION, 10, swarmsDictionary[swarm_id].SwarmsInterface.Leader.sysid, swarmsDictionary[swarm_id].SwarmsInterface.Leader.compid);
+            //swarmsDictionary[swarm_id].SwarmsInterface.Leader.cs.rateposition = 10;
+            //swarmsDictionary[swarm_id].SwarmsInterface.Leader.cs.rateattitude = 10;
+            if (swarmsDictionary[swarm_id].SwarmsInterface != null)
             {
-                SwarmInterface.Disarm();
+                swarmsDictionary[swarm_id].SwarmsInterface.DisarmSwarms(swarmsDictionary[swarm_id].SwarmList);
             }
         }
 
         private void BUT_Takeoff_Click(object sender, EventArgs e)
         {
-            if (SwarmInterface != null)
+            int swarm_id = int.Parse(comboBox1.Text == "" ? "1" : comboBox1.Text);
+            //swarmsDictionary[swarm_id].SwarmsInterface.Leader.parent.requestDatastream(MAVLink.MAV_DATA_STREAM.POSITION, 10, swarmsDictionary[swarm_id].SwarmsInterface.Leader.sysid, swarmsDictionary[swarm_id].SwarmsInterface.Leader.compid);
+            //swarmsDictionary[swarm_id].SwarmsInterface.Leader.cs.rateposition = 10;
+            //swarmsDictionary[swarm_id].SwarmsInterface.Leader.cs.rateattitude = 10;
+            if (swarmsDictionary[swarm_id].SwarmsInterface != null)
             {
-                SwarmInterface.Takeoff();
+                swarmsDictionary[swarm_id].SwarmsInterface.TakeoffSwarms(swarmsDictionary[swarm_id].SwarmList);
             }
         }
 
         private void BUT_Land_Click(object sender, EventArgs e)
         {
-            if (SwarmInterface != null)
+            int swarm_id = int.Parse(comboBox1.Text == "" ? "1" : comboBox1.Text);
+            //swarmsDictionary[swarm_id].SwarmsInterface.Leader.parent.requestDatastream(MAVLink.MAV_DATA_STREAM.POSITION, 10, swarmsDictionary[swarm_id].SwarmsInterface.Leader.sysid, swarmsDictionary[swarm_id].SwarmsInterface.Leader.compid);
+            //swarmsDictionary[swarm_id].SwarmsInterface.Leader.cs.rateposition = 10;
+            //swarmsDictionary[swarm_id].SwarmsInterface.Leader.cs.rateattitude = 10;
+            if (swarmsDictionary[swarm_id].SwarmsInterface != null)
             {
-                SwarmInterface.Land();
+                swarmsDictionary[swarm_id].SwarmsInterface.LandSwarms(swarmsDictionary[swarm_id].SwarmList);
             }
         }
 
@@ -594,21 +617,28 @@ namespace MissionPlanner.Swarm
 
         private void BUT_Updatepos_Click(object sender, EventArgs e)
         {
+            int swarm_id = int.Parse(comboBox1.Text == "" ? "1" : comboBox1.Text);
+            //swarmsDictionary[swarm_id].SwarmsInterface.Leader.parent.requestDatastream(MAVLink.MAV_DATA_STREAM.POSITION, 10, swarmsDictionary[swarm_id].SwarmsInterface.Leader.sysid, swarmsDictionary[swarm_id].SwarmsInterface.Leader.compid);
+            //swarmsDictionary[swarm_id].SwarmsInterface.Leader.cs.rateposition = 10;
+            //swarmsDictionary[swarm_id].SwarmsInterface.Leader.cs.rateattitude = 10;
             foreach (var port in MainV2.Comports)
             {
                 foreach (var mav in port.MAVlist)
                 {
-                    mav.cs.UpdateCurrentSettings(null, true, port, mav);
-
-                    if (mav == SwarmInterface.Leader)
-                        continue;
-
-                    Vector3 offset = getOffsetFromLeader(((Formation)SwarmInterface).getLeader(), mav);
-
-                    if (Math.Abs(offset.x) < 200 && Math.Abs(offset.y) < 200)
+                    if (swarmsDictionary[swarm_id].SwarmList.Contains(mav))
                     {
-                        grid1.UpdateIcon(mav, (float)offset.y, (float)offset.x, (float)offset.z, true);
-                        ((Formation)SwarmInterface).setOffsets(mav, offset.y, offset.x, offset.z);
+                        mav.cs.UpdateCurrentSettings(null, true, port, mav);
+
+                        if (mav == swarmsDictionary[swarm_id].SwarmsInterface.Leader)
+                            continue;
+
+                        Vector3 offset = getOffsetFromLeader(((Formation)swarmsDictionary[swarm_id].SwarmsInterface).getLeader(), mav);
+
+                        if (Math.Abs(offset.x) < 200 && Math.Abs(offset.y) < 200)
+                        {
+                            swarmsDictionary[swarm_id].Grid.UpdateIcon(mav, (float)offset.y, (float)offset.x, (float)offset.z, true);
+                            ((Formation)swarmsDictionary[swarm_id].SwarmsInterface).setOffsets(mav, offset.y, offset.x, offset.z);
+                        }
                     }
                 }
             }
@@ -679,17 +709,25 @@ namespace MissionPlanner.Swarm
 
         private void but_guided_Click(object sender, EventArgs e)
         {
-            if (SwarmInterface != null)
+            int swarm_id = int.Parse(comboBox1.Text == "" ? "1" : comboBox1.Text);
+            //swarmsDictionary[swarm_id].SwarmsInterface.Leader.parent.requestDatastream(MAVLink.MAV_DATA_STREAM.POSITION, 10, swarmsDictionary[swarm_id].SwarmsInterface.Leader.sysid, swarmsDictionary[swarm_id].SwarmsInterface.Leader.compid);
+            //swarmsDictionary[swarm_id].SwarmsInterface.Leader.cs.rateposition = 10;
+            //swarmsDictionary[swarm_id].SwarmsInterface.Leader.cs.rateattitude = 10;
+            if (swarmsDictionary[swarm_id].SwarmsInterface != null)
             {
-                SwarmInterface.GuidedMode();
+                swarmsDictionary[swarm_id].SwarmsInterface.GuidedMode();
             }
         }
 
         private void but_auto_Click(object sender, EventArgs e)
         {
-            if (SwarmInterface != null)
+            int swarm_id = int.Parse(comboBox1.Text == "" ? "1" : comboBox1.Text);
+            //swarmsDictionary[swarm_id].SwarmsInterface.Leader.parent.requestDatastream(MAVLink.MAV_DATA_STREAM.POSITION, 10, swarmsDictionary[swarm_id].SwarmsInterface.Leader.sysid, swarmsDictionary[swarm_id].SwarmsInterface.Leader.compid);
+            //swarmsDictionary[swarm_id].SwarmsInterface.Leader.cs.rateposition = 10;
+            //swarmsDictionary[swarm_id].SwarmsInterface.Leader.cs.rateattitude = 10;
+            if (swarmsDictionary[swarm_id].SwarmsInterface != null)
             {
-                SwarmInterface.AutoMode();
+                swarmsDictionary[swarm_id].SwarmsInterface.AutoMode();
             }
         }
 

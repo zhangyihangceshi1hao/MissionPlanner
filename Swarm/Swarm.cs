@@ -1,4 +1,5 @@
 ﻿using log4net;
+using System.Collections.Generic;
 using System.Reflection;
 
 namespace MissionPlanner.Swarm
@@ -31,6 +32,22 @@ namespace MissionPlanner.Swarm
                 }
             }
         }
+        public void ArmSwarms(List<MAVState> mavSwarmsList)
+        {
+            foreach (var port in MainV2.Comports)
+            {
+                foreach (var mav in port.MAVlist)
+                {
+                    if (mavSwarmsList.Contains(mav))
+                    {
+                        if (mav == Leader)
+                            continue;
+
+                        port.doARM(mav.sysid, mav.compid, true);
+                    }
+                }
+            }
+        }
 
         public void Disarm()
         {
@@ -42,6 +59,22 @@ namespace MissionPlanner.Swarm
                         continue;
 
                     port.doARM(mav.sysid, mav.compid, false);
+                }
+            }
+        }    
+        public void DisarmSwarms(List<MAVState> mavSwarmsList)
+        {
+            foreach (var port in MainV2.Comports)
+            {
+                foreach (var mav in port.MAVlist)
+                {
+                    if (mavSwarmsList.Contains(mav))
+                    {
+                        if (mav == Leader)
+                            continue;
+
+                        port.doARM(mav.sysid, mav.compid, false);
+                    }
                 }
             }
         }
@@ -60,6 +93,24 @@ namespace MissionPlanner.Swarm
                     port.doCommand(mav.sysid, mav.compid, MAVLink.MAV_CMD.TAKEOFF, 0, 0, 0, 0, 0, 0, 5);
                 }
             }
+        }   
+        public void TakeoffSwarms(List<MAVState> mavSwarmsList)
+        {
+            foreach (var port in MainV2.Comports)
+            {
+                foreach (var mav in port.MAVlist)
+                {
+                    if (mavSwarmsList.Contains(mav))
+                    {
+                        if (mav == Leader)
+                            continue;
+
+                        port.setMode(mav.sysid, mav.compid, "GUIDED");
+
+                        port.doCommand(mav.sysid, mav.compid, MAVLink.MAV_CMD.TAKEOFF, 0, 0, 0, 0, 0, 0, 5);
+                    }
+                }
+            }
         }
 
         public void Land()
@@ -69,6 +120,19 @@ namespace MissionPlanner.Swarm
                 foreach (var mav in port.MAVlist)
                 {
                     port.setMode(mav.sysid, mav.compid, "Land");
+                }
+            }
+        } 
+        public void LandSwarms(List<MAVState> mavSwarmsList)
+        {
+            foreach (var port in MainV2.Comports)
+            {
+                foreach (var mav in port.MAVlist)
+                {
+                    if (mavSwarmsList.Contains(mav))
+                    {
+                        port.setMode(mav.sysid, mav.compid, "Land");
+                    }
                 }
             }
         }
@@ -90,6 +154,22 @@ namespace MissionPlanner.Swarm
                 }
             }
         }
+        public void GuidedModeSwarms(List<MAVState> mavSwarmsList)
+        {
+            foreach (var port in MainV2.Comports)
+            {
+                foreach (var mav in port.MAVlist)
+                {
+                    if (mavSwarmsList.Contains(mav))
+                    {
+                        if (mav == Leader)
+                            continue;
+
+                        port.setMode(mav.sysid, mav.compid, "GUIDED");
+                    }
+                }
+            }
+        }
 
         public void AutoMode()
         {
@@ -101,6 +181,22 @@ namespace MissionPlanner.Swarm
                         continue;
 
                     port.setMode(mav.sysid, mav.compid, "AUTO");
+                }
+            }
+        }
+        public void AutoModeSwarms(List<MAVState> mavSwarmsList)
+        {
+            foreach (var port in MainV2.Comports)
+            {
+                foreach (var mav in port.MAVlist)
+                {
+                    if (mavSwarmsList.Contains(mav))
+                    {
+                        if (mav == Leader)
+                            continue;
+
+                        port.setMode(mav.sysid, mav.compid, "AUTO");
+                    }
                 }
             }
         }

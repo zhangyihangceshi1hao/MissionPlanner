@@ -65,7 +65,7 @@
             this.CMB_mavs.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.CMB_mavs.DataSource = this.bindingSource1;
             this.CMB_mavs.FormattingEnabled = true;
-            this.CMB_mavs.Location = new System.Drawing.Point(254, 570);
+            this.CMB_mavs.Location = new System.Drawing.Point(513, 579);
             this.CMB_mavs.Name = "CMB_mavs";
             this.CMB_mavs.Size = new System.Drawing.Size(121, 26);
             this.CMB_mavs.TabIndex = 4;
@@ -85,11 +85,11 @@
             // 
             this.BUT_Start.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.BUT_Start.Enabled = false;
-            this.BUT_Start.Location = new System.Drawing.Point(174, 649);
+            this.BUT_Start.Location = new System.Drawing.Point(433, 658);
             this.BUT_Start.Name = "BUT_Start";
             this.BUT_Start.Size = new System.Drawing.Size(75, 23);
             this.BUT_Start.TabIndex = 6;
-            this.BUT_Start.Text = "Start";
+            this.BUT_Start.Text = "开始编队";
             this.BUT_Start.TextColorNotEnabled = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(87)))), ((int)(((byte)(4)))));
             this.BUT_Start.UseVisualStyleBackColor = true;
             this.BUT_Start.Click += new System.EventHandler(this.BUT_Start_Click);
@@ -97,11 +97,11 @@
             // BUT_leader
             // 
             this.BUT_leader.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.BUT_leader.Location = new System.Drawing.Point(92, 609);
+            this.BUT_leader.Location = new System.Drawing.Point(351, 618);
             this.BUT_leader.Name = "BUT_leader";
             this.BUT_leader.Size = new System.Drawing.Size(75, 23);
             this.BUT_leader.TabIndex = 5;
-            this.BUT_leader.Text = "Set Leader";
+            this.BUT_leader.Text = "设置主机";
             this.BUT_leader.TextColorNotEnabled = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(87)))), ((int)(((byte)(4)))));
             this.BUT_leader.UseVisualStyleBackColor = true;
             this.BUT_leader.Click += new System.EventHandler(this.BUT_leader_Click);
@@ -109,11 +109,11 @@
             // BUT_Land
             // 
             this.BUT_Land.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.BUT_Land.Location = new System.Drawing.Point(173, 570);
+            this.BUT_Land.Location = new System.Drawing.Point(432, 579);
             this.BUT_Land.Name = "BUT_Land";
             this.BUT_Land.Size = new System.Drawing.Size(75, 23);
             this.BUT_Land.TabIndex = 3;
-            this.BUT_Land.Text = "Land (all)";
+            this.BUT_Land.Text = "降落";
             this.BUT_Land.TextColorNotEnabled = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(87)))), ((int)(((byte)(4)))));
             this.BUT_Land.UseVisualStyleBackColor = true;
             this.BUT_Land.Click += new System.EventHandler(this.BUT_Land_Click);
@@ -121,11 +121,11 @@
             // BUT_Takeoff
             // 
             this.BUT_Takeoff.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.BUT_Takeoff.Location = new System.Drawing.Point(12, 609);
+            this.BUT_Takeoff.Location = new System.Drawing.Point(271, 618);
             this.BUT_Takeoff.Name = "BUT_Takeoff";
             this.BUT_Takeoff.Size = new System.Drawing.Size(75, 23);
             this.BUT_Takeoff.TabIndex = 2;
-            this.BUT_Takeoff.Text = "Takeoff";
+            this.BUT_Takeoff.Text = "起飞";
             this.BUT_Takeoff.TextColorNotEnabled = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(87)))), ((int)(((byte)(4)))));
             this.BUT_Takeoff.UseVisualStyleBackColor = true;
             this.BUT_Takeoff.Click += new System.EventHandler(this.BUT_Takeoff_Click);
@@ -133,11 +133,11 @@
             // BUT_Disarm
             // 
             this.BUT_Disarm.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.BUT_Disarm.Location = new System.Drawing.Point(92, 570);
+            this.BUT_Disarm.Location = new System.Drawing.Point(351, 579);
             this.BUT_Disarm.Name = "BUT_Disarm";
             this.BUT_Disarm.Size = new System.Drawing.Size(75, 23);
             this.BUT_Disarm.TabIndex = 1;
-            this.BUT_Disarm.Text = "Disarm (exl leader)";
+            this.BUT_Disarm.Text = "上锁";
             this.BUT_Disarm.TextColorNotEnabled = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(87)))), ((int)(((byte)(4)))));
             this.BUT_Disarm.UseVisualStyleBackColor = true;
             this.BUT_Disarm.Click += new System.EventHandler(this.BUT_Disarm_Click);
@@ -145,11 +145,11 @@
             // BUT_Arm
             // 
             this.BUT_Arm.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.BUT_Arm.Location = new System.Drawing.Point(11, 570);
+            this.BUT_Arm.Location = new System.Drawing.Point(270, 579);
             this.BUT_Arm.Name = "BUT_Arm";
             this.BUT_Arm.Size = new System.Drawing.Size(75, 23);
             this.BUT_Arm.TabIndex = 0;
-            this.BUT_Arm.Text = "Arm (exl leader)";
+            this.BUT_Arm.Text = "解锁";
             this.BUT_Arm.TextColorNotEnabled = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(87)))), ((int)(((byte)(4)))));
             this.BUT_Arm.UseVisualStyleBackColor = true;
             this.BUT_Arm.Click += new System.EventHandler(this.BUT_Arm_Click);
@@ -181,11 +181,11 @@
             // 
             this.BUT_Updatepos.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.BUT_Updatepos.Enabled = false;
-            this.BUT_Updatepos.Location = new System.Drawing.Point(93, 649);
+            this.BUT_Updatepos.Location = new System.Drawing.Point(352, 658);
             this.BUT_Updatepos.Name = "BUT_Updatepos";
             this.BUT_Updatepos.Size = new System.Drawing.Size(75, 23);
             this.BUT_Updatepos.TabIndex = 10;
-            this.BUT_Updatepos.Text = "Update Pos";
+            this.BUT_Updatepos.Text = "更新位置";
             this.BUT_Updatepos.TextColorNotEnabled = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(87)))), ((int)(((byte)(4)))));
             this.BUT_Updatepos.UseVisualStyleBackColor = true;
             this.BUT_Updatepos.Click += new System.EventHandler(this.BUT_Updatepos_Click);
@@ -198,11 +198,11 @@
             // but_guided
             // 
             this.but_guided.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.but_guided.Location = new System.Drawing.Point(173, 609);
+            this.but_guided.Location = new System.Drawing.Point(432, 618);
             this.but_guided.Name = "but_guided";
             this.but_guided.Size = new System.Drawing.Size(75, 23);
             this.but_guided.TabIndex = 12;
-            this.but_guided.Text = "Guided Mode (exl leader)";
+            this.but_guided.Text = "引导模式";
             this.but_guided.TextColorNotEnabled = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(87)))), ((int)(((byte)(4)))));
             this.but_guided.UseVisualStyleBackColor = true;
             this.but_guided.Click += new System.EventHandler(this.but_guided_Click);
@@ -210,11 +210,11 @@
             // but_auto
             // 
             this.but_auto.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.but_auto.Location = new System.Drawing.Point(12, 649);
+            this.but_auto.Location = new System.Drawing.Point(271, 658);
             this.but_auto.Name = "but_auto";
             this.but_auto.Size = new System.Drawing.Size(75, 23);
             this.but_auto.TabIndex = 13;
-            this.but_auto.Text = "Auto Mode  (exl leader)";
+            this.but_auto.Text = "自动模式";
             this.but_auto.TextColorNotEnabled = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(87)))), ((int)(((byte)(4)))));
             this.but_auto.UseVisualStyleBackColor = true;
             this.but_auto.Click += new System.EventHandler(this.but_auto_Click);
