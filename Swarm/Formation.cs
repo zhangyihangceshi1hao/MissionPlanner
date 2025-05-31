@@ -13,7 +13,7 @@ namespace MissionPlanner.Swarm
     /// <summary>
     /// Follow the leader
     /// </summary>
-    class Formation : Swarm
+    public class Formation : Swarm
     {
         Dictionary<MAVState, Vector3> offsets = new Dictionary<MAVState, Vector3>();
 

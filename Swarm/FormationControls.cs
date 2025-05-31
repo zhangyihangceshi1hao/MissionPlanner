@@ -53,10 +53,10 @@ namespace MissionPlanner.Swarm
             CMB_mavs.DataSource = bindingSource1;
             CMB_mavs.ValueMember = "Value";
             CMB_mavs.DisplayMember = "Key";
-
-            updateicons();
             //初始化Swarms类
-            swarmsDictionary.Add(1,new Swarms(1, grid1,new Formation(), new List<MAVState>()));
+            swarmsDictionary.Add(1, new Swarms(1, grid1, new Formation(), new List<MAVState>()));
+            updateicons();
+            
 
             this.MouseWheel += new MouseEventHandler(FollowLeaderControl_MouseWheel);
 
@@ -281,25 +281,51 @@ namespace MissionPlanner.Swarm
         void updateicons()
         {
             bindingSource1.ResetBindings(false);
-
+            int swarm_id = int.Parse(comboBox1.Text==""?"1": comboBox1.Text);
             foreach (var port in MainV2.Comports)
             {
                 foreach (var mav in port.MAVlist)
                 {
-                    if (mav == SwarmInterface.getLeader())
-                    {
-                        ((Formation)SwarmInterface).setOffsets(mav, 0, 0, 0);
-                        var vector = SwarmInterface.getOffsets(mav);
-                        grid1.UpdateIcon(mav, (float)vector.x, (float)vector.y, (float)vector.z, false);
-                    }
-                    else
-                    {
-                        var vector = SwarmInterface.getOffsets(mav);
-                        grid1.UpdateIcon(mav, (float)vector.x, (float)vector.y, (float)vector.z, true);
+                    if (mav == CMB_mavs.SelectedValue) {
+
+                        swarmsDictionary[swarm_id].SwarmsInterface.setLeader(mav);
+
+                        if (mav == swarmsDictionary[swarm_id].SwarmsInterface.getLeader())
+                        {
+                            ((Formation)swarmsDictionary[swarm_id].SwarmsInterface).setOffsets(mav, 0, 0, 0);
+                            var vector = swarmsDictionary[swarm_id].SwarmsInterface.getOffsets(mav);
+                            swarmsDictionary[swarm_id].Grid.UpdateIcon(mav, (float)vector.x, (float)vector.y, (float)vector.z, false);
+                        }
+                        else
+                        {
+                            var vector = swarmsDictionary[swarm_id].SwarmsInterface.getOffsets(mav);
+                            swarmsDictionary[swarm_id].Grid.UpdateIcon(mav, (float)vector.x, (float)vector.y, (float)vector.z, true);
+                        }
                     }
                 }
             }
-            grid1.Invalidate();
+            swarmsDictionary[swarm_id].Grid.Invalidate();
+
+            //bindingSource1.ResetBindings(false);
+
+            //foreach (var port in MainV2.Comports)
+            //{
+            //    foreach (var mav in port.MAVlist)
+            //    {
+            //        if (mav == SwarmInterface.getLeader())
+            //        {
+            //            ((Formation)SwarmInterface).setOffsets(mav, 0, 0, 0);
+            //            var vector = SwarmInterface.getOffsets(mav);
+            //            grid1.UpdateIcon(mav, (float)vector.x, (float)vector.y, (float)vector.z, false);
+            //        }
+            //        else
+            //        {
+            //            var vector = SwarmInterface.getOffsets(mav);
+            //            grid1.UpdateIcon(mav, (float)vector.x, (float)vector.y, (float)vector.z, true);
+            //        }
+            //    }
+            //}
+            //grid1.Invalidate();
         }
 
         private void CMB_mavs_SelectedIndexChanged(object sender, EventArgs e)
@@ -390,27 +416,29 @@ namespace MissionPlanner.Swarm
 
         private void BUT_leader_Click(object sender, EventArgs e)
         {
-            if (SwarmInterface != null)
+            int swarm_id = int.Parse(comboBox1.Text);
+            MAVState targetMav = MainV2.Comports
+                 .SelectMany(port => port.MAVlist)  // 合并所有 MAVlist 列表
+                 .FirstOrDefault(mav => mav == CMB_mavs.SelectedValue);  // 查找 sysid 匹配的 MAVState
+          
+            if (swarmsDictionary[swarm_id].SwarmsInterface != null)
             {
-                var vectorlead = SwarmInterface.getOffsets(MainV2.comPort.MAV);
+                var vectorlead = swarmsDictionary[swarm_id].SwarmsInterface.getOffsets(targetMav);
 
-                foreach (var port in MainV2.Comports)
-                {
-                    foreach (var mav in port.MAVlist)
-                    {
-                        var vector = SwarmInterface.getOffsets(mav);
+                
+                var vector = SwarmInterface.getOffsets(targetMav);
 
-                        SwarmInterface.setOffsets(mav, (float)(vector.x - vectorlead.x),
-                            (float)(vector.y - vectorlead.y),
-                            (float)(vector.z - vectorlead.z));
-                    }
-                }
+                SwarmInterface.setOffsets(targetMav, (float)(vector.x - vectorlead.x),
+                    (float)(vector.y - vectorlead.y),
+                    (float)(vector.z - vectorlead.z));
 
-                SwarmInterface.setLeader(MainV2.comPort.MAV);
+
+                swarmsDictionary[swarm_id].SwarmsInterface.setLeader(targetMav);
                 updateicons();
                 BUT_Start.Enabled = true;
                 BUT_Updatepos.Enabled = true;
-            }
+            }             
+            
         }
 
         private void BUT_connect_Click(object sender, EventArgs e)
@@ -469,6 +497,7 @@ namespace MissionPlanner.Swarm
 
         private void grid1_UpdateOffsets(MAVState mav, float x, float y, float z, Grid.icon ico)
         {
+         
             if (mav == SwarmInterface.Leader)
             {
                 CustomMessageBox.Show("Can not move Leader");
@@ -1040,7 +1069,7 @@ namespace MissionPlanner.Swarm
             {
                 SwarmId = swarmId;
                 Grid = grid;
-                SwarmsInterface = swarmsInterface
+                SwarmsInterface = swarmsInterface;
                 SwarmList = swarmList ?? new List<MAVState>(); // 防止 null
             }
             // 属性：SwarmId
@@ -1056,7 +1085,7 @@ namespace MissionPlanner.Swarm
                 get { return grid; }
                 set { grid = value; }
             }
-             Formation SwarmsInterface
+             public Formation SwarmsInterface
             {
                 get { return swarmsInterface; }
                 set { swarmsInterface = value; }

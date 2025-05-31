@@ -3,7 +3,7 @@ using System.Reflection;
 
 namespace MissionPlanner.Swarm
 {
-    abstract class Swarm
+    public abstract class Swarm
     {
         internal static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         internal MAVState Leader = null;
