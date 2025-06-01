@@ -378,6 +378,7 @@
             this.myButton5.Text = "返航";
             this.myButton5.TextColorNotEnabled = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(87)))), ((int)(((byte)(4)))));
             this.myButton5.UseVisualStyleBackColor = true;
+            this.myButton5.Click += new System.EventHandler(this.BUT_Rtl_Click);
             // 
             // myButton6
             // 
@@ -389,6 +390,7 @@
             this.myButton6.Text = "依次返航";
             this.myButton6.TextColorNotEnabled = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(87)))), ((int)(((byte)(4)))));
             this.myButton6.UseVisualStyleBackColor = true;
+            this.myButton6.Click += new System.EventHandler(this.BUT_Rtl_successively_Click);
             // 
             // textBox2
             // 
@@ -432,6 +434,7 @@
             this.myButton9.Text = "刹车";
             this.myButton9.TextColorNotEnabled = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(87)))), ((int)(((byte)(4)))));
             this.myButton9.UseVisualStyleBackColor = true;
+            this.myButton9.Click += new System.EventHandler(this.BUT_Brake_Click);
             // 
             // label1
             // 
