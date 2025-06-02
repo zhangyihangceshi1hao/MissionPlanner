@@ -77,8 +77,6 @@
             this.textBox7 = new System.Windows.Forms.TextBox();
             this.myButton12 = new MissionPlanner.Controls.MyButton();
             this.textBox8 = new System.Windows.Forms.TextBox();
-            this.myButton13 = new MissionPlanner.Controls.MyButton();
-            this.textBox9 = new System.Windows.Forms.TextBox();
             this.myButton14 = new MissionPlanner.Controls.MyButton();
             this.textBox10 = new System.Windows.Forms.TextBox();
             this.myButton15 = new MissionPlanner.Controls.MyButton();
@@ -411,6 +409,7 @@
             this.myButton7.Text = "加载编队";
             this.myButton7.TextColorNotEnabled = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(87)))), ((int)(((byte)(4)))));
             this.myButton7.UseVisualStyleBackColor = true;
+            this.myButton7.Click += new System.EventHandler(this.BUT_LoadPoint_Click);
             // 
             // myButton8
             // 
@@ -423,6 +422,7 @@
             this.myButton8.Text = "保存编队";
             this.myButton8.TextColorNotEnabled = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(87)))), ((int)(((byte)(4)))));
             this.myButton8.UseVisualStyleBackColor = true;
+            this.myButton8.Click += new System.EventHandler(this.BUT_SavePoint_Click);
             // 
             // myButton9
             // 
@@ -514,7 +514,6 @@
             // myButton10
             // 
             this.myButton10.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.myButton10.Enabled = false;
             this.myButton10.Location = new System.Drawing.Point(505, 578);
             this.myButton10.Name = "myButton10";
             this.myButton10.Size = new System.Drawing.Size(75, 23);
@@ -522,6 +521,7 @@
             this.myButton10.Text = "X轴移动";
             this.myButton10.TextColorNotEnabled = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(87)))), ((int)(((byte)(4)))));
             this.myButton10.UseVisualStyleBackColor = true;
+            this.myButton10.Click += new System.EventHandler(this.myButton10_Click);
             // 
             // textBox6
             // 
@@ -534,7 +534,6 @@
             // myButton11
             // 
             this.myButton11.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.myButton11.Enabled = false;
             this.myButton11.Location = new System.Drawing.Point(505, 610);
             this.myButton11.Name = "myButton11";
             this.myButton11.Size = new System.Drawing.Size(75, 23);
@@ -542,6 +541,7 @@
             this.myButton11.Text = "Y轴移动";
             this.myButton11.TextColorNotEnabled = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(87)))), ((int)(((byte)(4)))));
             this.myButton11.UseVisualStyleBackColor = true;
+            this.myButton11.Click += new System.EventHandler(this.myButton11_Click);
             // 
             // textBox7
             // 
@@ -554,7 +554,6 @@
             // myButton12
             // 
             this.myButton12.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.myButton12.Enabled = false;
             this.myButton12.Location = new System.Drawing.Point(505, 639);
             this.myButton12.Name = "myButton12";
             this.myButton12.Size = new System.Drawing.Size(75, 23);
@@ -562,6 +561,7 @@
             this.myButton12.Text = "Z轴移动";
             this.myButton12.TextColorNotEnabled = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(87)))), ((int)(((byte)(4)))));
             this.myButton12.UseVisualStyleBackColor = true;
+            this.myButton12.Click += new System.EventHandler(this.myButton12_Click);
             // 
             // textBox8
             // 
@@ -571,30 +571,9 @@
             this.textBox8.Size = new System.Drawing.Size(86, 28);
             this.textBox8.TabIndex = 35;
             // 
-            // myButton13
-            // 
-            this.myButton13.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.myButton13.Enabled = false;
-            this.myButton13.Location = new System.Drawing.Point(505, 669);
-            this.myButton13.Name = "myButton13";
-            this.myButton13.Size = new System.Drawing.Size(75, 23);
-            this.myButton13.TabIndex = 34;
-            this.myButton13.Text = "偏航角";
-            this.myButton13.TextColorNotEnabled = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(87)))), ((int)(((byte)(4)))));
-            this.myButton13.UseVisualStyleBackColor = true;
-            // 
-            // textBox9
-            // 
-            this.textBox9.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.textBox9.Location = new System.Drawing.Point(586, 666);
-            this.textBox9.Name = "textBox9";
-            this.textBox9.Size = new System.Drawing.Size(86, 28);
-            this.textBox9.TabIndex = 35;
-            // 
             // myButton14
             // 
             this.myButton14.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.myButton14.Enabled = false;
             this.myButton14.Location = new System.Drawing.Point(704, 578);
             this.myButton14.Name = "myButton14";
             this.myButton14.Size = new System.Drawing.Size(75, 23);
@@ -614,7 +593,6 @@
             // myButton15
             // 
             this.myButton15.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.myButton15.Enabled = false;
             this.myButton15.Location = new System.Drawing.Point(704, 610);
             this.myButton15.Name = "myButton15";
             this.myButton15.Size = new System.Drawing.Size(75, 23);
@@ -634,7 +612,6 @@
             // myButton16
             // 
             this.myButton16.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.myButton16.Enabled = false;
             this.myButton16.Location = new System.Drawing.Point(704, 639);
             this.myButton16.Name = "myButton16";
             this.myButton16.Size = new System.Drawing.Size(75, 23);
@@ -654,10 +631,8 @@
             // FormationControls
             // 
             this.ClientSize = new System.Drawing.Size(1478, 744);
-            this.Controls.Add(this.textBox9);
             this.Controls.Add(this.textBox12);
             this.Controls.Add(this.textBox8);
-            this.Controls.Add(this.myButton13);
             this.Controls.Add(this.myButton16);
             this.Controls.Add(this.myButton12);
             this.Controls.Add(this.textBox11);
@@ -769,8 +744,6 @@
         private System.Windows.Forms.TextBox textBox7;
         private Controls.MyButton myButton12;
         private System.Windows.Forms.TextBox textBox8;
-        private Controls.MyButton myButton13;
-        private System.Windows.Forms.TextBox textBox9;
         private Controls.MyButton myButton14;
         private System.Windows.Forms.TextBox textBox10;
         private Controls.MyButton myButton15;

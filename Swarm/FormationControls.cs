@@ -13,6 +13,11 @@ using Match = System.Text.RegularExpressions.Match;
 using System.Linq;
 using DotSpatial.Data;
 using Accord.Imaging.Filters;
+using System.IO;
+using Newtonsoft.Json;
+using static MissionPlanner.Utilities.MissionFile;
+using static MAVLink;
+using System.Threading.Tasks;
 
 namespace MissionPlanner.Swarm
 {
@@ -587,6 +592,8 @@ namespace MissionPlanner.Swarm
                 updateicons();
                 BUT_Start.Enabled = true;
                 BUT_Updatepos.Enabled = true;
+                myButton7.Enabled = true;
+                myButton8.Enabled = true;
             }             
             
         }
@@ -1282,6 +1289,465 @@ namespace MissionPlanner.Swarm
             }
         }
 
-       
+        private void BUT_LoadPoint_Click(object sender, EventArgs e)
+        {
+            using (OpenFileDialog fd = new OpenFileDialog())
+            {
+                fd.Filter = "All Supported Types|*.txt;*.waypoints;*.shp;*.plan;*.kml";
+                if (Directory.Exists(Settings.Instance["WPFileDirectory"] ?? ""))
+                    fd.InitialDirectory = Settings.Instance["WPFileDirectory"];
+                DialogResult result = fd.ShowDialog();
+                string file = fd.FileName;
+
+                if (File.Exists(file))
+                {
+                    Settings.Instance["WPFileDirectory"] = Path.GetDirectoryName(file);
+
+
+                    string line = "";
+                    using (var fstream = File.Open(file, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                    using (var fs = new StreamReader(fstream))
+                    {
+                        line = fs.ReadLine();
+                    }
+
+                    if (line.StartsWith("{"))
+                    {
+                        var format = ReadFile(file);
+
+                        var cmds = ConvertToPoint(format);
+
+                        BUT_Updatepos_Click_New(cmds);
+                    }
+                }
+            }
+        }
+
+        public static RootObject_ICon ReadFile(string filename)
+        {
+            using (var file =
+                new StreamReader(File.Open(filename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)))
+            {
+                var output = JsonConvert.DeserializeObject<RootObject_ICon>(file.ReadToEnd());
+
+                return output;
+            }
+        }
+
+        public static List<new_icon> ConvertToPoint(RootObject_ICon format)
+        {
+            List<new_icon> cmds = new List<new_icon>();
+
+            // 空值检查
+            if (format == null || format.icon == null)
+                return cmds;
+
+            // 遍历 RootObject_ICon 中的 Grid.icon 列表
+            foreach (var gridIcon in format.icon)
+            {
+                // 创建目标 icon 对象
+                var targetIcon = new new_icon();
+
+                // 映射必要属性 (根据实际字段调整)
+                targetIcon.x = gridIcon.x;
+                targetIcon.y = gridIcon.y;
+                targetIcon.z = gridIcon.z;
+                targetIcon.Color = gridIcon.Color;
+                targetIcon.interf = gridIcon.interf;
+
+
+                cmds.Add(targetIcon);
+            }
+
+            return cmds;
+        }
+
+        private void BUT_Updatepos_Click_New(List<new_icon> icons)
+        {
+
+            int swarm_id = int.Parse(comboBox1.Text == "" ? "1" : comboBox1.Text);
+            //swarmsDictionary[swarm_id].SwarmsInterface.Leader.parent.requestDatastream(MAVLink.MAV_DATA_STREAM.POSITION, 10, swarmsDictionary[swarm_id].SwarmsInterface.Leader.sysid, swarmsDictionary[swarm_id].SwarmsInterface.Leader.compid);
+            //swarmsDictionary[swarm_id].SwarmsInterface.Leader.cs.rateposition = 10;
+            //swarmsDictionary[swarm_id].SwarmsInterface.Leader.cs.rateattitude = 10;
+
+            foreach (var port in MainV2.Comports)
+            {
+                foreach (var mav in port.MAVlist)
+                {
+                    if (swarmsDictionary[swarm_id].SwarmList.Contains(mav))
+                    {
+                        mav.cs.UpdateCurrentSettings(null, true, port, mav);
+
+                        //if (mav == SwarmInterface.Leader)
+                        //    continue;
+
+                        Vector3 offset = getOffsetFromLeader(((Formation)swarmsDictionary[swarm_id].SwarmsInterface).getLeader(), mav);
+
+                        if (Math.Abs(offset.x) < 10000 && Math.Abs(offset.y) < 10000)
+                        {
+                            //此处是控制页面的icon位置
+                            //grid1.UpdateIcon(mav, (float)offset.y, (float)offset.x, (float)offset.z, true);
+                            //((Formation)SwarmInterface).setOffsets(mav, offset.x, offset.y, offset.z);
+
+                            //offset.x = 1+ mav.sysid;
+                            //offset.y = 1+ mav.sysid;
+                            //offset.z = 1+ mav.sysid;
+                            foreach (var icon in icons)
+                            {
+                                if (icon.interf == mav.sysid)
+                                {
+                                    bool colorIsRed = false;
+                                    if (icon.Color.Name.Equals("Red"))
+                                    {
+                                        colorIsRed = true;
+                                    }
+                                    swarmsDictionary[swarm_id].Grid.UpdateIcon(mav, (float)icon.x, (float)icon.y, (float)icon.z, colorIsRed);
+                                    ((Formation)swarmsDictionary[swarm_id].SwarmsInterface).setOffsets(mav, icon.x, icon.y, icon.z);
+                                }
+                            }
+
+
+                        }
+                    }
+                }
+            }
+        }
+
+        public class new_icon
+        {
+            public float x = 0;
+            public float y = 0;
+            public float z = 10;
+            public int icosize = 20;
+            public RectangleF bounds = new RectangleF();
+            public Color Color = Color.Red;
+            public String Name = "";
+            public int interf = 0;
+            public bool Movable = true;
+        }
+        public class RootObject_ICon
+        {
+            public string fileType { get; set; }
+            public GeoFence geoFence { get; set; }
+            public string groundStation { get; set; }
+            public List<new_icon> icon { get; set; }
+            public RallyPoints rallyPoints { get; set; }
+            public int version { get; set; }
+        }
+        internal string wpfilename;
+        private void BUT_SavePoint_Click(object sender, EventArgs e)
+        {
+            int swarm_id = int.Parse(comboBox1.Text == "" ? "1" : comboBox1.Text);
+            //swarmsDictionary[swarm_id].SwarmsInterface.Leader.parent.requestDatastream(MAVLink.MAV_DATA_STREAM.POSITION, 10, swarmsDictionary[swarm_id].SwarmsInterface.Leader.sysid, swarmsDictionary[swarm_id].SwarmsInterface.Leader.compid);
+            //swarmsDictionary[swarm_id].SwarmsInterface.Leader.cs.rateposition = 10;
+            //swarmsDictionary[swarm_id].SwarmsInterface.Leader.cs.rateattitude = 10;
+            MAVState targetMav = MainV2.Comports
+                 .SelectMany(port => port.MAVlist)  // 合并所有 MAVlist 列表
+                 .FirstOrDefault(mav => mav == CMB_mavs.SelectedValue);  // 查找 sysid 匹配的 MAVState
+            using (SaveFileDialog fd = new SaveFileDialog())
+            {
+                fd.Filter = "Mission|*.waypoints;*.txt|Mission JSON|*.mission";
+                fd.DefaultExt = ".waypoints";
+                fd.InitialDirectory = Settings.Instance["WPFileDirectory"] ?? "";
+                fd.FileName = wpfilename;
+                DialogResult result = fd.ShowDialog();
+                string file = fd.FileName;
+                List<new_icon> icons = new List<new_icon>();
+
+                if (file != "" && result == DialogResult.OK)
+                {
+                    Settings.Instance["WPFileDirectory"] = Path.GetDirectoryName(file);
+
+                    try
+                    {
+
+                        if (swarmsDictionary[swarm_id].SwarmsInterface != null)
+                        {
+                            var vectorlead = swarmsDictionary[swarm_id].SwarmsInterface.getOffsets(targetMav);
+
+
+                            foreach (var port in MainV2.Comports)
+                            {
+                                foreach (var mav in port.MAVlist)
+                                {
+                                    if (swarmsDictionary[swarm_id].SwarmList.Contains(mav))
+                                    {
+                                        new_icon save_icon = new new_icon();
+                                        var vector = swarmsDictionary[swarm_id].SwarmsInterface.getOffsets(mav);
+                                        save_icon.x = (float)vector.x;
+                                        save_icon.y = (float)vector.y;
+                                        save_icon.z = (float)vector.z;
+                                        if (mav == swarmsDictionary[swarm_id].SwarmsInterface.Leader)
+                                        {
+                                            save_icon.Color = Color.Blue;
+                                        }
+                                        save_icon.interf = mav.sysid;
+
+                                        icons.Add(save_icon);
+                                    }
+                                }
+                            }
+                        }
+
+                        // Convert icons list to RootObject type
+                        var format = ConvertFromIcon(icons);
+
+                        // Now you can save this format as object
+                        WriteFile_icon(file, format);
+                        return;
+
+                    }
+                    catch (Exception)
+                    {
+                        CustomMessageBox.Show(Strings.ERROR);
+                    }
+                }
+            }
+        }
+        public static RootObject_ICon ConvertFromIcon(List<new_icon> list, byte frame = (byte)MAVLink.MAV_FRAME.GLOBAL_RELATIVE_ALT)
+        {
+            RootObject_ICon temp = new RootObject_ICon()
+            {
+                groundStation = "MissionPlanner_ICon",
+                version = 1,
+                icon = new List<new_icon>()
+            };
+
+
+            temp.icon = list;
+
+            return temp;
+        }
+
+        public static void WriteFile_icon(string filename, RootObject_ICon format)
+        {
+            var fileout = JsonConvert.SerializeObject(format, Formatting.Indented);
+
+            File.WriteAllText(filename, fileout);
+        }
+
+        private async void myButton10_Click(object sender, EventArgs e)
+        {
+            int swarm_id = int.Parse(comboBox1.Text == "" ? "1" : comboBox1.Text);
+            int x_s = int.Parse(textBox6.Text == "" ? "0" : textBox6.Text);
+
+            //swarmsDictionary[swarm_id].SwarmsInterface.Leader.parent.requestDatastream(MAVLink.MAV_DATA_STREAM.POSITION, 10, swarmsDictionary[swarm_id].SwarmsInterface.Leader.sysid, swarmsDictionary[swarm_id].SwarmsInterface.Leader.compid);
+            //swarmsDictionary[swarm_id].SwarmsInterface.Leader.cs.rateposition = 10;
+            //swarmsDictionary[swarm_id].SwarmsInterface.Leader.cs.rateattitude = 10;
+            MAVState targetMav = MainV2.Comports
+                 .SelectMany(port => port.MAVlist)  // 合并所有 MAVlist 列表
+                 .FirstOrDefault(mav => mav == CMB_mavs.SelectedValue);  // 查找 sysid 匹配的 MAVState
+            foreach (var port in MainV2.Comports)
+            {
+                foreach (var mav in port.MAVlist)
+                {
+                    if (swarmsDictionary[swarm_id].SwarmsInterface.Leader == mav)
+                    {
+                        var msg1 = new mavlink_set_position_target_local_ned_t
+                        {
+                            time_boot_ms = (uint)Environment.TickCount,
+                            coordinate_frame = (byte)MAV_FRAME.BODY_NED, // 使用机体坐标系
+
+                            // 位置（只设置）
+                            x = x_s,
+                            y = 0,
+                            z = 0,
+
+                            // 速度（只设置 vx = 0.5 m/s）（被忽略）
+                            vx = 5.0f,
+                            vy = 0.0f,
+                            vz = 0.0f,
+
+                            // 加速度（被忽略）
+                            afx = 0,
+                            afy = 0,
+                            afz = 0,
+
+                            // 偏航角和偏航速率（被忽略）
+                            yaw = 0,
+                            yaw_rate = 0,
+
+                            // 掩码：忽略位置、加速度、yaw、yaw_rate
+                            type_mask = (ushort)(
+                    POSITION_TARGET_TYPEMASK.VX_IGNORE |
+                    POSITION_TARGET_TYPEMASK.VY_IGNORE |
+                    POSITION_TARGET_TYPEMASK.VZ_IGNORE |
+                    POSITION_TARGET_TYPEMASK.AX_IGNORE |
+                    POSITION_TARGET_TYPEMASK.AY_IGNORE |
+                    POSITION_TARGET_TYPEMASK.AZ_IGNORE |
+                    POSITION_TARGET_TYPEMASK.FORCE_SET |
+                    POSITION_TARGET_TYPEMASK.YAW_IGNORE |
+                    POSITION_TARGET_TYPEMASK.YAW_RATE_IGNORE
+                ),
+
+                            target_system = mav.sysid,
+                            target_component = mav.compid
+                        };
+                        await Task.Run(() =>
+                        {
+                            this.Invoke((MethodInvoker)delegate
+                            {
+                                MainV2.comPort.generatePacket(
+                                    (byte)MAVLINK_MSG_ID.SET_POSITION_TARGET_LOCAL_NED,
+                                    msg1, mav.sysid, mav.compid);
+                            });
+                        });
+                    }
+                }
+            }
+        }
+
+        private async void myButton11_Click(object sender, EventArgs e)
+        {
+            int swarm_id = int.Parse(comboBox1.Text == "" ? "1" : comboBox1.Text);
+            int y_s = int.Parse(textBox7.Text == "" ? "0" : textBox7.Text);
+
+            //swarmsDictionary[swarm_id].SwarmsInterface.Leader.parent.requestDatastream(MAVLink.MAV_DATA_STREAM.POSITION, 10, swarmsDictionary[swarm_id].SwarmsInterface.Leader.sysid, swarmsDictionary[swarm_id].SwarmsInterface.Leader.compid);
+            //swarmsDictionary[swarm_id].SwarmsInterface.Leader.cs.rateposition = 10;
+            //swarmsDictionary[swarm_id].SwarmsInterface.Leader.cs.rateattitude = 10;
+            MAVState targetMav = MainV2.Comports
+                 .SelectMany(port => port.MAVlist)  // 合并所有 MAVlist 列表
+                 .FirstOrDefault(mav => mav == CMB_mavs.SelectedValue);  // 查找 sysid 匹配的 MAVState
+            foreach (var port in MainV2.Comports)
+            {
+                foreach (var mav in port.MAVlist)
+                {
+                    //if (swarmsDictionary[swarm_id].SwarmList.Contains(mav))
+                    if (swarmsDictionary[swarm_id].SwarmsInterface.Leader == mav)
+                    {
+                        var msg1 = new mavlink_set_position_target_local_ned_t
+                        {
+                            time_boot_ms = (uint)Environment.TickCount,
+                            coordinate_frame = (byte)MAV_FRAME.BODY_NED, // 使用机体坐标系
+
+                            // 位置（只设置）
+                            x = 0,
+                            y = y_s,
+                            z = 0,
+
+                            // 速度（只设置 vx = 0.5 m/s）（被忽略）
+                            vx = 0.0f,
+                            vy = 5.0f,
+                            vz = 0.0f,
+
+                            // 加速度（被忽略）
+                            afx = 0,
+                            afy = 0,
+                            afz = 0,
+
+                            // 偏航角和偏航速率（被忽略）
+                            yaw = 0,
+                            yaw_rate = 0,
+
+                            // 掩码：忽略位置、加速度、yaw、yaw_rate
+                            type_mask = (ushort)(
+                                POSITION_TARGET_TYPEMASK.VX_IGNORE |
+                                POSITION_TARGET_TYPEMASK.VY_IGNORE |
+                                POSITION_TARGET_TYPEMASK.VZ_IGNORE |
+                                POSITION_TARGET_TYPEMASK.AX_IGNORE |
+                                POSITION_TARGET_TYPEMASK.AY_IGNORE |
+                                POSITION_TARGET_TYPEMASK.AZ_IGNORE |
+                                POSITION_TARGET_TYPEMASK.FORCE_SET |
+                                POSITION_TARGET_TYPEMASK.YAW_IGNORE |
+                                POSITION_TARGET_TYPEMASK.YAW_RATE_IGNORE
+                            ),
+
+                            target_system = mav.sysid,
+                            target_component = mav.compid
+                        };
+                        await Task.Run(() =>
+                        {
+                            this.Invoke((MethodInvoker)delegate
+                            {
+                                MainV2.comPort.generatePacket(
+                                    (byte)MAVLINK_MSG_ID.SET_POSITION_TARGET_LOCAL_NED,
+                                    msg1, mav.sysid, mav.compid);
+                            });
+                        });
+                        return;
+                    }
+                }
+            }
+        }
+
+        private async void myButton12_Click(object sender, EventArgs e)
+        {
+            int swarm_id = int.Parse(comboBox1.Text == "" ? "1" : comboBox1.Text);
+            int z_s = int.Parse(textBox8.Text == "" ? "0" : textBox8.Text);
+            float z_v = 5f;
+            if (z_s < 0) {
+                z_v = -z_v;
+            }
+            //swarmsDictionary[swarm_id].SwarmsInterface.Leader.parent.requestDatastream(MAVLink.MAV_DATA_STREAM.POSITION, 10, swarmsDictionary[swarm_id].SwarmsInterface.Leader.sysid, swarmsDictionary[swarm_id].SwarmsInterface.Leader.compid);
+            //swarmsDictionary[swarm_id].SwarmsInterface.Leader.cs.rateposition = 10;
+            //swarmsDictionary[swarm_id].SwarmsInterface.Leader.cs.rateattitude = 10;
+            MAVState targetMav = MainV2.Comports
+                 .SelectMany(port => port.MAVlist)  // 合并所有 MAVlist 列表
+                 .FirstOrDefault(mav => mav == CMB_mavs.SelectedValue);  // 查找 sysid 匹配的 MAVState
+            foreach (var port in MainV2.Comports)
+            {
+                foreach (var mav in port.MAVlist)
+                {
+                    //if (swarmsDictionary[swarm_id].SwarmList.Contains(mav))
+                    //{
+                        if (swarmsDictionary[swarm_id].SwarmsInterface.Leader == mav)
+                        {
+                            var msg1 = new mavlink_set_position_target_local_ned_t
+                            {
+                                time_boot_ms = (uint)Environment.TickCount,
+                                coordinate_frame = (byte)MAV_FRAME.BODY_NED, // 使用机体坐标系
+
+                                // 位置（只设置）
+                                x = 0,
+                                y = 0,
+                                z = z_s,
+
+                                // 速度（只设置 vx = 0.5 m/s）（被忽略）
+                                vx = 0.0f,
+                                vy = 0.0f,
+                                vz = 0.0f,
+
+                                // 加速度（被忽略）
+                                afx = 0,
+                                afy = 0,
+                                afz = 0,
+
+                                // 偏航角和偏航速率（被忽略）
+                                yaw = 0,
+                                yaw_rate = 0,
+
+                                // 掩码：忽略位置、加速度、yaw、yaw_rate
+                                type_mask = (ushort)(
+                                    POSITION_TARGET_TYPEMASK.VX_IGNORE |
+                                    POSITION_TARGET_TYPEMASK.VY_IGNORE |
+                                    POSITION_TARGET_TYPEMASK.VZ_IGNORE |
+                                    POSITION_TARGET_TYPEMASK.AX_IGNORE |
+                                    POSITION_TARGET_TYPEMASK.AY_IGNORE |
+                                    POSITION_TARGET_TYPEMASK.AZ_IGNORE |
+                                    POSITION_TARGET_TYPEMASK.FORCE_SET |
+                                    POSITION_TARGET_TYPEMASK.YAW_IGNORE |
+                                    POSITION_TARGET_TYPEMASK.YAW_RATE_IGNORE
+                                ),
+
+                                target_system = mav.sysid,
+                                target_component = mav.compid
+                            };
+                            await Task.Run(() =>
+                            {
+                                this.Invoke((MethodInvoker)delegate
+                                {
+                                    MainV2.comPort.generatePacket(
+                                        (byte)MAVLINK_MSG_ID.SET_POSITION_TARGET_LOCAL_NED,
+                                        msg1, mav.sysid, mav.compid);
+                                });
+                            });
+                        return;
+                    }
+                    }
+                //}
+            }
+        }
+
+        
     }
 }
