@@ -571,62 +571,53 @@ namespace MissionPlanner.GCSViews
                         }
                         if (packet.control_type == 0x0A)
                         {
-                            while (MainV2.comPort.MAV.cs.mode != "Guided")
-                            {
+                            //while (MainV2.comPort.MAV.cs.mode != "Guided")
+                            //{
 
-                                MainV2.comPort.setMode("Guided");
+                            //    MainV2.comPort.setMode("Guided");
 
-                            }
-
-                            //抛投
-                            mavlink_rc_channels_override_t msg = new mavlink_rc_channels_override_t(
-                               chan1_raw: 1500, // Roll - 向右
-                               chan2_raw: 1500, // Pitch - 向前
-                               chan3_raw: 1500, // Throttle - 向上
-                               chan4_raw: 1500, // Yaw - 中立
-                               chan5_raw: 1100,
-                               chan6_raw: 0,
-                               chan7_raw: 0,
-                               chan8_raw: 0,
-                               target_system: MainV2.comPort.MAV.sysid,
-                               target_component: MainV2.comPort.MAV.compid,
-                               chan9_raw: 0, chan10_raw: 0, chan11_raw: 0, chan12_raw: 0,
-                               chan13_raw: 0, chan14_raw: 0, chan15_raw: 0, chan16_raw: 0,
-                               chan17_raw: 0, chan18_raw: 0
-                           );
-                            await Task.Run(() =>
-                            {
-                                this.Invoke((MethodInvoker)delegate
-                                {
-                                    MainV2.comPort.generatePacket((byte)MAVLINK_MSG_ID.RC_CHANNELS_OVERRIDE,
-                                        msg, MainV2.comPort.MAV.sysid, MainV2.comPort.MAV.compid);
-                                });
-                            });
+                            //}
 
                             //抛投
-                            mavlink_rc_channels_override_t msg1 = new mavlink_rc_channels_override_t(
-                               chan1_raw: 1500, // Roll - 向右
-                               chan2_raw: 1500, // Pitch - 向前
-                               chan3_raw: 1500, // Throttle - 向上
-                               chan4_raw: 1500, // Yaw - 中立
-                               chan5_raw: 1900,
-                               chan6_raw: 0,
-                               chan7_raw: 0,
-                               chan8_raw: 0,
-                               target_system: MainV2.comPort.MAV.sysid,
-                               target_component: MainV2.comPort.MAV.compid,
-                               chan9_raw: 0, chan10_raw: 0, chan11_raw: 0, chan12_raw: 0,
-                               chan13_raw: 0, chan14_raw: 0, chan15_raw: 0, chan16_raw: 0,
-                               chan17_raw: 0, chan18_raw: 0
-                           );
-                            await Task.Run(() =>
-                            {
-                                this.Invoke((MethodInvoker)delegate
-                                {
-                                    MainV2.comPort.generatePacket((byte)MAVLINK_MSG_ID.RC_CHANNELS_OVERRIDE,
-                                        msg1, MainV2.comPort.MAV.sysid, MainV2.comPort.MAV.compid);
-                                });
-                            });
+                            MainV2.comPort.doCommand((byte)MainV2.comPort.sysidcurrent, (byte)MainV2.comPort.compidcurrent, MAVLink.MAV_CMD.DO_SET_SERVO, 9, 1100, 0, 0,
+                      0, 0, 0);
+                            
+
+                            Application.DoEvents();
+                            System.Threading.Thread.Sleep(200);
+
+                            MainV2.comPort.doCommand((byte)MainV2.comPort.sysidcurrent, (byte)MainV2.comPort.compidcurrent, MAVLink.MAV_CMD.DO_SET_SERVO, 9, 1900, 0, 0,
+                                 0, 0, 0);
+
+                            Application.DoEvents();
+                            System.Threading.Thread.Sleep(1000);
+
+                            MainV2.comPort.doCommand((byte)MainV2.comPort.sysidcurrent, (byte)MainV2.comPort.compidcurrent, MAVLink.MAV_CMD.DO_SET_SERVO, 9, 1100, 0, 0,
+                                 0, 0, 0);
+
+                            ////抛投
+                            //mavlink_command_long_t msg1 = new mavlink_command_long_t
+                            //{
+                            //    target_system = MainV2.comPort.MAV.sysid,
+                            //    target_component = MainV2.comPort.MAV.compid,
+                            //    command = (ushort)183,
+                            //    confirmation = 0,
+                            //    param1 = 9,
+                            //    param2 = 1900,
+                            //    param3 = 0,
+                            //    param4 = 0,
+                            //    param5 = 0,
+                            //    param6 = 0,
+                            //    param7 = 0
+                            //};
+                            //await Task.Run(() =>
+                            //{
+                            //    this.Invoke((MethodInvoker)delegate
+                            //    {
+                            //        MainV2.comPort.generatePacket((byte)MAVLINK_MSG_ID.RC_CHANNELS_OVERRIDE,
+                            //            msg1, MainV2.comPort.MAV.sysid, MainV2.comPort.MAV.compid);
+                            //    });
+                            //});
                             packet.msg_type = 0x01;
                             packet.src_id = 0x01;
                             packet.dst_id = 0x00;
@@ -641,12 +632,12 @@ namespace MissionPlanner.GCSViews
                         }
                         if (packet.control_type == 0x0B)
                         {
-                            while (MainV2.comPort.MAV.cs.mode != "Guided")
-                            {
+                            //while (MainV2.comPort.MAV.cs.mode != "Guided")
+                            //{
 
-                                MainV2.comPort.setMode("Guided");
+                            //    MainV2.comPort.setMode("Guided");
 
-                            }
+                            //}
                             packet.msg_type = 0x01;
                             packet.src_id = 0x01;
                             packet.dst_id = 0x00;
