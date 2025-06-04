@@ -200,11 +200,11 @@ namespace MissionPlanner.GCSViews
                             DateTime baseTime = new DateTime(2000, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
                             // 获取当前 UTC 时间
-                            DateTime nowUtc = DateTime.UtcNow;
-                            
+                            //DateTime nowUtc = DateTime.UtcNow;
+                        DateTime nowUtc = DateTime.Now;
 
-                            // 计算时间差
-                            TimeSpan difference = nowUtc - baseTime;
+                        // 计算时间差
+                        TimeSpan difference = nowUtc - baseTime;
                             //TimeSpan elapsed = mav.cs.gpstime.ToUniversalTime() - gpsEpoch;
                             // 获取总天数（整数天）
                             int daysSince2000 = (int)difference.TotalDays;

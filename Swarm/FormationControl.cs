@@ -78,7 +78,7 @@ namespace MissionPlanner.Swarm
             comboBox1.ValueMember = "Value";
             comboBox1.DisplayMember = "Key";
             textBox4.Text = "0";
-
+            textBox8.Text = "50";
             updateicons();
 
             this.MouseWheel += new MouseEventHandler(FollowLeaderControl_MouseWheel);
@@ -1750,7 +1750,7 @@ namespace MissionPlanner.Swarm
                                     });
                                 });
                             }
-                            else if (timeDifferenceSeconds >= 20 && timeDifferenceSeconds < 30)
+                            else if (timeDifferenceSeconds >= 19 && timeDifferenceSeconds < 30)
                             {
                                 Console.WriteLine("timeDifferenceSeconds > 20 <40mav.sysid =" + mav.sysid);
                                 //Console.WriteLine("timeDifferenceSeconds < 10" );
@@ -1805,7 +1805,7 @@ namespace MissionPlanner.Swarm
                                 });
 
                             }
-                            else if (timeDifferenceSeconds >= 40 && timeDifferenceSeconds < 60)
+                            else if (timeDifferenceSeconds >= 29 && timeDifferenceSeconds <( 40+ (int.Parse(textBox8.Text))))
                             {
                                 //Console.WriteLine("timeDifferenceSeconds >40 <60" );
                                 Console.WriteLine("timeDifferenceSeconds > 20 && timeDifferenceSeconds < 30mav.sysid =" + mav.sysid);

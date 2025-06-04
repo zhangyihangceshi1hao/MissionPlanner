@@ -98,6 +98,7 @@
             this.textBox_uav11 = new System.Windows.Forms.TextBox();
             this.textBox_uav12 = new System.Windows.Forms.TextBox();
             this.myButton8 = new MissionPlanner.Controls.MyButton();
+            this.textBox8 = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -496,6 +497,7 @@
             this.textBox_uav1.Name = "textBox_uav1";
             this.textBox_uav1.Size = new System.Drawing.Size(121, 28);
             this.textBox_uav1.TabIndex = 17;
+            this.textBox_uav1.Visible = false;
             // 
             // label5
             // 
@@ -505,6 +507,7 @@
             this.label5.Size = new System.Drawing.Size(17, 18);
             this.label5.TabIndex = 15;
             this.label5.Text = "1";
+            this.label5.Visible = false;
             // 
             // label6
             // 
@@ -514,6 +517,7 @@
             this.label6.Size = new System.Drawing.Size(17, 18);
             this.label6.TabIndex = 15;
             this.label6.Text = "2";
+            this.label6.Visible = false;
             // 
             // textBox_uav2
             // 
@@ -521,6 +525,7 @@
             this.textBox_uav2.Name = "textBox_uav2";
             this.textBox_uav2.Size = new System.Drawing.Size(121, 28);
             this.textBox_uav2.TabIndex = 17;
+            this.textBox_uav2.Visible = false;
             // 
             // label7
             // 
@@ -530,6 +535,7 @@
             this.label7.Size = new System.Drawing.Size(17, 18);
             this.label7.TabIndex = 15;
             this.label7.Text = "3";
+            this.label7.Visible = false;
             // 
             // label8
             // 
@@ -539,6 +545,7 @@
             this.label8.Size = new System.Drawing.Size(17, 18);
             this.label8.TabIndex = 15;
             this.label8.Text = "4";
+            this.label8.Visible = false;
             // 
             // textBox_uav3
             // 
@@ -546,6 +553,7 @@
             this.textBox_uav3.Name = "textBox_uav3";
             this.textBox_uav3.Size = new System.Drawing.Size(121, 28);
             this.textBox_uav3.TabIndex = 17;
+            this.textBox_uav3.Visible = false;
             // 
             // textBox_uav4
             // 
@@ -553,6 +561,7 @@
             this.textBox_uav4.Name = "textBox_uav4";
             this.textBox_uav4.Size = new System.Drawing.Size(121, 28);
             this.textBox_uav4.TabIndex = 17;
+            this.textBox_uav4.Visible = false;
             // 
             // label9
             // 
@@ -562,6 +571,7 @@
             this.label9.Size = new System.Drawing.Size(17, 18);
             this.label9.TabIndex = 15;
             this.label9.Text = "5";
+            this.label9.Visible = false;
             // 
             // label10
             // 
@@ -571,6 +581,7 @@
             this.label10.Size = new System.Drawing.Size(17, 18);
             this.label10.TabIndex = 15;
             this.label10.Text = "6";
+            this.label10.Visible = false;
             // 
             // textBox_uav5
             // 
@@ -578,6 +589,7 @@
             this.textBox_uav5.Name = "textBox_uav5";
             this.textBox_uav5.Size = new System.Drawing.Size(121, 28);
             this.textBox_uav5.TabIndex = 17;
+            this.textBox_uav5.Visible = false;
             // 
             // textBox_uav6
             // 
@@ -585,6 +597,7 @@
             this.textBox_uav6.Name = "textBox_uav6";
             this.textBox_uav6.Size = new System.Drawing.Size(121, 28);
             this.textBox_uav6.TabIndex = 17;
+            this.textBox_uav6.Visible = false;
             // 
             // label11
             // 
@@ -594,6 +607,7 @@
             this.label11.Size = new System.Drawing.Size(17, 18);
             this.label11.TabIndex = 15;
             this.label11.Text = "7";
+            this.label11.Visible = false;
             // 
             // label12
             // 
@@ -603,6 +617,7 @@
             this.label12.Size = new System.Drawing.Size(17, 18);
             this.label12.TabIndex = 15;
             this.label12.Text = "8";
+            this.label12.Visible = false;
             // 
             // textBox_uav7
             // 
@@ -610,6 +625,7 @@
             this.textBox_uav7.Name = "textBox_uav7";
             this.textBox_uav7.Size = new System.Drawing.Size(121, 28);
             this.textBox_uav7.TabIndex = 17;
+            this.textBox_uav7.Visible = false;
             // 
             // textBox_uav8
             // 
@@ -617,6 +633,7 @@
             this.textBox_uav8.Name = "textBox_uav8";
             this.textBox_uav8.Size = new System.Drawing.Size(121, 28);
             this.textBox_uav8.TabIndex = 17;
+            this.textBox_uav8.Visible = false;
             // 
             // label13
             // 
@@ -626,6 +643,7 @@
             this.label13.Size = new System.Drawing.Size(17, 18);
             this.label13.TabIndex = 15;
             this.label13.Text = "9";
+            this.label13.Visible = false;
             // 
             // label14
             // 
@@ -635,6 +653,7 @@
             this.label14.Size = new System.Drawing.Size(26, 18);
             this.label14.TabIndex = 15;
             this.label14.Text = "10";
+            this.label14.Visible = false;
             // 
             // textBox_uav9
             // 
@@ -642,6 +661,7 @@
             this.textBox_uav9.Name = "textBox_uav9";
             this.textBox_uav9.Size = new System.Drawing.Size(121, 28);
             this.textBox_uav9.TabIndex = 17;
+            this.textBox_uav9.Visible = false;
             // 
             // textBox_uav10
             // 
@@ -649,6 +669,7 @@
             this.textBox_uav10.Name = "textBox_uav10";
             this.textBox_uav10.Size = new System.Drawing.Size(121, 28);
             this.textBox_uav10.TabIndex = 17;
+            this.textBox_uav10.Visible = false;
             // 
             // label15
             // 
@@ -658,6 +679,7 @@
             this.label15.Size = new System.Drawing.Size(26, 18);
             this.label15.TabIndex = 15;
             this.label15.Text = "11";
+            this.label15.Visible = false;
             // 
             // label16
             // 
@@ -667,6 +689,7 @@
             this.label16.Size = new System.Drawing.Size(26, 18);
             this.label16.TabIndex = 15;
             this.label16.Text = "12";
+            this.label16.Visible = false;
             // 
             // textBox_uav11
             // 
@@ -674,6 +697,7 @@
             this.textBox_uav11.Name = "textBox_uav11";
             this.textBox_uav11.Size = new System.Drawing.Size(121, 28);
             this.textBox_uav11.TabIndex = 17;
+            this.textBox_uav11.Visible = false;
             // 
             // textBox_uav12
             // 
@@ -681,6 +705,7 @@
             this.textBox_uav12.Name = "textBox_uav12";
             this.textBox_uav12.Size = new System.Drawing.Size(121, 28);
             this.textBox_uav12.TabIndex = 17;
+            this.textBox_uav12.Visible = false;
             // 
             // myButton8
             // 
@@ -691,11 +716,20 @@
             this.myButton8.Text = "更新返航点";
             this.myButton8.TextColorNotEnabled = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(87)))), ((int)(((byte)(4)))));
             this.myButton8.UseVisualStyleBackColor = true;
+            this.myButton8.Visible = false;
             this.myButton8.Click += new System.EventHandler(this.Checkpoint_Click);
+            // 
+            // textBox8
+            // 
+            this.textBox8.Location = new System.Drawing.Point(869, 781);
+            this.textBox8.Name = "textBox8";
+            this.textBox8.Size = new System.Drawing.Size(121, 28);
+            this.textBox8.TabIndex = 18;
             // 
             // FormationControl
             // 
             this.ClientSize = new System.Drawing.Size(1407, 877);
+            this.Controls.Add(this.textBox8);
             this.Controls.Add(this.textBox7);
             this.Controls.Add(this.textBox3);
             this.Controls.Add(this.textBox4);
@@ -843,5 +877,6 @@
         private System.Windows.Forms.TextBox textBox_uav11;
         private System.Windows.Forms.TextBox textBox_uav12;
         private Controls.MyButton myButton8;
+        private System.Windows.Forms.TextBox textBox8;
     }
 }
