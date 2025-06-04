@@ -109,7 +109,7 @@ namespace MissionPlanner.GCSViews
                         {
 
                             //control_command packet = ByteArrayToStructure<control_command>(data);
-                            MessageBox.Show("加载航点！");
+                            //MessageBox.Show("加载航点！");
 
                             await Task.Run(() =>
                             {
@@ -117,12 +117,12 @@ namespace MissionPlanner.GCSViews
                                 //{
 
                                 //});
-                                foreach (var port in MainV2.Comports)
-                                {
-                                    foreach (var mav in port.MAVlist)
-                                    {
-                                        if (mav.sysid == BitConverter.ToInt16(data, 12))
-                                        {
+                                //foreach (var port in MainV2.Comports)
+                                //{
+                                //    foreach (var mav in port.MAVlist)
+                                //    {
+                                //        if (mav.sysid == BitConverter.ToInt16(data, 12))
+                                //        {
                                             gotohere = new Locationwp();
 
                                             gotohere.id = (ushort)MAVLink.MAV_CMD.WAYPOINT;
@@ -133,32 +133,18 @@ namespace MissionPlanner.GCSViews
                                             gotohere.alt = (float)packet.relative_height/100;
                                             gotohere.frame = MainV2.comPort.MAV.GuidedMode.frame;
 
-                                            //bool isarmed = mav.cs.armed;
-
-
-
-                                            //try
-                                            //{
-                                            //    //MainV2.comPort.setGuidedModeWP(gotohere);
-                                            //    //MAVLinkInterface.setGuidedModeWP(mav.sysid, mav.compid, gotohere, true);
-                                            //    new MAVLinkInterface().setGuidedModeWP(mav.sysid, mav.compid, gotohere, true);
-                                            //}
-                                            //catch (Exception ex)
-                                            //{
-                                            //    CustomMessageBox.Show(Strings.CommandFailed + ex.Message, Strings.ERROR);
-                                            //}
-                                            // 修改 data[3]（例如改为 0x01）
                                             packet.msg_type = 0x01;
                                             packet.src_id = 0x01;
                                             packet.dst_id = 0x00;
+                                            
                                             //// 原样发送回来源 IP 和 Port
                                             //udpClient.Send(data, data.Length, remoteEndPoint);
 
                                             byte[] send = StructToBytes(packet);
                                             udpClient.Send(send, send.Length, endPoint);
-                                        }
-                                    }
-                                }
+                                //        }
+                                //    }
+                                //}
 
 
                             });
@@ -168,13 +154,13 @@ namespace MissionPlanner.GCSViews
                         if ((byte)packet.control_type == 0x02)
                         {
                             //MessageBox.Show("开始执行任务！");
-                            //解锁,需要修改参数AUTO_OPTIONS==3
+                            //解锁,需要修改参==3
                             //while()
-                            foreach (var port in MainV2.Comports)
-                            {
-                                foreach (var mav in port.MAVlist)
-                                {
-                                    if (mav.sysid == packet.uav_id) {
+                            //foreach (var port in MainV2.Comports)
+                            //{
+                            //    foreach (var mav in port.MAVlist)
+                            //    {
+                                    //if (mav.sysid == packet.uav_id) {
 
 
                                         List<Locationwp> commands = new List<Locationwp>();
@@ -250,16 +236,16 @@ namespace MissionPlanner.GCSViews
 
                                         home.alt = (float)50;
 
-                                        home.lat = (double)mav.cs.HomeLocation.Lat;
+                                        home.lat = (double)MainV2.comPort.MAV.cs.HomeLocation.Lat;
 
-                                        home.lng = (double)mav.cs.HomeLocation.Lng;
+                                        home.lng = (double)MainV2.comPort.MAV.cs.HomeLocation.Lng;
 
                                         commands.Insert(0, home);
 
 
 
-                                        mav_mission.upload(port, mav.sysid,
-                                        mav.compid, 0,
+                                        mav_mission.upload(MainV2.comPort, MainV2.comPort.MAV.sysid,
+                                        MainV2.comPort.MAV.compid, 0,
                                          commands,
                                          (percent, status) =>
                                          {
@@ -268,7 +254,7 @@ namespace MissionPlanner.GCSViews
                                         {
                                             Thread.Sleep(1000);
                                             //doCommand(sysid, compid, MAV_CMD.DO_SET_MODE, mode.base_mode, mode.custom_mode, 0, 0, 0, 0, 0, false);
-                                            while (mav.cs.mode != "Auto")
+                                            while (MainV2.comPort.MAV.cs.mode != "Auto")
                                             {
                                                 //foreach (var port in MainV2.Comports)
                                                 //{
@@ -280,53 +266,406 @@ namespace MissionPlanner.GCSViews
                                                 //        port.doARM(mav.sysid, mav.compid, true);
                                                 //    }
                                                 //}
-                                                port.setMode("Auto");
+                                                MainV2.comPort.setMode("Auto");
                                                 //MAV.setMode(mav.sysid, mav.compid, "Auto");
                                             }
 
 
 
-                                            while (!mav.cs.armed)
+                                            while (!MainV2.comPort.MAV.cs.armed)
                                             {
-                                                port.doARM(true);
+                                                MainV2.comPort.doARM(true);
                                             }
                                         });
+                                        packet.msg_type = 0x01;
+                                        packet.src_id = 0x01;
+                                        packet.dst_id = 0x00;
+                                        //// 原样发送回来源 IP 和 Port
+                                        //udpClient.Send(data, data.Length, remoteEndPoint);
+
+                                        byte[] send = StructToBytes(packet);
+                                        udpClient.Send(send, send.Length, endPoint);
+
+                            //        }
+
+                            //    }
+                            //}
+                            //起飞
+
+                            //指点飞行
 
 
-                                    }
-
-                                }
-                            }
-                                    //起飞
-
-                                    //指点飞行
 
 
-
-
-                                }
+                        }
                         if (packet.control_type == 0x03)
                         {
-                            MessageBox.Show("向前！");
+                            while (MainV2.comPort.MAV.cs.mode != "AltHold")
+                            {
+
+                                MainV2.comPort.setMode("AltHold");
+
+                            }
+                          
+                            mavlink_rc_channels_override_t msg = new mavlink_rc_channels_override_t(
+                                chan1_raw: 1500, // Roll - 中立
+                                chan2_raw: 1400, // Pitch - 向前
+                                chan3_raw: 1500, // Throttle - 中立
+                                chan4_raw: 1500, // Yaw - 中立
+                                chan5_raw: 0,
+                                chan6_raw: 0,
+                                chan7_raw: 0,
+                                chan8_raw: 0,
+                                target_system: MainV2.comPort.MAV.sysid,
+                                target_component: MainV2.comPort.MAV.compid,
+                                chan9_raw: 0, chan10_raw: 0, chan11_raw: 0, chan12_raw: 0,
+                                chan13_raw: 0, chan14_raw: 0, chan15_raw: 0, chan16_raw: 0,
+                                chan17_raw: 0, chan18_raw: 0
+                            );
+                            await Task.Run(() =>
+                            {
+                                this.Invoke((MethodInvoker)delegate
+                                {
+                                    MainV2.comPort.generatePacket((byte)MAVLINK_MSG_ID.RC_CHANNELS_OVERRIDE,
+                                        msg, MainV2.comPort.MAV.sysid, MainV2.comPort.MAV.compid);                                   
+                                });
+                            });
+
+                            packet.msg_type = 0x01;
+                            packet.src_id = 0x01;
+                            packet.dst_id = 0x00;
+
+                            //// 原样发送回来源 IP 和 Port
+                            //udpClient.Send(data, data.Length, remoteEndPoint);
+
+                            byte[] send = StructToBytes(packet);
+                            udpClient.Send(send, send.Length, endPoint);
                         }
                         if (packet.control_type == 0x04)
                         {
-                            MessageBox.Show("向后！");
+                            while (MainV2.comPort.MAV.cs.mode != "AltHold")
+                            {
+
+                                MainV2.comPort.setMode("AltHold");
+
+                            }
+                           
+                            mavlink_rc_channels_override_t msg = new mavlink_rc_channels_override_t(
+                                chan1_raw: 1500, // Roll - 中立
+                                chan2_raw: 1600, // Pitch - 向后
+                                chan3_raw: 1500, // Throttle - 中立
+                                chan4_raw: 1500, // Yaw - 中立
+                                chan5_raw: 0,
+                                chan6_raw: 0,
+                                chan7_raw: 0,
+                                chan8_raw: 0,
+                                target_system: MainV2.comPort.MAV.sysid,
+                                target_component: MainV2.comPort.MAV.compid,
+                                chan9_raw: 0, chan10_raw: 0, chan11_raw: 0, chan12_raw: 0,
+                                chan13_raw: 0, chan14_raw: 0, chan15_raw: 0, chan16_raw: 0,
+                                chan17_raw: 0, chan18_raw: 0
+                            );
+                            await Task.Run(() =>
+                            {
+                                this.Invoke((MethodInvoker)delegate
+                                {
+                                    MainV2.comPort.generatePacket((byte)MAVLINK_MSG_ID.RC_CHANNELS_OVERRIDE,
+                                        msg, MainV2.comPort.MAV.sysid, MainV2.comPort.MAV.compid);
+                                });
+                            });
+                            packet.msg_type = 0x01;
+                            packet.src_id = 0x01;
+                            packet.dst_id = 0x00;
+
+                            //// 原样发送回来源 IP 和 Port
+                            //udpClient.Send(data, data.Length, remoteEndPoint);
+
+                            byte[] send = StructToBytes(packet);
+                            udpClient.Send(send, send.Length, endPoint);
                         }
                         if (packet.control_type == 0x05)
                         {
-                            MessageBox.Show("向左！");
+                            while (MainV2.comPort.MAV.cs.mode != "AltHold")
+                            {
+
+                                MainV2.comPort.setMode("AltHold");
+
+                            }
+                            
+                            mavlink_rc_channels_override_t msg = new mavlink_rc_channels_override_t(
+                                chan1_raw: 1400, // Roll - 向左
+                                chan2_raw: 1500, // Pitch - 向前
+                                chan3_raw: 1500, // Throttle - 中立
+                                chan4_raw: 1500, // Yaw - 中立
+                                chan5_raw: 0,
+                                chan6_raw: 0,
+                                chan7_raw: 0,
+                                chan8_raw: 0,
+                                target_system: MainV2.comPort.MAV.sysid,
+                                target_component: MainV2.comPort.MAV.compid,
+                                chan9_raw: 0, chan10_raw: 0, chan11_raw: 0, chan12_raw: 0,
+                                chan13_raw: 0, chan14_raw: 0, chan15_raw: 0, chan16_raw: 0,
+                                chan17_raw: 0, chan18_raw: 0
+                            );
+                            await Task.Run(() =>
+                            {
+                                this.Invoke((MethodInvoker)delegate
+                                {
+                                    MainV2.comPort.generatePacket((byte)MAVLINK_MSG_ID.RC_CHANNELS_OVERRIDE,
+                                        msg, MainV2.comPort.MAV.sysid, MainV2.comPort.MAV.compid);
+                                });
+                            });
+                            packet.msg_type = 0x01;
+                            packet.src_id = 0x01;
+                            packet.dst_id = 0x00;
+
+                            //// 原样发送回来源 IP 和 Port
+                            //udpClient.Send(data, data.Length, remoteEndPoint);
+
+                            byte[] send = StructToBytes(packet);
+                            udpClient.Send(send, send.Length, endPoint);
                         }
                         if (packet.control_type == 0x06)
                         {
-                            MessageBox.Show("向右！");
+                            while (MainV2.comPort.MAV.cs.mode != "AltHold")
+                            {
+
+                                MainV2.comPort.setMode("AltHold");
+
+                            }
+
+                            mavlink_rc_channels_override_t msg = new mavlink_rc_channels_override_t(
+                                chan1_raw: 1600, // Roll - 向右
+                                chan2_raw: 1500, // Pitch - 向前
+                                chan3_raw: 1500, // Throttle - 中立
+                                chan4_raw: 1500, // Yaw - 中立
+                                chan5_raw: 0,
+                                chan6_raw: 0,
+                                chan7_raw: 0,
+                                chan8_raw: 0,
+                                target_system: MainV2.comPort.MAV.sysid,
+                                target_component: MainV2.comPort.MAV.compid,
+                                chan9_raw: 0, chan10_raw: 0, chan11_raw: 0, chan12_raw: 0,
+                                chan13_raw: 0, chan14_raw: 0, chan15_raw: 0, chan16_raw: 0,
+                                chan17_raw: 0, chan18_raw: 0
+                            );
+                            await Task.Run(() =>
+                            {
+                                this.Invoke((MethodInvoker)delegate
+                                {
+                                    MainV2.comPort.generatePacket((byte)MAVLINK_MSG_ID.RC_CHANNELS_OVERRIDE,
+                                        msg, MainV2.comPort.MAV.sysid, MainV2.comPort.MAV.compid);
+                                });
+                            });
+                            packet.msg_type = 0x01;
+                            packet.src_id = 0x01;
+                            packet.dst_id = 0x00;
+
+                            //// 原样发送回来源 IP 和 Port
+                            //udpClient.Send(data, data.Length, remoteEndPoint);
+
+                            byte[] send = StructToBytes(packet);
+                            udpClient.Send(send, send.Length, endPoint);
                         }
                         if (packet.control_type == 0x07)
                         {
-                            MessageBox.Show("返航！");
+                            while (MainV2.comPort.MAV.cs.mode != "Auto")
+                            {
+
+                                MainV2.comPort.setMode("Auto");
+
+                            }
+                            packet.msg_type = 0x01;
+                            packet.src_id = 0x01;
+                            packet.dst_id = 0x00;
+
+                            //// 原样发送回来源 IP 和 Port
+                            //udpClient.Send(data, data.Length, remoteEndPoint);
+
+                            byte[] send = StructToBytes(packet);
+                            udpClient.Send(send, send.Length, endPoint);
+                        }
+                        if (packet.control_type == 0x08)
+                        {
+                            while (MainV2.comPort.MAV.cs.mode != "PosHold")
+                            {
+
+                                MainV2.comPort.setMode("PosHold");
+
+                            }
+
+                            mavlink_rc_channels_override_t msg = new mavlink_rc_channels_override_t(
+                                chan1_raw: 1500, // Roll - 向右
+                                chan2_raw: 1500, // Pitch - 向前
+                                chan3_raw: 1400, // Throttle - 向下
+                                chan4_raw: 1500, // Yaw - 中立
+                                chan5_raw: 0,
+                                chan6_raw: 0,
+                                chan7_raw: 0,
+                                chan8_raw: 0,
+                                target_system: MainV2.comPort.MAV.sysid,
+                                target_component: MainV2.comPort.MAV.compid,
+                                chan9_raw: 0, chan10_raw: 0, chan11_raw: 0, chan12_raw: 0,
+                                chan13_raw: 0, chan14_raw: 0, chan15_raw: 0, chan16_raw: 0,
+                                chan17_raw: 0, chan18_raw: 0
+                            );
+                            await Task.Run(() =>
+                            {
+                                this.Invoke((MethodInvoker)delegate
+                                {
+                                    MainV2.comPort.generatePacket((byte)MAVLINK_MSG_ID.RC_CHANNELS_OVERRIDE,
+                                        msg, MainV2.comPort.MAV.sysid, MainV2.comPort.MAV.compid);
+                                });
+                            });
+                            packet.msg_type = 0x01;
+                            packet.src_id = 0x01;
+                            packet.dst_id = 0x00;
+
+                            //// 原样发送回来源 IP 和 Port
+                            //udpClient.Send(data, data.Length, remoteEndPoint);
+
+                            byte[] send = StructToBytes(packet);
+                            udpClient.Send(send, send.Length, endPoint);
+                        }
+                        if (packet.control_type == 0x09)
+                        {
+                            while (MainV2.comPort.MAV.cs.mode != "PosHold")
+                            {
+
+                                MainV2.comPort.setMode("PosHold");
+
+                            }
+
+                            mavlink_rc_channels_override_t msg = new mavlink_rc_channels_override_t(
+                                chan1_raw: 1500, // Roll - 向右
+                                chan2_raw: 1500, // Pitch - 向前
+                                chan3_raw: 1700, // Throttle - 向上
+                                chan4_raw: 1500, // Yaw - 中立
+                                chan5_raw: 0,
+                                chan6_raw: 0,
+                                chan7_raw: 0,
+                                chan8_raw: 0,
+                                target_system: MainV2.comPort.MAV.sysid,
+                                target_component: MainV2.comPort.MAV.compid,
+                                chan9_raw: 0, chan10_raw: 0, chan11_raw: 0, chan12_raw: 0,
+                                chan13_raw: 0, chan14_raw: 0, chan15_raw: 0, chan16_raw: 0,
+                                chan17_raw: 0, chan18_raw: 0
+                            );
+                            await Task.Run(() =>
+                            {
+                                this.Invoke((MethodInvoker)delegate
+                                {
+                                    MainV2.comPort.generatePacket((byte)MAVLINK_MSG_ID.RC_CHANNELS_OVERRIDE,
+                                        msg, MainV2.comPort.MAV.sysid, MainV2.comPort.MAV.compid);
+                                });
+                            });
+                            packet.msg_type = 0x01;
+                            packet.src_id = 0x01;
+                            packet.dst_id = 0x00;
+
+                            //// 原样发送回来源 IP 和 Port
+                            //udpClient.Send(data, data.Length, remoteEndPoint);
+
+                            byte[] send = StructToBytes(packet);
+                            udpClient.Send(send, send.Length, endPoint);
+                        }
+                        if (packet.control_type == 0x0A)
+                        {
+                            while (MainV2.comPort.MAV.cs.mode != "Guided")
+                            {
+
+                                MainV2.comPort.setMode("Guided");
+
+                            }
+
+                            //抛投
+                            mavlink_rc_channels_override_t msg = new mavlink_rc_channels_override_t(
+                               chan1_raw: 1500, // Roll - 向右
+                               chan2_raw: 1500, // Pitch - 向前
+                               chan3_raw: 1500, // Throttle - 向上
+                               chan4_raw: 1500, // Yaw - 中立
+                               chan5_raw: 1100,
+                               chan6_raw: 0,
+                               chan7_raw: 0,
+                               chan8_raw: 0,
+                               target_system: MainV2.comPort.MAV.sysid,
+                               target_component: MainV2.comPort.MAV.compid,
+                               chan9_raw: 0, chan10_raw: 0, chan11_raw: 0, chan12_raw: 0,
+                               chan13_raw: 0, chan14_raw: 0, chan15_raw: 0, chan16_raw: 0,
+                               chan17_raw: 0, chan18_raw: 0
+                           );
+                            await Task.Run(() =>
+                            {
+                                this.Invoke((MethodInvoker)delegate
+                                {
+                                    MainV2.comPort.generatePacket((byte)MAVLINK_MSG_ID.RC_CHANNELS_OVERRIDE,
+                                        msg, MainV2.comPort.MAV.sysid, MainV2.comPort.MAV.compid);
+                                });
+                            });
+
+                            //抛投
+                            mavlink_rc_channels_override_t msg1 = new mavlink_rc_channels_override_t(
+                               chan1_raw: 1500, // Roll - 向右
+                               chan2_raw: 1500, // Pitch - 向前
+                               chan3_raw: 1500, // Throttle - 向上
+                               chan4_raw: 1500, // Yaw - 中立
+                               chan5_raw: 1900,
+                               chan6_raw: 0,
+                               chan7_raw: 0,
+                               chan8_raw: 0,
+                               target_system: MainV2.comPort.MAV.sysid,
+                               target_component: MainV2.comPort.MAV.compid,
+                               chan9_raw: 0, chan10_raw: 0, chan11_raw: 0, chan12_raw: 0,
+                               chan13_raw: 0, chan14_raw: 0, chan15_raw: 0, chan16_raw: 0,
+                               chan17_raw: 0, chan18_raw: 0
+                           );
+                            await Task.Run(() =>
+                            {
+                                this.Invoke((MethodInvoker)delegate
+                                {
+                                    MainV2.comPort.generatePacket((byte)MAVLINK_MSG_ID.RC_CHANNELS_OVERRIDE,
+                                        msg1, MainV2.comPort.MAV.sysid, MainV2.comPort.MAV.compid);
+                                });
+                            });
+                            packet.msg_type = 0x01;
+                            packet.src_id = 0x01;
+                            packet.dst_id = 0x00;
+
+                            //// 原样发送回来源 IP 和 Port
+                            //udpClient.Send(data, data.Length, remoteEndPoint);
+
+                            byte[] send = StructToBytes(packet);
+                            udpClient.Send(send, send.Length, endPoint);
+
+                            packet.msg_type = 0x01;
+                            packet.src_id = 0x01;
+                            packet.dst_id = 0x00;
+
+                            //// 原样发送回来源 IP 和 Port
+                            //udpClient.Send(data, data.Length, remoteEndPoint);
+
+                            byte[] send = StructToBytes(packet);
+                            udpClient.Send(send, send.Length, endPoint);
+                        }
+                        if (packet.control_type == 0x0B)
+                        {
+                            while (MainV2.comPort.MAV.cs.mode != "Guided")
+                            {
+
+                                MainV2.comPort.setMode("Guided");
+
+                            }
+                            packet.msg_type = 0x01;
+                            packet.src_id = 0x01;
+                            packet.dst_id = 0x00;
+
+                            //// 原样发送回来源 IP 和 Port
+                            //udpClient.Send(data, data.Length, remoteEndPoint);
+
+                            byte[] send = StructToBytes(packet);
+                            udpClient.Send(send, send.Length, endPoint);
                         }
 
-                        //control_command packet1 =new control_command();
                     }
 
                    
