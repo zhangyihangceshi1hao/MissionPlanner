@@ -637,15 +637,7 @@ namespace MissionPlanner.GCSViews
                             byte[] send = StructToBytes(packet);
                             udpClient.Send(send, send.Length, endPoint);
 
-                            packet.msg_type = 0x01;
-                            packet.src_id = 0x01;
-                            packet.dst_id = 0x00;
-
-                            //// 原样发送回来源 IP 和 Port
-                            //udpClient.Send(data, data.Length, remoteEndPoint);
-
-                            byte[] send = StructToBytes(packet);
-                            udpClient.Send(send, send.Length, endPoint);
+                           
                         }
                         if (packet.control_type == 0x0B)
                         {
