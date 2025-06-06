@@ -11,6 +11,7 @@ using Onvif.Core.Client;
 using BitMiracle.LibTiff.Classic;
 using Xamarin.Forms;
 using System.Runtime.ConstrainedExecution;
+using System.Collections.Generic;
 
 namespace MissionPlanner.GCSViews
 {
@@ -18,7 +19,7 @@ namespace MissionPlanner.GCSViews
     {
         const string UDP_IP = "192.168.6.203";  // 目标IP
         //const string UDP_IP = "127.0.0.1";  // 目标IP
-        //const int UDP_PORT = 15005;           // 目标端口
+
         const int UDP_PORT = 24584;           // 目标端口
 
         IPEndPoint endPoint;
@@ -136,7 +137,7 @@ namespace MissionPlanner.GCSViews
             public Int16 NorthVelocity;   // 北向速度 (2字节)
             
             public Int16 FlyTime;// 飞行时间 (2字节)
-            public Int16 GPSLostStarTime;// GPS丢星时间 (2字节)
+            public UInt16 GPSLostStarTime;// GPS丢星时间 (2字节)
             public byte FLAG3; //预留
             public byte CabinTemperature; //舱温
             public Int16 courseOfTheTarget;        // 目标航向
@@ -167,7 +168,7 @@ namespace MissionPlanner.GCSViews
 
 
         }
-
+        private static Dictionary<int, DateTime?> gpsFailureStartTime = new Dictionary<int, DateTime?>();
 
         private void sendmessage(object nothing)
         {
@@ -200,7 +201,7 @@ namespace MissionPlanner.GCSViews
                             DateTime baseTime = new DateTime(2000, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
                             // 获取当前 UTC 时间
-                            //DateTime nowUtc = DateTime.UtcNow;
+                            //DateTime nowUtc = DateTime.UtcNow;time_usec
                         DateTime nowUtc = DateTime.Now;
 
                         // 计算时间差
@@ -209,9 +210,10 @@ namespace MissionPlanner.GCSViews
                             // 获取总天数（整数天）
                             int daysSince2000 = (int)difference.TotalDays;
 
-                            Int32 timestamp_0_1ms = (Int32)(DateTime.UtcNow.TimeOfDay.TotalMilliseconds * 10);
+                        Int16 timestamp_s = (Int16)(mav.cs.timeInAir);
+                        
                         //Int32 ticks = (Int32)(elapsed.TotalMilliseconds * 10); // 转换为 0.1 毫秒单位
-                        Int32 gpstimestamp_0_1ms = (Int32)(mav.cs.gpstime.TimeOfDay.TotalSeconds * 10000);
+                        Int16 gpstimestamp_s = (Int16)((DateTime.UtcNow - mav.lastvalidpacket).TotalSeconds);
                         int modeType = 0;
                         if (mav.cs.mode == "Stabilize")
                         {
@@ -241,6 +243,14 @@ namespace MissionPlanner.GCSViews
                         {
                             modeType = 8;
                         }
+                        if (mav.cs.satcount < 3)
+                        {
+                            //gpsFailureStartTime[mav.sysid] = DateTime.Now;
+                        }
+                        else {
+                            gpsFailureStartTime[mav.sysid] = nowUtc;
+                        }
+                        TimeSpan elapsed =  nowUtc - gpsFailureStartTime[mav.sysid].Value;
 
                             PdxpPacket2 pdxpPacket2 = new PdxpPacket2
                             {
@@ -248,11 +258,11 @@ namespace MissionPlanner.GCSViews
                                 MID = 20521,               // 任务代号
                                 SID = BitConverter.ToInt32(new byte[4] { 0x01, 0x02, 0x11, 0xee }, 0),           // 发送方地址
                                 DID = BitConverter.ToInt32(new byte[4] { 0x01, 0x01, 0x01, 0x21 }, 0),           // 接收方地址
-                                BID = BitConverter.ToInt32(new byte[4] { mav.sysid,0x02,0x2b,0xee  }, 0),           // 数据包类型标识
+                                BID = BitConverter.ToInt32(new byte[4] { mav.sysid, 0x02, 0x2b, 0xee }, 0),           // 数据包类型标识
                                 No = (Int32)sequence,                  // 包序号
                                 FLAG = 0,                // 标志位
                                 R = 0,                      // 预留或使用字段
-                                DATE = (ushort)((DateTime.Now - new DateTime(2000, 1, 1)).Days+1), // 从2000年累计天数
+                                DATE = (ushort)((DateTime.Now - new DateTime(2000, 1, 1)).Days + 1), // 从2000年累计天数
                                 TIME = (Int32)(DateTime.Now.TimeOfDay.TotalMilliseconds * 10), // 时间戳（0.1ms单位）
                                 L = 107,                      // 数据域长度（可后续计算）
 
@@ -290,8 +300,8 @@ namespace MissionPlanner.GCSViews
                                 EastVelocity = ConvertVelocity(mav.cs.vy),                // 东向速度（0.1单位）
                                 NorthVelocity = ConvertVelocity(mav.cs.vx),                // 北向速度（0.1单位）
 
-                                FlyTime = (Int16)timestamp_0_1ms,            // 飞行时间（单位：秒）
-                                GPSLostStarTime = (Int16)gpstimestamp_0_1ms,       // GPS丢星时间（单位：秒）
+                                FlyTime = timestamp_s,            // 飞行时间（单位：秒）
+                                GPSLostStarTime = (UInt16)elapsed.TotalSeconds,       // GPS丢星时间（单位：秒）
                                 FLAG3 = 0x00,              // 预留
                                 CabinTemperature = 0,      // 舱温（单位：摄氏度）
                                 courseOfTheTarget = 0,   // 目标航向（单位：0.01度）
