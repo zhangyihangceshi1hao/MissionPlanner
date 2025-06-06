@@ -1471,32 +1471,52 @@ namespace MissionPlanner.Swarm
                 while (isConnection && !token.IsCancellationRequested)
                 {
 
-                    if (Settings.Instance.IsSimulation == "true")
-                    {
-                        //如果此处判断byte[] copy = Settings.BadUavId;这个数组有值==1，就copy到uav_unconnection数组，专门用于给模拟环境用的
-                        MergeByteArraysInPlace(uav_unconnection, Settings.BadUavId);
-                        bool hasValueOne = uav_unconnection.Any(b => b == 1);
-                        if (hasValueOne) {
-                            isConnection = false;
-                        }
+                    //if (Settings.Instance.IsSimulation == "true")
+                    //{
+                    ////如果此处判断byte[] copy = Settings.BadUavId;这个数组有值==1，就copy到uav_unconnection数组，专门用于给模拟环境用的
+                    //MergeByteArraysInPlace(uav_unconnection, Settings.BadUavId);
+                    //bool hasValueOne = uav_unconnection.Any(b => b == 1);
+                    //bool BadUavIds = Settings.BadUavId.Any(b => b == 1);
+                    //if (hasValueOne) {
+                    //    isConnection = false;
+                    //}
 
-                        //Console.WriteLine("线程正在执行..." + mav.cs.lastdata);
+                    ////Console.WriteLine("线程正在执行..." + mav.cs.lastdata);
 
-                        for (int i = 0; i < uav_unconnection.Length; i++)
-                        {
-                            int droneNumber = i + 1;
-                            byte parameter = uav_unconnection[i];
-                            Console.WriteLine($"uav {droneNumber} 号无人机 参数是 {parameter}");
-                        }
-                    }
-                    else
-                    {
+                    //for (int i = 0; i < uav_unconnection.Length; i++)
+                    //{
+                    //    int droneNumber = i + 1;
+                    //    byte parameter = uav_unconnection[i];
+                    //    Console.WriteLine($"uav {droneNumber} 号无人机 参数是 {parameter}");
+                    //}
+                    //}
+                    //else
+                    //{
+
+                    bool isbadcount = false; 
+
                         int count = 0;
                         while (count<2) {
                             foreach (var port in MainV2.Comports)
                             {
-                                foreach (var mav in port.MAVlist)
+                            foreach (var mav in port.MAVlist)
+                            {
+
+                                //MergeByteArraysInPlace(uav_unconnection, Settings.BadUavId);
+                                //bool hasValueOne = uav_unconnection.Any(b => b == 1);
+                                bool BadUavIds = Settings.BadUavId.Any(b => b == 1);
+                                if (BadUavIds)
                                 {
+                                    //isConnection = false;
+                                    //isbadcount = true;
+                                    count = 3;
+                                    isbadcount = true;
+                                    MergeByteArraysInPlace(uav_unconnection, Settings.BadUavId);
+                                    isConnection = false;
+                                    Console.WriteLine("已经关闭了");
+
+                                }
+                                if (!isbadcount) {
                                     var currentTime = DateTime.Now;
                                     //var interval = (currentTime - mav.cs.lastdata1).TotalSeconds;
                                     Drone2SecondsAgo result = drone2SecondsAgos.FirstOrDefault(d => d.Id == mav.sysid);
@@ -1509,7 +1529,9 @@ namespace MissionPlanner.Swarm
                                         uav_unconnection[mav.sysid - 1] = 1;
                                         isConnection = false;
                                         //Console.WriteLine("正在检查连接...数据丢失警告...");
+
                                         count++;
+                                        //isbadcount = true;
 
                                     }
 
@@ -1523,9 +1545,14 @@ namespace MissionPlanner.Swarm
                                     }
                                 }
                             }
+
+                                
+                            }
                         }
-                       
-                    }
+
+
+
+                //}
 
                     // 添加延迟避免 CPU 过载
                     await Task.Delay(100, token);
@@ -1544,7 +1571,14 @@ namespace MissionPlanner.Swarm
                 {
                     foreach (var mav in port.MAVlist)
                     {
-                        port.setMode(mav.sysid, mav.compid, "Guided");
+                        if (uav_unconnection[mav.sysid-1]==1)
+                        {
+                        }
+                        else
+                        {
+                            port.setMode(mav.sysid, mav.compid, "Guided");
+                        }
+
                     }
                 }
 

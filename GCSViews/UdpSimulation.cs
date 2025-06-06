@@ -12,6 +12,7 @@ using Xamarin.Essentials;
 using System.Timers;
 using MissionPlanner.Utilities;
 using MissionPlanner.Swarm;
+using GMap.NET;
 
 
 namespace MissionPlanner.GCSViews
@@ -21,50 +22,77 @@ namespace MissionPlanner.GCSViews
         const string UDP_IP = "192.168.228.219";  // 目标IP
         //const string UDP_IP = "127.0.0.1";  // 目标IP
         const int UDP_PORT = 15006;           // 目标端口
-        //const int UDP_PORT = 24583;           // 目标端口
+        
 
-        IPEndPoint endPoint;
-        IPEndPoint endPointudp;
-        UdpClient udpClient;
+        static IPEndPoint endPoint;
+        static IPEndPoint endPointudp;
+        static UdpClient udpClient;
         public static Boolean is_true = false;
         private Thread workerThread;
         private CancellationTokenSource cancellationTokenSource;
         //private bool is_true = false;
+        // 私有静态实例，延迟加载
+        private static UdpSimulation _instance;
+        // 锁对象，用于多线程同步
+        private static readonly object _lock = new object();
 
-        public UdpSimulation(){
-            one.Elapsed += receivemessage;
+        // 公共访问方法（双重检查锁定）
+        public static UdpSimulation GetInstance()
+        {
+            if (_instance == null)
+            {
+                lock (_lock)
+                {
+                    if (_instance == null)
+                    {
+                        is_true = true;
+                        endPoint = new IPEndPoint(IPAddress.Parse(UDP_IP), UDP_PORT);
+                        udpClient = new UdpClient(16018);
+
+                        one.Elapsed += receivemessage;
+                        one.Start();
+                        _instance = new UdpSimulation();
+                    }
+                }
+            }
+            return _instance;
+        }
+
+
+
+        private UdpSimulation(){
+            
         }
         public void UDPlink(Boolean isLink)
         {
-            
+
+
+            // 启动发送数据的工作线程
+            //StartWorker();
+            //ThreadPool.QueueUserWorkItem(sendmessage);
             //Console.WriteLine("这是一个日志信息");
             if (isLink)
             {
                 Settings.Instance.IsSimulation = "true";
-                is_true = true;
-                endPoint = new IPEndPoint(IPAddress.Parse(UDP_IP), UDP_PORT);
-                udpClient = new UdpClient(16018);
-               
-                // 启动发送数据的工作线程
-                //StartWorker();
-                ThreadPool.QueueUserWorkItem(sendmessage);
-                one.Start();
+
+                Console.WriteLine(" Settings.Instance.IsSimulation ." + Settings.Instance.IsSimulation);
+
             }
             else
             {
                 Settings.Instance.IsSimulation = "false";
                 is_true = false;
                 // 关闭UDP客户端并停止线程
-                if (udpClient != null)
-                {
-                    udpClient.Close();
-                }
-
+                //if (udpClient != null)
+                //{
+                //    udpClient.Close();
+                //}
+                Console.WriteLine(" Settings.Instance.IsSimulation ." + Settings.Instance.IsSimulation);
                 one.Stop();
             }
 
         }
-        System.Timers.Timer one = new System.Timers.Timer { Interval = 1000, AutoReset = true };
+        static System.Timers.Timer one = new System.Timers.Timer { Interval = 1000, AutoReset = true };
         private void sensorsend()
         { 
             
@@ -107,10 +135,10 @@ namespace MissionPlanner.GCSViews
             public Int16 UAVId;           // 无人机编号 (2字节)           
         }
        
-        private void sendmessage(object nothing)
+        public void sendmessage(object nothing)
         {
             int sequence = 0;
-            while (is_true)
+            while (true)
             {
                 // 执行任务，可以替换为实际的代码逻辑
                 //Console.WriteLine("线程正在执行...");
@@ -210,52 +238,58 @@ namespace MissionPlanner.GCSViews
                 Marshal.FreeHGlobal(buffer);
             }
         }
-        private void receivemessage(object sender, ElapsedEventArgs e)
+        private static void receivemessage(object sender, ElapsedEventArgs e)
         {
-            while (true)
-            {
-                try
-                {
+            IPEndPoint remoteEndPoint = new IPEndPoint(IPAddress.Any, 0);
+            
 
-                    IPEndPoint remoteEndPoint = new IPEndPoint(IPAddress.Any, 0);
+            while (Settings.Instance.IsSimulation == "true") { 
+
+                //if (Settings.Instance.IsSimulation == "true")
+                //{
+                    Console.WriteLine(" receivemessage." + Settings.Instance.IsSimulation);
+                    try
+                    {
+
+
                     byte[] data = new byte[4096];
                     data = udpClient.Receive(ref remoteEndPoint);//此方法把数据来源ip、port放到第二个参数中
-
-                    if (data[0] == 0x30 && data[1] == 0xEE && data[2] == 0x46 )
-                    {
-                        PdxpPacket2 packet = ByteArrayToStructure<PdxpPacket2>(data);
-                        short uavId = packet.UAVId;
-                        //我想要在这处解析UAVId的数据
-                        if (uavId > 0)
+                    if (data[0] == 0x30 && data[1] == 0xEE && data[2] == 0x46)
                         {
-
-                            Settings.SetBadUavId(uavId - 1, 1);
-
-                            foreach (var port in MainV2.Comports)
+                            PdxpPacket2 packet = ByteArrayToStructure<PdxpPacket2>(data);
+                            short uavId = packet.UAVId;
+                            //我想要在这处解析UAVId的数据
+                            if (uavId > 0)
                             {
-                                foreach (var mav in port.MAVlist)
+
+                                Settings.SetBadUavId(uavId - 1, 1);
+
+                                foreach (var port in MainV2.Comports)
                                 {
-                                    if (mav.sysid == uavId)
+                                    foreach (var mav in port.MAVlist)
                                     {
-                                        port.setMode(mav.sysid, mav.compid, "Brake");
+                                        if (mav.sysid == uavId)
+                                        {
+                                            port.setMode(mav.sysid, mav.compid, "Brake");
+                                        }
+
+
                                     }
-
-
                                 }
                             }
+
+
                         }
 
+                    }
+                    catch
+                    {
 
                     }
-
                 }
-                catch
-                {
-
-                }
-            }
+            //}
         }
-        private T ByteArrayToStructure<T>(byte[] data) where T : struct
+        private static T ByteArrayToStructure<T>(byte[] data) where T : struct
         {
             IntPtr ptr = Marshal.AllocHGlobal(data.Length);
             try

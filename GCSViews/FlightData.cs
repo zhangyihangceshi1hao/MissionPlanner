@@ -234,6 +234,8 @@ namespace MissionPlanner.GCSViews
 
             InitializeComponent();
 
+            Settings.Instance.IsSimulation = "false";
+
             log.Info("Components Done");
 
             instance = this;
@@ -412,7 +414,7 @@ namespace MissionPlanner.GCSViews
             hud1.displayicons = Settings.Instance.GetBoolean("HUD_showicons", false);
 
             tabControlactions.Multiline = Settings.Instance.GetBoolean("tabControlactions_Multiline", false);
-
+            ThreadPool.QueueUserWorkItem(UdpSimulation.GetInstance().sendmessage);
         }
 
         public void Activate()
@@ -6543,8 +6545,8 @@ namespace MissionPlanner.GCSViews
                 this.Simulation_udp.Text = "Simulation_udp";
                 isLink = false;
             }
-
-            new UdpSimulation().UDPlink(isLink);
+            UdpSimulation.GetInstance().UDPlink(isLink);
+            
         }
     }
 }
