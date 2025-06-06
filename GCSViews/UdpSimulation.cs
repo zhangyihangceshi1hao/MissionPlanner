@@ -19,7 +19,7 @@ namespace MissionPlanner.GCSViews
 {
     public class UdpSimulation
     {
-        const string UDP_IP = "192.168.228.219";  // 目标IP
+        const string UDP_IP = "2.1.48.48";  // 目标IP
         //const string UDP_IP = "127.0.0.1";  // 目标IP
         const int UDP_PORT = 15006;           // 目标端口
         
