@@ -414,7 +414,13 @@ namespace MissionPlanner.GCSViews
             hud1.displayicons = Settings.Instance.GetBoolean("HUD_showicons", false);
 
             tabControlactions.Multiline = Settings.Instance.GetBoolean("tabControlactions_Multiline", false);
-            ThreadPool.QueueUserWorkItem(UdpSimulation.GetInstance().sendmessage);
+            try
+            {
+                ThreadPool.QueueUserWorkItem(UdpSimulation.GetInstance().sendmessage);
+            }
+            catch {
+                
+            }
         }
 
         public void Activate()

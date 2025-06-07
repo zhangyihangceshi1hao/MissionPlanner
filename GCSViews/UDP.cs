@@ -175,26 +175,28 @@ namespace MissionPlanner.GCSViews
             int sequence = 0;
             while (is_true)
             {
-                // 执行任务，可以替换为实际的代码逻辑
-                //Console.WriteLine("线程正在执行...");
-                //Thread.Sleep(1000); // 模拟工作1秒钟
-               
+                try
+                {
+                    // 执行任务，可以替换为实际的代码逻辑
+                    //Console.WriteLine("线程正在执行...");
+                    //Thread.Sleep(1000); // 模拟工作1秒钟
+
                     foreach (var port in MainV2.Comports)
                     {
                         foreach (var mav in port.MAVlist)
                         {
 
-                        // 示例：北京某点 BLH 值
-                        double latitude = mav.cs.lat;   // 纬度（北纬）
-                        double longitude = mav.cs.lng; // 经度（东经）
-                        double altitude = mav.cs.alt;         // 海拔高度（米）
+                            // 示例：北京某点 BLH 值
+                            double latitude = mav.cs.lat;   // 纬度（北纬）
+                            double longitude = mav.cs.lng; // 经度（东经）
+                            double altitude = mav.cs.alt;         // 海拔高度（米）
 
-                        var (X, Y, Z) = Program.BlhToXyz(latitude, longitude, altitude);
+                            var (X, Y, Z) = Program.BlhToXyz(latitude, longitude, altitude);
 
-                        sequence++;
+                            sequence++;
                             //DateTime gpsEpoch = new DateTime(2000, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-                            
-                           
+
+
 
 
                             // 设置基准时间：2000年1月1日 UTC
@@ -202,55 +204,59 @@ namespace MissionPlanner.GCSViews
 
                             // 获取当前 UTC 时间
                             //DateTime nowUtc = DateTime.UtcNow;time_usec
-                        DateTime nowUtc = DateTime.Now;
+                            DateTime nowUtc = DateTime.Now;
 
-                        // 计算时间差
-                        TimeSpan difference = nowUtc - baseTime;
+                            // 计算时间差
+                            TimeSpan difference = nowUtc - baseTime;
                             //TimeSpan elapsed = mav.cs.gpstime.ToUniversalTime() - gpsEpoch;
                             // 获取总天数（整数天）
                             int daysSince2000 = (int)difference.TotalDays;
 
-                        Int16 timestamp_s = (Int16)(mav.cs.timeInAir);
-                        
-                        //Int32 ticks = (Int32)(elapsed.TotalMilliseconds * 10); // 转换为 0.1 毫秒单位
-                        Int16 gpstimestamp_s = (Int16)((DateTime.UtcNow - mav.lastvalidpacket).TotalSeconds);
-                        int modeType = 0;
-                        if (mav.cs.mode == "Stabilize")
-                        {
-                            modeType = 0;
+                            Int16 timestamp_s = (Int16)(mav.cs.timeInAir);
 
-                        }
-                        else if (mav.cs.mode == "Auto")
-                        {
-                            modeType = 2;
+                            //Int32 ticks = (Int32)(elapsed.TotalMilliseconds * 10); // 转换为 0.1 毫秒单位
+                            Int16 gpstimestamp_s = (Int16)((DateTime.UtcNow - mav.lastvalidpacket).TotalSeconds);
+                            int modeType = 0;
+                            if (mav.cs.mode == "Stabilize")
+                            {
+                                modeType = 0;
 
-                        }
-                        else if (mav.cs.mode == "Loiter" || mav.cs.mode == "Circle")
-                        {
-                            modeType = 3;
+                            }
+                            else if (mav.cs.mode == "Auto")
+                            {
+                                modeType = 2;
 
-                        }
-                        else if (mav.cs.mode == "RTL"  )
-                        {
-                            modeType = 4;
-                        } else if (mav.cs.mode == "|| mav.cs.mode == \"Auto RTL\"")
-                        {
-                            modeType = 6;
-                        }else if (mav.cs.mode == "AltHold"  )
-                        {
-                            modeType = 7;
-                        }else if (mav.cs.mode == "Brake")
-                        {
-                            modeType = 8;
-                        }
-                        if (mav.cs.satcount < 3)
-                        {
-                            //gpsFailureStartTime[mav.sysid] = DateTime.Now;
-                        }
-                        else {
-                            gpsFailureStartTime[mav.sysid] = nowUtc;
-                        }
-                        TimeSpan elapsed =  nowUtc - gpsFailureStartTime[mav.sysid].Value;
+                            }
+                            else if (mav.cs.mode == "Loiter" || mav.cs.mode == "Circle")
+                            {
+                                modeType = 3;
+
+                            }
+                            else if (mav.cs.mode == "RTL")
+                            {
+                                modeType = 4;
+                            }
+                            else if (mav.cs.mode == "|| mav.cs.mode == \"Auto RTL\"")
+                            {
+                                modeType = 6;
+                            }
+                            else if (mav.cs.mode == "AltHold")
+                            {
+                                modeType = 7;
+                            }
+                            else if (mav.cs.mode == "Brake")
+                            {
+                                modeType = 8;
+                            }
+                            if (mav.cs.satcount < 3)
+                            {
+                                //gpsFailureStartTime[mav.sysid] = DateTime.Now;
+                            }
+                            else
+                            {
+                                gpsFailureStartTime[mav.sysid] = nowUtc;
+                            }
+                            TimeSpan elapsed = nowUtc - gpsFailureStartTime[mav.sysid].Value;
 
                             PdxpPacket2 pdxpPacket2 = new PdxpPacket2
                             {
@@ -330,40 +336,42 @@ namespace MissionPlanner.GCSViews
                                 Vy = ConvertVelocity1(mav.cs.vy),                   // Y方向速度Vy
                                 Vz = ConvertVelocity1(mav.cs.vz)                    // Z方向速度Vz
                             };
-                        // 打印参数日志
-                        //    Console.WriteLine("📊 PDXP 数据包字段解析：");
-                        //    Console.WriteLine($"VER: {pdxpPacket.VER}        // 协议版本");
-                        //    Console.WriteLine($"MID: 0x{pdxpPacket.MID:X2}   // 任务代号");
-                        //    Console.WriteLine($"SID: 0x{pdxpPacket.SID:X4}   // 发送方地址");
-                        //    Console.WriteLine($"DID: 0x{pdxpPacket.DID:X4}   // 接收方地址");
-                        //    Console.WriteLine($"BID: 0x{pdxpPacket.BID:X8}   // 数据包类型标识");
-                        //    Console.WriteLine($"No: {pdxpPacket.No}          // 包序号");
-                        //    Console.WriteLine($"L: {pdxpPacket.L}            // 数据域长度（字节）");
-                        //    Console.WriteLine($"UAVId: {pdxpPacket.UAVId}    // 无人机编号（sysid={mav.sysid}）");
-                        //    Console.WriteLine($"Longitude: {pdxpPacket.Longitude}  // 经度 ×1e6 → {mav.cs.lng:F6}°");
-                        //    Console.WriteLine($"Latitude: {pdxpPacket.Latitude}   // 纬度 ×1e6 → {mav.cs.lat:F6}°");
-                        //    Console.WriteLine($"RelativeHeight: {pdxpPacket.RelativeHeight}  // 相对高度 ×10 → {mav.cs.alt:F2}m");
-                        //    Console.WriteLine($"Altitude: {pdxpPacket.Altitude}              // 海拔高度 ×10 → {mav.cs.altasl:F2}m");
-                        //    Console.WriteLine($"GPSTime: {pdxpPacket.GPSTime}               // GPS 时间戳（0.1ms）");
-                        //    Console.WriteLine($"Heading: {pdxpPacket.Heading}               // 方向角 ×10 → {mav.cs.yaw:F1}°");
-                        //    Console.WriteLine($"EastVelocity: {pdxpPacket.EastVelocity}     // 东向速度 ×10 → {mav.cs.vy:F1}m/s");
-                        //    Console.WriteLine($"NorthVelocity: {pdxpPacket.NorthVelocity}   // 北向速度 ×10 → {mav.cs.vx:F1}m/s");
-                        //    Console.WriteLine($"VerticalVelocity: {pdxpPacket.VerticalVelocity}  // 垂向速度 ×10 → {mav.cs.vz:F1}m/s");
-                        //    Console.WriteLine($"GPSSatellites: {pdxpPacket.GPSSatellites}   // GPS 搜星数量（satcount={mav.cs.satcount}）");
+                            // 打印参数日志
+                            //    Console.WriteLine("📊 PDXP 数据包字段解析：");
+                            //    Console.WriteLine($"VER: {pdxpPacket.VER}        // 协议版本");
+                            //    Console.WriteLine($"MID: 0x{pdxpPacket.MID:X2}   // 任务代号");
+                            //    Console.WriteLine($"SID: 0x{pdxpPacket.SID:X4}   // 发送方地址");
+                            //    Console.WriteLine($"DID: 0x{pdxpPacket.DID:X4}   // 接收方地址");
+                            //    Console.WriteLine($"BID: 0x{pdxpPacket.BID:X8}   // 数据包类型标识");
+                            //    Console.WriteLine($"No: {pdxpPacket.No}          // 包序号");
+                            //    Console.WriteLine($"L: {pdxpPacket.L}            // 数据域长度（字节）");
+                            //    Console.WriteLine($"UAVId: {pdxpPacket.UAVId}    // 无人机编号（sysid={mav.sysid}）");
+                            //    Console.WriteLine($"Longitude: {pdxpPacket.Longitude}  // 经度 ×1e6 → {mav.cs.lng:F6}°");
+                            //    Console.WriteLine($"Latitude: {pdxpPacket.Latitude}   // 纬度 ×1e6 → {mav.cs.lat:F6}°");
+                            //    Console.WriteLine($"RelativeHeight: {pdxpPacket.RelativeHeight}  // 相对高度 ×10 → {mav.cs.alt:F2}m");
+                            //    Console.WriteLine($"Altitude: {pdxpPacket.Altitude}              // 海拔高度 ×10 → {mav.cs.altasl:F2}m");
+                            //    Console.WriteLine($"GPSTime: {pdxpPacket.GPSTime}               // GPS 时间戳（0.1ms）");
+                            //    Console.WriteLine($"Heading: {pdxpPacket.Heading}               // 方向角 ×10 → {mav.cs.yaw:F1}°");
+                            //    Console.WriteLine($"EastVelocity: {pdxpPacket.EastVelocity}     // 东向速度 ×10 → {mav.cs.vy:F1}m/s");
+                            //    Console.WriteLine($"NorthVelocity: {pdxpPacket.NorthVelocity}   // 北向速度 ×10 → {mav.cs.vx:F1}m/s");
+                            //    Console.WriteLine($"VerticalVelocity: {pdxpPacket.VerticalVelocity}  // 垂向速度 ×10 → {mav.cs.vz:F1}m/s");
+                            //    Console.WriteLine($"GPSSatellites: {pdxpPacket.GPSSatellites}   // GPS 搜星数量（satcount={mav.cs.satcount}）");
 
-                        //    Console.WriteLine($"Batteruy_V: {pdxpPacket.Batteruy_V}   // 电池电压 ×100 → {mav.cs.battery_voltage:F2}V");
-                        //    Console.WriteLine($"Failsafe: {pdxpPacket.Failsafe}   // 是否进入故障安全模式（{mav.cs.failsafe}）");
-                        //    Console.WriteLine($"Gpsstatus: {pdxpPacket.Gpsstatus}   // GPS 状态（{mav.cs.gpsstatus:F0}，≥3 表示正常）");
-                        //Console.WriteLine("--------------------------------------------------");
+                            //    Console.WriteLine($"Batteruy_V: {pdxpPacket.Batteruy_V}   // 电池电压 ×100 → {mav.cs.battery_voltage:F2}V");
+                            //    Console.WriteLine($"Failsafe: {pdxpPacket.Failsafe}   // 是否进入故障安全模式（{mav.cs.failsafe}）");
+                            //    Console.WriteLine($"Gpsstatus: {pdxpPacket.Gpsstatus}   // GPS 状态（{mav.cs.gpsstatus:F0}，≥3 表示正常）");
+                            //Console.WriteLine("--------------------------------------------------");
 
-                        // 将结构体转换为字节数组
-                        byte[] packetBytes = StructToBytes(pdxpPacket2);
+                            // 将结构体转换为字节数组
+                            byte[] packetBytes = StructToBytes(pdxpPacket2);
 
                             // 发送UDP数据包
                             udpClient.Send(packetBytes, packetBytes.Length, endPoint);
                         }
                     }
-                   
+                }
+                catch { 
+                }
 
                     System.Threading.Thread.Sleep(1000);  // 每 100ms 发送一次
                
