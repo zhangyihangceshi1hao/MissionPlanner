@@ -33,6 +33,12 @@ using LogAnalyzer = MissionPlanner.Utilities.LogAnalyzer;
 using TableLayoutPanelCellPosition = System.Windows.Forms.TableLayoutPanelCellPosition;
 using UnauthorizedAccessException = System.UnauthorizedAccessException;
 using MissionPlanner.Swarm;
+using System.ComponentModel;
+using System.Security.Cryptography;
+using System.Management;
+using System.Security.AccessControl;
+using System.Security.Principal;
+using SharpCompress.Common;
 
 // written by michael oborne
 
@@ -5190,14 +5196,255 @@ namespace MissionPlanner.GCSViews
                 }
             }
         }
-        private void Swarms_Click(object sender, EventArgs e) { 
-        
+        private void Swarms_Click(object sender, EventArgs e) {
 
-            new FormationControls().Show();
+
+            string currentMachineId = MachineIdGenerator.GetMachineId();
+            string key = "";
+            string value = "";
+
+            if (LicenseManager.IsLicensed(currentMachineId))
+            {
+                
+                string licenseMachineId = "";
+                LicenseManager.ValidateLicense(File.ReadAllText(LicenseManager.GetLicenseFilePath()), out licenseMachineId);
+
+                if (licenseMachineId == currentMachineId)
+                {
+                    new FormationControls().Show();
+                    // 正常启动软件
+                }
+                else
+                {
+                    MessageBox.Show("此激活码已在其他电脑上使用，请重新激活！");
+                    // 清除旧授权文件，提示重新输入激活码
+                }
+            }
+            else
+            {
+                //弹出输入密码提醒框
+
+
+                using (MachineIdGeneratorKey_Value inputForm = new MachineIdGeneratorKey_Value())
+                {
+                    if (inputForm.ShowDialog() == DialogResult.OK)
+                    {
+                        key = inputForm.InputKey;
+                        value = inputForm.InputValue;
+
+                        //MessageBox.Show($"你输入的 Key 是：{key}\nValue 是：{value}");
+                    }
+                    else
+                    {
+                        MessageBox.Show("用户取消了操作。");
+                        return;
+                    }
+                }
+
+
+                if (LicenseManager.GenerateLicenseForMachine(key, value))
+                {
+                    MessageBox.Show("激活成功！");                                       
+                }
+                else
+                {
+                    MessageBox.Show("激活失败！");
+                }
+            }
+            
             //new FormationControls1().Show();
 
         }
-        
+        public static class LicenseManager
+        {
+
+            private const string SecretKey = "zyh@3045883533.."; // 必须保密，建议从服务器下发
+            private static readonly string LicenseFilePath = Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+            "YourApp",
+            ".machineid");
+
+            public static string GetLicenseFilePath()
+            {
+                return LicenseFilePath;
+            }
+
+
+
+            public static bool IsLicensed(string currentMachineId)
+            {
+                if (File.Exists(LicenseFilePath))
+                {
+                    try
+                    {
+                        string encryptedLicense = File.ReadAllText(LicenseFilePath);
+                        return GenerateLicenseForMachine(currentMachineId, encryptedLicense);
+                    }
+                    catch
+                    {
+                        // 文件损坏或解密失败，重新生成
+                        GenerateNewLicense(currentMachineId);
+                        return false;
+                    }
+                }
+                else
+                {
+                    // 文件不存在，生成新的授权文件
+                    GenerateNewLicense(currentMachineId);
+                    return false;
+                }
+            }
+            private static void GenerateNewLicense(string currentMachineId)
+            {
+                string directoryPath = Path.GetDirectoryName(LicenseFilePath);
+                if (!Directory.Exists(directoryPath))
+                {
+                    Directory.CreateDirectory(directoryPath);
+                }
+
+                File.WriteAllText(LicenseFilePath, "");
+
+                File.SetAttributes(LicenseFilePath, File.GetAttributes(LicenseFilePath) | FileAttributes.Hidden);
+                GrantEveryoneFullControl(LicenseFilePath);
+            }
+
+            private static void GrantEveryoneFullControl(string filePath)
+            {
+                FileSecurity fileSecurity = File.GetAccessControl(filePath);
+                SecurityIdentifier everyone = new SecurityIdentifier(WellKnownSidType.WorldSid, null);
+
+                fileSecurity.AddAccessRule(
+                    new FileSystemAccessRule(
+                        everyone,
+                        FileSystemRights.FullControl,
+                        AccessControlType.Allow));
+
+                File.SetAccessControl(filePath, fileSecurity);
+            }
+
+            public static bool ValidateLicense(string licenseKey, out string machineIdFromLicense)
+            {
+                machineIdFromLicense = null;
+
+                try
+                {
+                    using (Aes aes = Aes.Create())
+                    {
+                        aes.Key = Encoding.UTF8.GetBytes(SecretKey.PadRight(32).Substring(0, 32));
+                        aes.IV = new byte[16];
+
+                        var decryptor = aes.CreateDecryptor(aes.Key, aes.IV);
+                        byte[] encryptedData = Convert.FromBase64String(licenseKey);
+                        byte[] decryptedData = decryptor.TransformFinalBlock(encryptedData, 0, encryptedData.Length);
+
+                        string decrypted = Encoding.UTF8.GetString(decryptedData);
+                        string[] parts = decrypted.Split('|');
+
+                        machineIdFromLicense = parts[0];
+                        DateTime expiryDate = DateTime.Parse(parts[1]);
+
+                        return expiryDate >= DateTime.Now;
+                    }
+                }
+                catch
+                {
+                    return false;
+                }
+            }
+
+       
+
+
+            public static void SaveLicense(string licenseKey)
+            {
+                if (File.Exists(LicenseFilePath))
+                {
+                    File.Delete(LicenseFilePath);
+                }
+                // 后续可以重新创建文件
+                File.WriteAllText(LicenseFilePath, licenseKey);
+                //try
+                //{
+                //    using (StreamWriter writer = new StreamWriter(LicenseFilePath, append: true))
+                //    {
+                //        writer.WriteLine(licenseKey);
+                //    }
+                //}
+                //catch (UnauthorizedAccessException ex)
+                //{
+                //    // 处理权限错误
+                //    Console.WriteLine($"权限错误: {ex.Message}");
+                //}
+                //catch (IOException ex)
+                //{
+                //    // 处理IO错误
+                //    Console.WriteLine($"IO错误: {ex.Message}");
+                //}
+                //File.WriteAllText(LicenseFilePath, licenseKey);
+            }
+
+            public static bool GenerateLicenseForMachine(string machineId,string value)
+            {
+                string dataToEncrypt = $"{machineId}|{DateTime.Now.AddYears(1):yyyy-MM-dd}";
+
+                using (Aes aes = Aes.Create())
+                {
+                    aes.Key = Encoding.UTF8.GetBytes(SecretKey.PadRight(32).Substring(0, 32));
+                    aes.IV = new byte[16];
+
+                    var encryptor = aes.CreateEncryptor(aes.Key, aes.IV);
+                    byte[] inputBytes = Encoding.UTF8.GetBytes(dataToEncrypt);
+                    byte[] encrypted = encryptor.TransformFinalBlock(inputBytes, 0, inputBytes.Length);
+
+                    if (value == Convert.ToBase64String(encrypted))
+                    {
+                        SaveLicense(value);
+                        return true;
+                    }
+                    else {
+                        return false;
+                    }
+                   
+                }
+            }
+
+        }
+        public static class MachineIdGenerator
+        {
+
+            public static string GetMachineId()
+            {
+                string cpu = GetFirstItem("Win32_Processor", "ProcessorId");
+                string bios = GetFirstItem("Win32_BIOS", "SerialNumber");
+                string baseBoard = GetFirstItem("Win32_BaseBoard", "SerialNumber");
+
+                string raw = cpu + bios + baseBoard;
+                return ComputeSha256Hash(raw);
+            }
+
+            private static string GetFirstItem(string wmiClass, string propName)
+            {
+                using (var searcher = new ManagementObjectSearcher($"SELECT * FROM {wmiClass}"))
+                {
+                    foreach (var item in searcher.Get())
+                    {
+                        return item[propName]?.ToString();
+                    }
+                }
+                return "";
+            }
+
+            private static string ComputeSha256Hash(string rawData)
+            {
+                using (var sha256 = System.Security.Cryptography.SHA256.Create())
+                {
+                    byte[] bytes = System.Text.Encoding.UTF8.GetBytes(rawData);
+                    byte[] hash = sha256.ComputeHash(bytes);
+                    return BitConverter.ToString(hash).Replace("-", "").Substring(0, 20); // 取前20位
+                }
+            }
+
+        }
         private void ZedGraphTimer_Tick(object sender, EventArgs e)
         {
             try
