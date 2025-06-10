@@ -717,13 +717,16 @@ namespace MissionPlanner.GCSViews
             public UInt16 uav_id;
             public UInt32 latitude;
             public UInt32 longitude;
-            public UInt16 altitude;
-            public UInt16 relative_height;
-            public UInt16 flyspeed;
-            public UInt16 roll;
-            public UInt16 pitch;
+            public Int16 altitude;
+            public Int16 relative_height;
+            public Int16 levelSpeed;
+            public Int16 verticalVelocity;
+            public Int16 roll;
+            public Int16 pitch;
             public UInt16 yaw;
             public UInt16 voltage;
+            public UInt32 rtl_latitude;
+            public UInt32 rtl_longitude;
         }
 
       
@@ -789,30 +792,55 @@ namespace MissionPlanner.GCSViews
                 {
                     try
                     {
+
+                        int modeType = 0;
+                        if (mav.cs.mode == "Guided")
+                        {
+                            modeType = 0;
+
+                        }
+                        else if (mav.cs.mode == "Auto")
+                        {
+                            modeType = 1;
+
+                        }
+                        else if (mav.cs.mode == "RTL")
+                        {
+                            modeType = 2;
+                        }
+                        else { modeType = 3; }
+
+                            int f = (int)mav.cs.groundspeed * 100;
+                        int f1 = (int )mav.cs.verticalspeed * 100;
+                        PointLatLngAlt pointLatLngAlt = mav.cs.HomeLocation;
+                        
                         sequence++;
                         pose_information data = new pose_information
                         {
                             magic = 0xFAFF,
-                            version = 0x01,
-                            msg_type = 0x01,
+                            version = (byte)(mav.cs.armed?01:00),
+                            msg_type = (byte)(modeType),
                             src_id = 0x01,
                             dst_id = 0x00,
                             seq_num = (UInt32)sequence,
-                            payload_len = (UInt16)28,
+                            payload_len = (UInt16)36,
                            
                             
                             arm_state = 0x01,
                             mode_type = 0x01,
                             uav_id = (UInt16)mav.sysid,
-                            latitude = (UInt32)(mav.cs.lat * 1e6),
-                            longitude = (UInt32)(mav.cs.lng * 1e6),
-                            altitude =1,
-                            relative_height = (UInt16)(mav.cs.alt * 10),
-                            flyspeed =1,
-                            roll=1,
-                            pitch=1,
-                            yaw=1,
-                            voltage=1
+                            latitude = (UInt32)(mav.cs.lat * 1e7),
+                            longitude = (UInt32)(mav.cs.lng * 1e7),
+                            altitude = (Int16)(mav.cs.altasl * 100),
+                            relative_height = (Int16)(mav.cs.alt * 100),
+                            levelSpeed = (Int16)f,
+                            verticalVelocity = (Int16)f1,
+                            roll= (Int16)(mav.cs.roll * 100),
+                            pitch= (Int16)(mav.cs.pitch * 100),
+                            yaw= (UInt16)(mav.cs.yaw * 100),
+                            voltage= (UInt16)(mav.cs.battery_voltage * 10),
+                            rtl_latitude= (UInt32)(pointLatLngAlt.Lat *1e7),
+                            rtl_longitude = (UInt32)(pointLatLngAlt.Lng * 1e7)
                         };
                         byte[] send = StructToBytes(data);
                         udpClient.Send(send, send.Length, endPoint);                      
