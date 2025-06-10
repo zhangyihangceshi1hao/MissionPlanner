@@ -632,12 +632,30 @@ namespace MissionPlanner.GCSViews
                         }
                         if (packet.control_type == 0x0B)
                         {
-                            //while (MainV2.comPort.MAV.cs.mode != "Guided")
-                            //{
+                            while (MainV2.comPort.MAV.cs.mode != "Guided")
+                            {
 
-                            //    MainV2.comPort.setMode("Guided");
+                                MainV2.comPort.setMode("Guided");
 
-                            //}
+                            }
+                            packet.msg_type = 0x01;
+                            packet.src_id = 0x01;
+                            packet.dst_id = 0x00;
+
+                            //// 原样发送回来源 IP 和 Port
+                            //udpClient.Send(data, data.Length, remoteEndPoint);
+
+                            byte[] send = StructToBytes(packet);
+                            udpClient.Send(send, send.Length, endPoint);
+                        }
+                        if (packet.control_type == 0x0C)
+                        {
+                            while (MainV2.comPort.MAV.cs.mode != "Brake")
+                            {
+
+                                MainV2.comPort.setMode("Brake");
+
+                            }
                             packet.msg_type = 0x01;
                             packet.src_id = 0x01;
                             packet.dst_id = 0x00;
