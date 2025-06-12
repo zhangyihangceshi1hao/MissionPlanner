@@ -1226,7 +1226,13 @@ namespace MissionPlanner.GCSViews
             new JoystickSetup().ShowUserControl();
         }
 
+        private void BUT_UDP_Click(object sender, EventArgs e)
+        {            
 
+            var form = new Udp();
+
+            form.Show();
+        }
         private void BUT_SendMSG_Click(object sender, EventArgs e)
         {
             if (!MainV2.comPort.BaseStream.IsOpen)
