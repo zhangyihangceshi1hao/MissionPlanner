@@ -5,6 +5,7 @@ using MissionPlanner.Utilities;
 using netDxf.Entities;
 using Newtonsoft.Json;
 using SharpDX.Mathematics.Interop;
+using SharpKml.Dom;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -141,7 +142,7 @@ namespace MissionPlanner.GCSViews
                 string[] parts = url.Substring("/uav_control/api/".Length).Split('/');
                 if (parts.Length >= 1 && parts[0] == "UploadWayPoint")
                 {
-             
+
 
                     if (context.Request.HttpMethod == "POST")
                     {
@@ -179,9 +180,227 @@ namespace MissionPlanner.GCSViews
                         SendJsonResponse(context, new { error = "不支持的命令或方法。" }, HttpStatusCode.MethodNotAllowed);
                     }
                 }
-                else
+                else if (parts.Length >= 1 && parts[0] == "set_mode")
                 {
-                    SendJsonResponse(context, new { error = "未找到指定接口。" }, HttpStatusCode.NotFound);
+                    try
+                    {
+                        string mode = parts[1];
+                        MainV2.comPort.setMode(mode);
+                        Thread.Sleep(1000);
+                        if (MainV2.comPort.MAV.cs.mode == mode)
+                        {
+                            SendJsonResponse(context, new
+                            {
+                                message = "模式切换成功。",
+                                detail = "成功"
+                            });
+                        }
+                        else
+                        {
+                            SendJsonResponse(context, new
+                            {
+                                message = "模式切换失败。",
+                                detail = "失败"
+                            });
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+
+                    }
+                }
+                if (parts.Length >= 1 && (parts[0] == "UnArm"))
+                {
+
+
+                    if (context.Request.HttpMethod == "POST")
+                    {
+                        using (var reader = new StreamReader(context.Request.InputStream, Encoding.UTF8))
+                        {
+                            string requestBody = reader.ReadToEnd();
+                            Console.WriteLine("请求体内容：" + requestBody);
+                            int count = 0;
+                            try
+                            {
+                                while (MainV2.comPort.MAV.cs.armed && count < 3)
+                                {
+                                    count++;
+                                    MainV2.comPort.doARM(false);
+                                     Thread.Sleep(1000);
+                                }
+                                if (!MainV2.comPort.MAV.cs.armed)
+                                {
+                                    SendJsonResponse(context, new
+                                    {
+                                        message = "上锁成功。",
+                                        detail = "成功"
+                                    }, HttpStatusCode.OK);
+                                }
+                                else
+                                {
+                                    SendJsonResponse(context, new
+                                    {
+                                        message = "上锁失败。",
+                                        detail = "失败"
+                                    }, HttpStatusCode.OK);
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine("解析JSON失败：" + ex.Message);
+                                SendJsonResponse(context, new
+                                {
+                                    error = "无效的JSON格式",
+                                    detail = ex.Message
+                                }, HttpStatusCode.BadRequest);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        SendJsonResponse(context, new { error = "不支持的命令或方法。" }, HttpStatusCode.MethodNotAllowed);
+                    }
+                }
+                if (parts.Length >= 1 && (parts[0] == "Arm"))
+                {
+
+
+                    if (context.Request.HttpMethod == "POST")
+                    {
+                        using (var reader = new StreamReader(context.Request.InputStream, Encoding.UTF8))
+                        {
+                            string requestBody = reader.ReadToEnd();
+                            Console.WriteLine("请求体内容：" + requestBody);
+                            int count = 0;
+                            try
+                            {
+                                while (!MainV2.comPort.MAV.cs.armed && count < 3)
+                                {
+                                    count++;
+                                    MainV2.comPort.doARM(true,true);
+                                    Thread.Sleep(1000);
+                                }
+                                if (MainV2.comPort.MAV.cs.armed)
+                                {
+                                SendJsonResponse(context, new
+                                {
+                                    message = "上锁成功。",
+                                    detail = "成功"
+                                }, HttpStatusCode.OK);
+                                }
+                                else
+                                {
+                                    SendJsonResponse(context, new
+                                    {
+                                        message = "上锁失败。",
+                                        detail = "失败"
+                                    }, HttpStatusCode.OK);
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine("解析JSON失败：" + ex.Message);
+                                SendJsonResponse(context, new
+                                {
+                                    error = "无效的JSON格式",
+                                    detail = ex.Message
+                                }, HttpStatusCode.BadRequest);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        SendJsonResponse(context, new { error = "不支持的命令或方法。" }, HttpStatusCode.MethodNotAllowed);
+                    }
+                }
+                if (parts.Length >= 1 && parts[0] == "TakeOff")
+                {
+
+
+                    if (context.Request.HttpMethod == "POST")
+                    {
+                        using (var reader = new StreamReader(context.Request.InputStream, Encoding.UTF8))
+                        {
+                            string requestBody = reader.ReadToEnd();
+                            Console.WriteLine("请求体内容：" + requestBody);
+
+                            try
+                            {
+                                var command_params = JsonConvert.DeserializeObject<command_type_obj>(requestBody);
+
+                                MainV2.comPort.setMode(MainV2.comPort.MAV.sysid, MainV2.comPort.MAV.compid, "GUIDED");
+
+                                MainV2.comPort.doCommand(MainV2.comPort.MAV.sysid, MainV2.comPort.MAV.compid, MAVLink.MAV_CMD.TAKEOFF, 0, 0, 0, 0, 0, 0, int.Parse(command_params.takeOff));
+
+                                SendJsonResponse(context, new
+                                {
+                                    message = $"起飞 {command_params.takeOff} 高度。",
+                                    detail = "成功"
+                                }, HttpStatusCode.OK);
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine("解析JSON失败：" + ex.Message);
+                                SendJsonResponse(context, new
+                                {
+                                    error = "无效的JSON格式",
+                                    detail = ex.Message
+                                }, HttpStatusCode.BadRequest);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        SendJsonResponse(context, new { error = "不支持的命令或方法。" }, HttpStatusCode.MethodNotAllowed);
+                    }
+                }
+                if (parts.Length >= 1 && parts[0] == "PointFlight")
+                {
+
+
+                    if (context.Request.HttpMethod == "POST")
+                    {
+                        using (var reader = new StreamReader(context.Request.InputStream, Encoding.UTF8))
+                        {
+                            string requestBody = reader.ReadToEnd();
+                            Console.WriteLine("请求体内容：" + requestBody);
+
+                            try
+                            {
+                                var command_params = JsonConvert.DeserializeObject<command_type_obj>(requestBody);
+
+                                Locationwp gotohere = new Locationwp();
+
+                                gotohere.id = (ushort)MAVLink.MAV_CMD.WAYPOINT;
+                                gotohere.alt = float.Parse(command_params.height); // back to m
+                                gotohere.lat = double.Parse(command_params.latitude);
+                                gotohere.lng = double.Parse(command_params.longitude);
+
+                                
+                               MainV2.comPort.setGuidedModeWP(gotohere);
+                                  
+                                                           
+                                SendJsonResponse(context, new
+                                {
+                                    message = $"起飞 {command_params.takeOff} 高度。",
+                                    detail = "成功"
+                                }, HttpStatusCode.OK);
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine("解析JSON失败：" + ex.Message);
+                                SendJsonResponse(context, new
+                                {
+                                    error = "无效的JSON格式",
+                                    detail = ex.Message
+                                }, HttpStatusCode.BadRequest);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        SendJsonResponse(context, new { error = "不支持的命令或方法。" }, HttpStatusCode.MethodNotAllowed);
+                    }
                 }
             }
             else
@@ -189,7 +408,13 @@ namespace MissionPlanner.GCSViews
                 SendJsonResponse(context, new { error = "路径错误。" }, HttpStatusCode.NotFound);
             }
         }
-
+        public class command_type_obj
+        {
+            public string takeOff { get; set; }
+            public string longitude { get; set; }
+            public string latitude { get; set; }
+            public string height { get; set; }
+        }
         public class Waypoint
         {
             public string id { get; set; }
@@ -304,21 +529,21 @@ namespace MissionPlanner.GCSViews
                 // 创建要发送的数据
                 var droneData = new DroneStatus
                 {
-                    UAVId = "1",
-                    Longitude = "40.1234567",
-                    Latitude = "85.1234567",
-                    Altitude = "150",
-                    RelativeHeight = "10",
-                    AirSpeed = "10",
-                    Groundspeed = "20",
-                    Pitch = "30",
-                    Roll = "15",
-                    Yaw = "20",
-                    Batterylevel = "15.23",
-                    Linkqualitygcs = "100",
-                    Satcount = "12",
-                    TimeInAir="100",
-                    DateTime ="2025/6/13 09:07:56"
+                    UAVId = MainV2.comPort.MAV.sysid+"",
+                    Longitude = MainV2.comPort.MAV.cs.lng+"",
+                    Latitude = MainV2.comPort.MAV.cs.lat+"",
+                    Altitude = MainV2.comPort.MAV.cs.altasl + "",
+                    RelativeHeight = MainV2.comPort.MAV.cs.alt + "",
+                    AirSpeed = MainV2.comPort.MAV.cs.airspeed + "",
+                    Groundspeed = MainV2.comPort.MAV.cs.groundspeed + "",
+                    Pitch = MainV2.comPort.MAV.cs.pitch + "",
+                    Roll = MainV2.comPort.MAV.cs.roll + "",
+                    Yaw = MainV2.comPort.MAV.cs.yaw + "",
+                    Batterylevel = MainV2.comPort.MAV.cs.battery_voltage + "",
+                    Linkqualitygcs = MainV2.comPort.MAV.cs.linkqualitygcs + "",
+                    Satcount = MainV2.comPort.MAV.cs.satcount + "",
+                    TimeInAir = MainV2.comPort.MAV.cs.timeInAir + "",
+                    DateTime = DateTime.Now.ToString()
                 };
 
                 // 将对象序列化为 JSON 字符串
