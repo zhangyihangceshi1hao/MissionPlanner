@@ -300,36 +300,37 @@ namespace MissionPlanner.GCSViews
                         }
                         if (packet.control_type == 0x03)
                         {
-                            while (MainV2.comPort.MAV.cs.mode != "AltHold")
-                            {
+                            updateUAVVXYZAsync(1,1);
+                            //while (MainV2.comPort.MAV.cs.mode != "AltHold")
+                            //{
 
-                                MainV2.comPort.setMode("AltHold");
+                            //    MainV2.comPort.setMode("AltHold");
 
-                            }
-                          
-                            mavlink_rc_channels_override_t msg = new mavlink_rc_channels_override_t(
-                                chan1_raw: 1500, // Roll - 中立
-                                chan2_raw: 1400, // Pitch - 向前
-                                chan3_raw: 1500, // Throttle - 中立
-                                chan4_raw: 1500, // Yaw - 中立
-                                chan5_raw: 0,
-                                chan6_raw: 0,
-                                chan7_raw: 0,
-                                chan8_raw: 0,
-                                target_system: MainV2.comPort.MAV.sysid,
-                                target_component: MainV2.comPort.MAV.compid,
-                                chan9_raw: 0, chan10_raw: 0, chan11_raw: 0, chan12_raw: 0,
-                                chan13_raw: 0, chan14_raw: 0, chan15_raw: 0, chan16_raw: 0,
-                                chan17_raw: 0, chan18_raw: 0
-                            );
-                            await Task.Run(() =>
-                            {
-                                this.Invoke((MethodInvoker)delegate
-                                {
-                                    MainV2.comPort.generatePacket((byte)MAVLINK_MSG_ID.RC_CHANNELS_OVERRIDE,
-                                        msg, MainV2.comPort.MAV.sysid, MainV2.comPort.MAV.compid);                                   
-                                });
-                            });
+                            //}
+
+                            //mavlink_rc_channels_override_t msg = new mavlink_rc_channels_override_t(
+                            //    chan1_raw: 1500, // Roll - 中立
+                            //    chan2_raw: 1400, // Pitch - 向前
+                            //    chan3_raw: 1500, // Throttle - 中立
+                            //    chan4_raw: 1500, // Yaw - 中立
+                            //    chan5_raw: 0,
+                            //    chan6_raw: 0,
+                            //    chan7_raw: 0,
+                            //    chan8_raw: 0,
+                            //    target_system: MainV2.comPort.MAV.sysid,
+                            //    target_component: MainV2.comPort.MAV.compid,
+                            //    chan9_raw: 0, chan10_raw: 0, chan11_raw: 0, chan12_raw: 0,
+                            //    chan13_raw: 0, chan14_raw: 0, chan15_raw: 0, chan16_raw: 0,
+                            //    chan17_raw: 0, chan18_raw: 0
+                            //);
+                            //await Task.Run(() =>
+                            //{
+                            //    this.Invoke((MethodInvoker)delegate
+                            //    {
+                            //        MainV2.comPort.generatePacket((byte)MAVLINK_MSG_ID.RC_CHANNELS_OVERRIDE,
+                            //            msg, MainV2.comPort.MAV.sysid, MainV2.comPort.MAV.compid);                                   
+                            //    });
+                            //});
 
                             packet.msg_type = 0x01;
                             packet.src_id = 0x01;
@@ -340,39 +341,47 @@ namespace MissionPlanner.GCSViews
 
                             byte[] send = StructToBytes(packet);
                             udpClient.Send(send, send.Length, endPoint);
+
+                            //while (MainV2.comPort.MAV.cs.mode != "Guided")
+                            //{
+
+                            //    MainV2.comPort.setMode("Guided");
+
+                            //}
                         }
                         if (packet.control_type == 0x04)
                         {
-                            while (MainV2.comPort.MAV.cs.mode != "AltHold")
-                            {
+                            updateUAVVXYZAsync(1, -1);
+                            //while (MainV2.comPort.MAV.cs.mode != "AltHold")
+                            //{
 
-                                MainV2.comPort.setMode("AltHold");
+                            //    MainV2.comPort.setMode("AltHold");
 
-                            }
-                           
-                            mavlink_rc_channels_override_t msg = new mavlink_rc_channels_override_t(
-                                chan1_raw: 1500, // Roll - 中立
-                                chan2_raw: 1600, // Pitch - 向后
-                                chan3_raw: 1500, // Throttle - 中立
-                                chan4_raw: 1500, // Yaw - 中立
-                                chan5_raw: 0,
-                                chan6_raw: 0,
-                                chan7_raw: 0,
-                                chan8_raw: 0,
-                                target_system: MainV2.comPort.MAV.sysid,
-                                target_component: MainV2.comPort.MAV.compid,
-                                chan9_raw: 0, chan10_raw: 0, chan11_raw: 0, chan12_raw: 0,
-                                chan13_raw: 0, chan14_raw: 0, chan15_raw: 0, chan16_raw: 0,
-                                chan17_raw: 0, chan18_raw: 0
-                            );
-                            await Task.Run(() =>
-                            {
-                                this.Invoke((MethodInvoker)delegate
-                                {
-                                    MainV2.comPort.generatePacket((byte)MAVLINK_MSG_ID.RC_CHANNELS_OVERRIDE,
-                                        msg, MainV2.comPort.MAV.sysid, MainV2.comPort.MAV.compid);
-                                });
-                            });
+                            //}
+
+                            //mavlink_rc_channels_override_t msg = new mavlink_rc_channels_override_t(
+                            //    chan1_raw: 1500, // Roll - 中立
+                            //    chan2_raw: 1600, // Pitch - 向后
+                            //    chan3_raw: 1500, // Throttle - 中立
+                            //    chan4_raw: 1500, // Yaw - 中立
+                            //    chan5_raw: 0,
+                            //    chan6_raw: 0,
+                            //    chan7_raw: 0,
+                            //    chan8_raw: 0,
+                            //    target_system: MainV2.comPort.MAV.sysid,
+                            //    target_component: MainV2.comPort.MAV.compid,
+                            //    chan9_raw: 0, chan10_raw: 0, chan11_raw: 0, chan12_raw: 0,
+                            //    chan13_raw: 0, chan14_raw: 0, chan15_raw: 0, chan16_raw: 0,
+                            //    chan17_raw: 0, chan18_raw: 0
+                            //);
+                            //await Task.Run(() =>
+                            //{
+                            //    this.Invoke((MethodInvoker)delegate
+                            //    {
+                            //        MainV2.comPort.generatePacket((byte)MAVLINK_MSG_ID.RC_CHANNELS_OVERRIDE,
+                            //            msg, MainV2.comPort.MAV.sysid, MainV2.comPort.MAV.compid);
+                            //    });
+                            //});
                             packet.msg_type = 0x01;
                             packet.src_id = 0x01;
                             packet.dst_id = 0x00;
@@ -382,39 +391,46 @@ namespace MissionPlanner.GCSViews
 
                             byte[] send = StructToBytes(packet);
                             udpClient.Send(send, send.Length, endPoint);
+                            //while (MainV2.comPort.MAV.cs.mode != "Guided")
+                            //{
+
+                            //    MainV2.comPort.setMode("Guided");
+
+                            //}
                         }
                         if (packet.control_type == 0x05)
                         {
-                            while (MainV2.comPort.MAV.cs.mode != "AltHold")
-                            {
+                            updateUAVVXYZAsync(2, -1);
+                            //while (MainV2.comPort.MAV.cs.mode != "AltHold")
+                            //{
 
-                                MainV2.comPort.setMode("AltHold");
+                            //    MainV2.comPort.setMode("AltHold");
 
-                            }
-                            
-                            mavlink_rc_channels_override_t msg = new mavlink_rc_channels_override_t(
-                                chan1_raw: 1400, // Roll - 向左
-                                chan2_raw: 1500, // Pitch - 向前
-                                chan3_raw: 1500, // Throttle - 中立
-                                chan4_raw: 1500, // Yaw - 中立
-                                chan5_raw: 0,
-                                chan6_raw: 0,
-                                chan7_raw: 0,
-                                chan8_raw: 0,
-                                target_system: MainV2.comPort.MAV.sysid,
-                                target_component: MainV2.comPort.MAV.compid,
-                                chan9_raw: 0, chan10_raw: 0, chan11_raw: 0, chan12_raw: 0,
-                                chan13_raw: 0, chan14_raw: 0, chan15_raw: 0, chan16_raw: 0,
-                                chan17_raw: 0, chan18_raw: 0
-                            );
-                            await Task.Run(() =>
-                            {
-                                this.Invoke((MethodInvoker)delegate
-                                {
-                                    MainV2.comPort.generatePacket((byte)MAVLINK_MSG_ID.RC_CHANNELS_OVERRIDE,
-                                        msg, MainV2.comPort.MAV.sysid, MainV2.comPort.MAV.compid);
-                                });
-                            });
+                            //}
+
+                            //mavlink_rc_channels_override_t msg = new mavlink_rc_channels_override_t(
+                            //    chan1_raw: 1400, // Roll - 向左
+                            //    chan2_raw: 1500, // Pitch - 向前
+                            //    chan3_raw: 1500, // Throttle - 中立
+                            //    chan4_raw: 1500, // Yaw - 中立
+                            //    chan5_raw: 0,
+                            //    chan6_raw: 0,
+                            //    chan7_raw: 0,
+                            //    chan8_raw: 0,
+                            //    target_system: MainV2.comPort.MAV.sysid,
+                            //    target_component: MainV2.comPort.MAV.compid,
+                            //    chan9_raw: 0, chan10_raw: 0, chan11_raw: 0, chan12_raw: 0,
+                            //    chan13_raw: 0, chan14_raw: 0, chan15_raw: 0, chan16_raw: 0,
+                            //    chan17_raw: 0, chan18_raw: 0
+                            //);
+                            //await Task.Run(() =>
+                            //{
+                            //    this.Invoke((MethodInvoker)delegate
+                            //    {
+                            //        MainV2.comPort.generatePacket((byte)MAVLINK_MSG_ID.RC_CHANNELS_OVERRIDE,
+                            //            msg, MainV2.comPort.MAV.sysid, MainV2.comPort.MAV.compid);
+                            //    });
+                            //});
                             packet.msg_type = 0x01;
                             packet.src_id = 0x01;
                             packet.dst_id = 0x00;
@@ -424,39 +440,46 @@ namespace MissionPlanner.GCSViews
 
                             byte[] send = StructToBytes(packet);
                             udpClient.Send(send, send.Length, endPoint);
+                            //while (MainV2.comPort.MAV.cs.mode != "Guided")
+                            //{
+
+                            //    MainV2.comPort.setMode("Guided");
+
+                            //}
                         }
                         if (packet.control_type == 0x06)
                         {
-                            while (MainV2.comPort.MAV.cs.mode != "AltHold")
-                            {
+                            updateUAVVXYZAsync(2, 1);
+                            //while (MainV2.comPort.MAV.cs.mode != "AltHold")
+                            //{
 
-                                MainV2.comPort.setMode("AltHold");
+                            //    MainV2.comPort.setMode("AltHold");
 
-                            }
+                            //}
 
-                            mavlink_rc_channels_override_t msg = new mavlink_rc_channels_override_t(
-                                chan1_raw: 1600, // Roll - 向右
-                                chan2_raw: 1500, // Pitch - 向前
-                                chan3_raw: 1500, // Throttle - 中立
-                                chan4_raw: 1500, // Yaw - 中立
-                                chan5_raw: 0,
-                                chan6_raw: 0,
-                                chan7_raw: 0,
-                                chan8_raw: 0,
-                                target_system: MainV2.comPort.MAV.sysid,
-                                target_component: MainV2.comPort.MAV.compid,
-                                chan9_raw: 0, chan10_raw: 0, chan11_raw: 0, chan12_raw: 0,
-                                chan13_raw: 0, chan14_raw: 0, chan15_raw: 0, chan16_raw: 0,
-                                chan17_raw: 0, chan18_raw: 0
-                            );
-                            await Task.Run(() =>
-                            {
-                                this.Invoke((MethodInvoker)delegate
-                                {
-                                    MainV2.comPort.generatePacket((byte)MAVLINK_MSG_ID.RC_CHANNELS_OVERRIDE,
-                                        msg, MainV2.comPort.MAV.sysid, MainV2.comPort.MAV.compid);
-                                });
-                            });
+                            //mavlink_rc_channels_override_t msg = new mavlink_rc_channels_override_t(
+                            //    chan1_raw: 1600, // Roll - 向右
+                            //    chan2_raw: 1500, // Pitch - 向前
+                            //    chan3_raw: 1500, // Throttle - 中立
+                            //    chan4_raw: 1500, // Yaw - 中立
+                            //    chan5_raw: 0,
+                            //    chan6_raw: 0,
+                            //    chan7_raw: 0,
+                            //    chan8_raw: 0,
+                            //    target_system: MainV2.comPort.MAV.sysid,
+                            //    target_component: MainV2.comPort.MAV.compid,
+                            //    chan9_raw: 0, chan10_raw: 0, chan11_raw: 0, chan12_raw: 0,
+                            //    chan13_raw: 0, chan14_raw: 0, chan15_raw: 0, chan16_raw: 0,
+                            //    chan17_raw: 0, chan18_raw: 0
+                            //);
+                            //await Task.Run(() =>
+                            //{
+                            //    this.Invoke((MethodInvoker)delegate
+                            //    {
+                            //        MainV2.comPort.generatePacket((byte)MAVLINK_MSG_ID.RC_CHANNELS_OVERRIDE,
+                            //            msg, MainV2.comPort.MAV.sysid, MainV2.comPort.MAV.compid);
+                            //    });
+                            //});
                             packet.msg_type = 0x01;
                             packet.src_id = 0x01;
                             packet.dst_id = 0x00;
@@ -466,6 +489,12 @@ namespace MissionPlanner.GCSViews
 
                             byte[] send = StructToBytes(packet);
                             udpClient.Send(send, send.Length, endPoint);
+                            //while (MainV2.comPort.MAV.cs.mode != "Guided")
+                            //{
+
+                            //    MainV2.comPort.setMode("Guided");
+
+                            //}
                         }
                         if (packet.control_type == 0x07)
                         {
@@ -487,18 +516,116 @@ namespace MissionPlanner.GCSViews
                         }
                         if (packet.control_type == 0x08)
                         {
-                            while (MainV2.comPort.MAV.cs.mode != "PosHold")
-                            {
+                            updateUAVVXYZAsync(3, 1);
+                            //while (MainV2.comPort.MAV.cs.mode != "PosHold")
+                            //{
 
-                                MainV2.comPort.setMode("PosHold");
+                            //    MainV2.comPort.setMode("PosHold");
 
-                            }
+                            //}
+
+                            //mavlink_rc_channels_override_t msg = new mavlink_rc_channels_override_t(
+                            //    chan1_raw: 1500, // Roll - 向右
+                            //    chan2_raw: 1500, // Pitch - 向前
+                            //    chan3_raw: 1400, // Throttle - 向下
+                            //    chan4_raw: 1500, // Yaw - 中立
+                            //    chan5_raw: 0,
+                            //    chan6_raw: 0,
+                            //    chan7_raw: 0,
+                            //    chan8_raw: 0,
+                            //    target_system: MainV2.comPort.MAV.sysid,
+                            //    target_component: MainV2.comPort.MAV.compid,
+                            //    chan9_raw: 0, chan10_raw: 0, chan11_raw: 0, chan12_raw: 0,
+                            //    chan13_raw: 0, chan14_raw: 0, chan15_raw: 0, chan16_raw: 0,
+                            //    chan17_raw: 0, chan18_raw: 0
+                            //);
+                            //await Task.Run(() =>
+                            //{
+                            //    this.Invoke((MethodInvoker)delegate
+                            //    {
+                            //        MainV2.comPort.generatePacket((byte)MAVLINK_MSG_ID.RC_CHANNELS_OVERRIDE,
+                            //            msg, MainV2.comPort.MAV.sysid, MainV2.comPort.MAV.compid);
+                            //    });
+                            //});
+                            packet.msg_type = 0x01;
+                            packet.src_id = 0x01;
+                            packet.dst_id = 0x00;
+
+                            //// 原样发送回来源 IP 和 Port
+                            //udpClient.Send(data, data.Length, remoteEndPoint);
+
+                            byte[] send = StructToBytes(packet);
+                            udpClient.Send(send, send.Length, endPoint);
+                            //while (MainV2.comPort.MAV.cs.mode != "Guided")
+                            //{
+
+                            //    MainV2.comPort.setMode("Guided");
+
+                            //}
+                        }
+                        if (packet.control_type == 0x09)
+                        {
+                            updateUAVVXYZAsync(3, -1);
+                            //while (MainV2.comPort.MAV.cs.mode != "PosHold")
+                            //{
+
+                            //    MainV2.comPort.setMode("PosHold");
+
+                            //}
+
+                            //mavlink_rc_channels_override_t msg = new mavlink_rc_channels_override_t(
+                            //    chan1_raw: 1500, // Roll - 向右
+                            //    chan2_raw: 1500, // Pitch - 向前
+                            //    chan3_raw: 1700, // Throttle - 向上
+                            //    chan4_raw: 1500, // Yaw - 中立
+                            //    chan5_raw: 0,
+                            //    chan6_raw: 0,
+                            //    chan7_raw: 0,
+                            //    chan8_raw: 0,
+                            //    target_system: MainV2.comPort.MAV.sysid,
+                            //    target_component: MainV2.comPort.MAV.compid,
+                            //    chan9_raw: 0, chan10_raw: 0, chan11_raw: 0, chan12_raw: 0,
+                            //    chan13_raw: 0, chan14_raw: 0, chan15_raw: 0, chan16_raw: 0,
+                            //    chan17_raw: 0, chan18_raw: 0
+                            //);
+                            //await Task.Run(() =>
+                            //{
+                            //    this.Invoke((MethodInvoker)delegate
+                            //    {
+                            //        MainV2.comPort.generatePacket((byte)MAVLINK_MSG_ID.RC_CHANNELS_OVERRIDE,
+                            //            msg, MainV2.comPort.MAV.sysid, MainV2.comPort.MAV.compid);
+                            //    });
+                            //});
+                            packet.msg_type = 0x01;
+                            packet.src_id = 0x01;
+                            packet.dst_id = 0x00;
+
+                            //// 原样发送回来源 IP 和 Port
+                            //udpClient.Send(data, data.Length, remoteEndPoint);
+
+                            byte[] send = StructToBytes(packet);
+                            udpClient.Send(send, send.Length, endPoint);
+                            //while (MainV2.comPort.MAV.cs.mode != "Guided")
+                            //{
+
+                            //    MainV2.comPort.setMode("Guided");
+
+                            //}
+                        }
+                        if (packet.control_type == 0x0D)
+                        {
+                            //while (MainV2.comPort.MAV.cs.mode != "AltHold")
+                            //{
+
+                            //    MainV2.comPort.setMode("AltHold");
+
+                            //}
 
                             mavlink_rc_channels_override_t msg = new mavlink_rc_channels_override_t(
                                 chan1_raw: 1500, // Roll - 向右
                                 chan2_raw: 1500, // Pitch - 向前
-                                chan3_raw: 1400, // Throttle - 向下
-                                chan4_raw: 1500, // Yaw - 中立
+                                chan3_raw: 1500, // Throttle - 向上
+                                chan4_raw: 1450, // Yaw - 中立
                                 chan5_raw: 0,
                                 chan6_raw: 0,
                                 chan7_raw: 0,
@@ -527,20 +654,20 @@ namespace MissionPlanner.GCSViews
                             byte[] send = StructToBytes(packet);
                             udpClient.Send(send, send.Length, endPoint);
                         }
-                        if (packet.control_type == 0x09)
+                        if (packet.control_type == 0x0E)
                         {
-                            while (MainV2.comPort.MAV.cs.mode != "PosHold")
-                            {
+                            //while (MainV2.comPort.MAV.cs.mode != "AltHold")
+                            //{
 
-                                MainV2.comPort.setMode("PosHold");
+                            //    MainV2.comPort.setMode("AltHold");
 
-                            }
+                            //}
 
                             mavlink_rc_channels_override_t msg = new mavlink_rc_channels_override_t(
                                 chan1_raw: 1500, // Roll - 向右
                                 chan2_raw: 1500, // Pitch - 向前
-                                chan3_raw: 1700, // Throttle - 向上
-                                chan4_raw: 1500, // Yaw - 中立
+                                chan3_raw: 1500, // Throttle - 向上
+                                chan4_raw: 1550, // Yaw - 中立
                                 chan5_raw: 0,
                                 chan6_raw: 0,
                                 chan7_raw: 0,
@@ -676,6 +803,116 @@ namespace MissionPlanner.GCSViews
 
                 }
             }
+        }
+        async Task updateUAVVXYZAsync(int type,int param)
+        {
+            float X = 0;
+            float Y = 0;
+            float Z = 0;
+            if (type == 1)
+            {
+                X = 0.5f* param;
+            }
+            else if (type == 2)
+            {
+                Y = 0.5f * param;
+            }
+            else if (type == 3) {
+                Z = 0.5f * param;
+            }
+                var msg1 = new mavlink_set_position_target_local_ned_t
+                {
+                    time_boot_ms = (uint)Environment.TickCount,
+                    coordinate_frame = (byte)MAV_FRAME.BODY_NED, // 使用机体坐标系
+
+                    // 位置（只设置）
+                    x = X,
+                    y = Y,
+                    z = Z,
+
+                    // 速度（只设置 vx = 0.5 m/s）（被忽略）
+                    vx = 0.0f,
+                    vy = 0.0f,
+                    vz = 0.0f,
+
+                    // 加速度（被忽略）
+                    afx = 0,
+                    afy = 0,
+                    afz = 0,
+
+                    // 偏航角和偏航速率（被忽略）
+                    yaw = 0,
+                    yaw_rate = 0,
+
+                    // 掩码：忽略位置、加速度、yaw、yaw_rate
+                    type_mask = (ushort)(
+                       POSITION_TARGET_TYPEMASK.VX_IGNORE |
+                       POSITION_TARGET_TYPEMASK.VY_IGNORE |
+                       POSITION_TARGET_TYPEMASK.VZ_IGNORE |
+                       POSITION_TARGET_TYPEMASK.AX_IGNORE |
+                       POSITION_TARGET_TYPEMASK.AY_IGNORE |
+                       POSITION_TARGET_TYPEMASK.AZ_IGNORE |
+                       POSITION_TARGET_TYPEMASK.FORCE_SET |
+                       POSITION_TARGET_TYPEMASK.YAW_IGNORE |
+                       POSITION_TARGET_TYPEMASK.YAW_RATE_IGNORE
+                   ),
+
+                    target_system = MainV2.comPort.MAV.sysid,
+                    target_component = MainV2.comPort.MAV.compid
+                };
+            await Task.Run(() =>
+            {
+                this.Invoke((MethodInvoker)delegate
+                {
+                    MainV2.comPort.generatePacket(
+                        (byte)MAVLINK_MSG_ID.SET_POSITION_TARGET_LOCAL_NED,
+                        msg1, MainV2.comPort.MAV.sysid, MainV2.comPort.MAV.compid);
+                });
+            });
+            //// 1. 构造 SET_POSITION_TARGET_GLOBAL_INT 消息
+            //var msg = new mavlink_set_position_target_global_int_t
+            //{
+            //    time_boot_ms = (uint)Environment.TickCount, // 当前时间戳
+            //    coordinate_frame = (byte)MAV_FRAME.GLOBAL_RELATIVE_ALT_INT, // 使用相对海拔的全局坐标系
+            //    lat_int = (int)(MainV2.comPort.MAV.cs.lat * 1e7), // 纬度（例如 30.0 度，转换为 int）
+            //    lon_int = (int)(MainV2.comPort.MAV.cs.lng * 1e7), // 经度（例如 120.0 度，转换为 int）
+            //    alt = MainV2.comPort.MAV.cs.alt, // 相对高度（米）
+            //    vx = 0, // 忽略 x 方向速度
+            //    vy = 0, // 忽略 y 方向速度
+            //    vz = 0, // 忽略 z 方向速度
+            //    afx = 0, // 忽略 x 方向加速度
+            //    afy = 0, // 忽略 y 方向加速度
+            //    afz = 0, // 忽略 z 方向加速度
+            //    yaw = (float)(0 * Math.PI / 180.0), // 偏航角（弧度，这里设置为 0，表示朝北）
+            //    yaw_rate = 0, // 忽略偏航角速率
+            //    type_mask = (ushort)(
+            //        // POSITION_TARGET_TYPEMASK.X_IGNORE | // 忽略位置
+            //        //POSITION_TARGET_TYPEMASK.Y_IGNORE |      // 忽略速度
+            //        //POSITION_TARGET_TYPEMASK.Z_IGNORE |   // 忽略加速度
+            //        POSITION_TARGET_TYPEMASK.VX_IGNORE | // 忽略位置
+            //        POSITION_TARGET_TYPEMASK.VY_IGNORE |      // 忽略速度
+            //        POSITION_TARGET_TYPEMASK.VZ_IGNORE |   // 忽略加速度
+            //        POSITION_TARGET_TYPEMASK.AX_IGNORE |  // 忽略偏航角速率
+            //        POSITION_TARGET_TYPEMASK.AY_IGNORE |
+            //         POSITION_TARGET_TYPEMASK.AZ_IGNORE |
+            //         POSITION_TARGET_TYPEMASK.YAW_IGNORE |
+            //         POSITION_TARGET_TYPEMASK.YAW_RATE_IGNORE |
+            //         POSITION_TARGET_TYPEMASK.FORCE_SET
+            //         ),
+            //    target_system = MainV2.comPort.MAV.sysid,
+            //    target_component = MainV2.comPort.MAV.compid
+            //};
+            //await Task.Run(() =>
+            //{
+            //    this.Invoke((MethodInvoker)delegate {
+            //        MainV2.comPort.generatePacket(
+            //        (byte)MAVLINK_MSG_ID.SET_POSITION_TARGET_GLOBAL_INT,
+            //        msg, MainV2.comPort.MAV.sysid, MainV2.comPort.MAV.compid);
+            //    });
+            //});
+            //// 控制发送频率为 10Hz（每秒发送 10 次）
+            //await Task.Delay(100); // 单位是毫秒
+            
         }
 
         private T ByteArrayToStructure<T>(byte[] data) where T : struct
