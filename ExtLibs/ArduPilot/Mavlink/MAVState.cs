@@ -143,7 +143,7 @@ namespace MissionPlanner
         /// mavlink remove compid
         /// </summary>
         public byte compid { get; set; } = 0;
-
+       
         public byte linkid { get; set; }
 
         public byte sendlinkid { get; internal set; }

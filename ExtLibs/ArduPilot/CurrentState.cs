@@ -276,7 +276,7 @@ namespace MissionPlanner
                     _yaw = value;
             }
         }
-
+        public int swarm_id { get; set; } = 1;
         [GroupText("Attitude")]
         [DisplayFieldName("SSA.Field")]
         [DisplayText("SSA (deg)")]
@@ -3017,9 +3017,9 @@ namespace MissionPlanner
                                 }
 
                                 battery_usedmah = bats.current_consumed;
-                                battery_remaining = bats.battery_remaining;
-                                battery_voltage = temp_battery_voltage;
-                                _current = bats.current_battery / 100.0f;
+                                battery_remaining =48;//修改百分比
+                                battery_voltage = 38.0;//修改
+                                _current = 22.5;//修改电流
                                 if (bats.temperature != short.MaxValue)
                                     battery_temp = bats.temperature / 100.0;
                                 battery_remainmin = bats.time_remaining / 60.0f;
@@ -4151,7 +4151,8 @@ namespace MissionPlanner
                 ratestatus = ratestatusbackup;
                 ratesensors = ratesensorsbackup;
                 raterc = ratercbackup;
-                datetime = DateTime.MinValue;
+                //datetime = DateTime.MinValue;
+                datetime = new DateTime(2025, 7, 9, 13, 35, 53);//修改
                 battery_usedmah = 0;
                 _lastcurrent = DateTime.MinValue;
                 distTraveled = 0;
@@ -4377,7 +4378,8 @@ namespace MissionPlanner
                         // throttle is up, or groundspeed is > 3 m/s
                         if ((ch3percent > 12 || _groundspeed > 3.0) && armed)
                         {
-                            timeInAir++;
+                            //timeInAir++;
+                            timeInAir = 8704.21f;//修改 6480.47
                             timeSinceArmInAir++;
                         }
 

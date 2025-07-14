@@ -954,6 +954,7 @@ namespace MissionPlanner.Swarm
                         List<Drone> thirdThreeDrones = aliveSortedDrones.Skip(2*baseSize + 1).Take(baseSize).ToList();
                         thirdThreeDrones.AddRange(deadDrones);
                         groups.Add(thirdThreeDrones);
+                        
 
                     }
                     else if (rem == 2)
@@ -1009,6 +1010,8 @@ namespace MissionPlanner.Swarm
                     
                     groups.Add(drones);
                 }
+
+
                 return groups;
 
 
@@ -1025,6 +1028,7 @@ namespace MissionPlanner.Swarm
 
                 //    return groups;
                 //}
+
             }
         }
       
@@ -1238,6 +1242,7 @@ namespace MissionPlanner.Swarm
             {
                 foreach (var mav in port.MAVlist)
                 {
+                    mav.cs.swarm_id = 1;
                     if (uav_unconnection[mav.sysid - 1] == 1)
                     {
                         continue;
@@ -1514,6 +1519,12 @@ namespace MissionPlanner.Swarm
                                     MergeByteArraysInPlace(uav_unconnection, Settings.BadUavId);
                                     isConnection = false;
                                     Console.WriteLine("已经关闭了");
+                                    for (int i = 0; i < uav_unconnection.Length; i++)
+                                    {
+                                        int droneNumber = i + 1;
+                                        byte parameter = uav_unconnection[i];
+                                        Console.WriteLine($"uav {droneNumber} 号无人机 参数是 {parameter}");
+                                    }
 
                                 }
                                 if (!isbadcount) {
@@ -1616,7 +1627,7 @@ namespace MissionPlanner.Swarm
         {
             var drones = new List<List<Drone>>();
             var drones_1 = new List<Drone>();
-
+            Console.WriteLine("进入HandleDroneGroupingAndFlightAsync");
             // 获取 Leader 的 yaw 角度（需安全访问 UI 资源）
             await Task.Run(() =>
             {
@@ -1652,6 +1663,24 @@ namespace MissionPlanner.Swarm
             // 分组逻辑（纯计算无需 UI 交互）
             var groups = DroneGrouping.按X轴分组(drones_1);
             drones = SplitByYaw(groups, f_yaw);
+            
+            foreach (var port in MainV2.Comports)
+            {
+                foreach (var mav in port.MAVlist)
+                {
+                    for (int i = 0; i < drones.Count; i++)
+                    {
+                        var group = drones[i];
+                        var matched = group.FirstOrDefault(d => d.Id == mav.sysid+"");
+
+                        if (matched != null)
+                        {
+                            mav.cs.swarm_id = (i+1);
+                        }
+                    }
+
+                } 
+            }
 
             // 启动定时器（需回到 UI 线程）
             this.Invoke((MethodInvoker)delegate {
@@ -1733,7 +1762,7 @@ namespace MissionPlanner.Swarm
                             /*******************方式二----start*****************************/
                             double speed = 10.0;            // 期望速度 (m/s)
                             if (timeDifferenceSeconds < 20) {
-                                Console.WriteLine("timeDifferenceSeconds < 10  mav.sysid ="+mav.sysid );
+                                Console.WriteLine("timeDifferenceSeconds < 20  mav.sysid ="+mav.sysid );
                                 GlobalToBody(speedGlobal1, yawAngle, yaw, out vx_body, out vy_body);
                                 //Console.WriteLine("timeDifferenceSeconds < 20" );
                                 // 1. 构造 SET_POSITION_TARGET_GLOBAL_INT 消息
@@ -1786,7 +1815,7 @@ namespace MissionPlanner.Swarm
                             }
                             else if (timeDifferenceSeconds >= 19 && timeDifferenceSeconds < 30)
                             {
-                                Console.WriteLine("timeDifferenceSeconds > 20 <40mav.sysid =" + mav.sysid);
+                                Console.WriteLine("timeDifferenceSeconds >= 19 && timeDifferenceSeconds < 30" + mav.sysid);
                                 //Console.WriteLine("timeDifferenceSeconds < 10" );
                                 GlobalToBody(speedGlobal, yawAngle, yaw, out vx_body, out vy_body);
 
@@ -1842,7 +1871,7 @@ namespace MissionPlanner.Swarm
                             else if (timeDifferenceSeconds >= 29 && timeDifferenceSeconds <( 40+ (int.Parse(textBox8.Text))))
                             {
                                 //Console.WriteLine("timeDifferenceSeconds >40 <60" );
-                                Console.WriteLine("timeDifferenceSeconds > 20 && timeDifferenceSeconds < 30mav.sysid =" + mav.sysid);
+                                Console.WriteLine("timeDifferenceSeconds >= 29 && timeDifferenceSeconds <( 40+ (int.Parse(textBox8.Textmav.sysid =" + mav.sysid);
                                 //GlobalToBody(speedGlobal, 0, mav.cs.yaw, out vx_body, out vy_body);
                                 GlobalToBody(speedGlobal, yaw, yaw, out vx_body, out vy_body);
                                 // 1. 构造 SET_POSITION_TARGET_GLOBAL_INT 消息

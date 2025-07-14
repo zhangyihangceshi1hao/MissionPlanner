@@ -19,7 +19,8 @@ namespace MissionPlanner.GCSViews
 {
     public class UdpSimulation
     {
-        const string UDP_IP = "192.168.6.204";  // 目标IP
+        const string UDP_IP = "2.1.48.48";  // 目标IP
+        //const string UDP_IP = "192.168.6.204";  // 目标IP
         //const string UDP_IP = "127.0.0.1";  // 目标IP
         const int UDP_PORT = 15006;           // 目标端口
         
@@ -120,6 +121,7 @@ namespace MissionPlanner.GCSViews
             public Int16 NorthVelocity;   // 北向速度 (2字节)
             public Int16 VerticalVelocity;// 垂向速度 (2字节)
             public Int16 Leader;
+            public Int16 Swarm_id;
 
         }
         [StructLayout(LayoutKind.Sequential, Pack = 1)]
@@ -150,60 +152,62 @@ namespace MissionPlanner.GCSViews
                     {
                         foreach (var mav in port.MAVlist)
                         {
-                            sequence++;
-                            //DateTime gpsEpoch = new DateTime(2000, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+                            if (mav.cs.linkqualitygcs != 0) {
+                                sequence++;
+                                //DateTime gpsEpoch = new DateTime(2000, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
 
 
-                            // 设置基准时间：2000年1月1日 UTC
-                            DateTime baseTime = new DateTime(2000, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+                                // 设置基准时间：2000年1月1日 UTC
+                                DateTime baseTime = new DateTime(2000, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
-                            // 获取当前 UTC 时间
-                            DateTime nowUtc = DateTime.UtcNow;
+                                // 获取当前 UTC 时间
+                                DateTime nowUtc = DateTime.UtcNow;
 
-                            // 计算时间差（以 ticks 为单位，1 tick = 100 ns）
-                            long totalTicks = (nowUtc - baseTime).Ticks;
+                                // 计算时间差（以 ticks 为单位，1 tick = 100 ns）
+                                long totalTicks = (nowUtc - baseTime).Ticks;
 
-                            // 1 毫秒 = 10,000 ticks → 0.1 毫秒 = 1,000 ticks
-                            // 所以我们可以用 ticks 直接除以 1000 来得到 0.1ms 的整数值
-                            ulong timestampIn0_1ms = (ulong)(totalTicks / 1000);
-                            //TimeSpan elapsed = mav.cs.gpstime.ToUniversalTime() - gpsEpoch;
-                            // 获取总天数（整数天）
-                            //int daysSince2000 = (int)difference.TotalDays;
+                                // 1 毫秒 = 10,000 ticks → 0.1 毫秒 = 1,000 ticks
+                                // 所以我们可以用 ticks 直接除以 1000 来得到 0.1ms 的整数值
+                                ulong timestampIn0_1ms = (ulong)(totalTicks / 1000);
+                                //TimeSpan elapsed = mav.cs.gpstime.ToUniversalTime() - gpsEpoch;
+                                // 获取总天数（整数天）
+                                //int daysSince2000 = (int)difference.TotalDays;
 
-                            //Int32 timestamp_0_1ms = (Int32)(DateTime.UtcNow.TimeOfDay.TotalMilliseconds * 10);
-                            //Int32 ticks = (Int32)(elapsed.TotalMilliseconds * 10); // 转换为 0.1 毫秒单位
-                            //Int32 gpstimestamp_0_1ms = (Int32)(mav.cs.gpstime.TimeOfDay.TotalSeconds * 10000);
-                            //mav.cs.gpstime
+                                //Int32 timestamp_0_1ms = (Int32)(DateTime.UtcNow.TimeOfDay.TotalMilliseconds * 10);
+                                //Int32 ticks = (Int32)(elapsed.TotalMilliseconds * 10); // 转换为 0.1 毫秒单位
+                                //Int32 gpstimestamp_0_1ms = (Int32)(mav.cs.gpstime.TimeOfDay.TotalSeconds * 10000);
+                                //mav.cs.gpstime
 
-                            // 初始化PDXP数据包并填充默认值
-                            PdxpPacket pdxpPacket = new PdxpPacket
-                            {
-                                VER = 0x30,                           // 协议版本
-                                MID = 17902,                        // 任务代号
-                                SID = BitConverter.ToInt32(new byte[4] { 0x4F, 0x10, 0x01, 0x01 }, 0),                      // 发送方地址
-                                DID = BitConverter.ToInt32(new byte[4] { 0x01, 0x01, 0x01, 0x4F }, 0),                      // 接收方地址                         
-                                No = (Int32)sequence,                            // 初始包序号
-                                DATE = (ushort)timestampIn0_1ms,
-                                L = 34,                            // 数据域长度（32字节）
-                                UAVId = (Int16)mav.sysid,                         // 无人机编号
-                                Longitude = (Int32)(mav.cs.lng * 1e6),     // 经度：东经116.4度
-                                Latitude = (Int32)(mav.cs.lat * 1e6),       // 纬度：北纬40.0度
-                                RelativeHeight = (Int16)(mav.cs.alt * 10),                // 相对高度（0.1m单位）
-                                Altitude = ConvertVelocity(mav.cs.altasl),                   // 海拔高度（0.1m单位）                                          
-                                EastVelocity = ConvertVelocity(mav.cs.vy),                // 东向速度（0.1单位）
-                                NorthVelocity = ConvertVelocity(mav.cs.vx),                // 北向速度（0.1单位）
-                                VerticalVelocity = ConvertVelocity(mav.cs.vz),             // 垂向速度（0.1单位）
-                                Leader = (Int16)int.Parse(Settings.Instance.SwarmLeader)
+                                // 初始化PDXP数据包并填充默认值
+                                PdxpPacket pdxpPacket = new PdxpPacket
+                                {
+                                    VER = 0x30,                           // 协议版本
+                                    MID = 17902,                        // 任务代号
+                                    SID = BitConverter.ToInt32(new byte[4] { 0x4F, 0x10, 0x01, 0x01 }, 0),                      // 发送方地址
+                                    DID = BitConverter.ToInt32(new byte[4] { 0x01, 0x01, 0x01, 0x4F }, 0),                      // 接收方地址                         
+                                    No = (Int32)sequence,                            // 初始包序号
+                                    DATE = (ushort)timestampIn0_1ms,
+                                    L = 36,                            // 数据域长度（32字节）
+                                    UAVId = (Int16)mav.sysid,                         // 无人机编号
+                                    Longitude = (Int32)(mav.cs.lng * 1e6),     // 经度：东经116.4度
+                                    Latitude = (Int32)(mav.cs.lat * 1e6),       // 纬度：北纬40.0度
+                                    RelativeHeight = (Int16)(mav.cs.alt * 10),                // 相对高度（0.1m单位）
+                                    Altitude = ConvertVelocity(mav.cs.altasl),                   // 海拔高度（0.1m单位）                                          
+                                    EastVelocity = ConvertVelocity(mav.cs.vy),                // 东向速度（0.1单位）
+                                    NorthVelocity = ConvertVelocity(mav.cs.vx),                // 北向速度（0.1单位）
+                                    VerticalVelocity = ConvertVelocity(mav.cs.vz),             // 垂向速度（0.1单位）
+                                    Leader = (Int16)int.Parse(Settings.Instance.SwarmLeader),
+                                    Swarm_id = (Int16)mav.cs.swarm_id
+                                };
 
-                            };
 
+                                // 将结构体转换为字节数组
+                                byte[] packetBytes = StructToBytes(pdxpPacket);
 
-                            // 将结构体转换为字节数组
-                            byte[] packetBytes = StructToBytes(pdxpPacket);
-
-                            // 发送UDP数据包
-                            udpClient.Send(packetBytes, packetBytes.Length, endPoint);
+                                // 发送UDP数据包
+                                udpClient.Send(packetBytes, packetBytes.Length, endPoint);
+                            }
                         }
                     }
 
