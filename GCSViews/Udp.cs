@@ -435,6 +435,21 @@ namespace MissionPlanner.GCSViews
             // 清除当前任务
             MainV2.comPort.MAV.wps.Clear();
 
+            Locationwp home = new Locationwp();
+            try
+            {
+                home.frame = (byte)MAVLink.MAV_FRAME.GLOBAL;
+                home.id = (ushort)MAVLink.MAV_CMD.WAYPOINT;
+                home.lat = (MainV2.comPort.MAV.cs.PlannedHomeLocation.Lat);
+                home.lng = (MainV2.comPort.MAV.cs.PlannedHomeLocation.Lng);
+                home.alt = ((float)MainV2.comPort.MAV.cs.PlannedHomeLocation.Alt); // use saved home
+            }
+            catch
+            {
+                throw new Exception("Your home location is invalid");
+            }
+            commands.Insert(0, home);
+            
             foreach (var wp in waypoints)
             {
                 double lat, lon, alt;
@@ -447,23 +462,30 @@ namespace MissionPlanner.GCSViews
                     continue;
                 }
 
-                // 创建任务项（MAV_CMD.WAYPOINT）
-                var item = new MAVLink.mavlink_mission_item_int_t
-                {
-                    x = (int)(lon * 1e7),
-                    y = (int)(lat * 1e7),
-                    z = (float)alt,
-                    seq = (ushort)MainV2.comPort.MAV.wps.Count,
-                    command = (ushort)MAVLink.MAV_CMD.WAYPOINT,
-                    frame = (byte)MAVLink.MAV_FRAME.MISSION,
-                    param1 = 0,  // Hold time
-                    param2 = 0,  // Accept radius
-                    param3 = 0,  // Pass radius
-                    param4 = 0,  // Yaw angle
-                    autocontinue = 1
-                };
+                
+                Locationwp temp = new Locationwp();
 
+                temp.id = (ushort)16;
+
+                temp.p1 = 0;
+
+                temp.alt = (float)alt;
+
+                temp.lat = (double)lat;
+
+                temp.lng = (double)lon;
+
+                temp.p2 = 0;
+
+                temp.p3 = 0;
+
+                temp.p4 = 0;
+
+                temp.Tag = "0";
+
+                temp.frame = 3;
                 //MainV2.comPort.MAV.wps.Add(item);
+                commands.Add(temp);
             }
 
             Console.WriteLine($"已加载 {waypoints.Count} 个航点到任务列表");
