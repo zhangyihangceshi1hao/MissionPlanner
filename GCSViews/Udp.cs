@@ -39,10 +39,10 @@ namespace MissionPlanner.GCSViews
             InitializeComponent();
             countdown.Elapsed += sendMassage;
 
-          
+
         }
 
-       
+
         Thread receive;
 
         System.Timers.Timer countdown = new System.Timers.Timer { Interval = 1000, AutoReset = true };
@@ -81,6 +81,7 @@ namespace MissionPlanner.GCSViews
                 return;
 
             httpListener = new HttpListener();
+            //httpListener.Prefixes.Add("http://192.168.1.20:5031/uav_control/api/");
             httpListener.Prefixes.Add("http://localhost:5031/uav_control/api/");
             httpListener.Start();
 
@@ -142,7 +143,7 @@ namespace MissionPlanner.GCSViews
                 string[] parts = url.Substring("/uav_control/api/".Length).Split('/');
                 if (parts.Length >= 1 && parts[0] == "UploadWayPoint")
                 {
-
+                    string uavid = parts[1];
 
                     if (context.Request.HttpMethod == "POST")
                     {
@@ -156,10 +157,11 @@ namespace MissionPlanner.GCSViews
                                 var waypoints = JsonConvert.DeserializeObject<List<Waypoint>>(requestBody);
 
                                 // 处理上传的航点数据
-                                ProcessWaypoints("1", "1", waypoints);
+                                ProcessWaypoints(uavid, "1", waypoints);
 
                                 SendJsonResponse(context, new
                                 {
+                                    status = "Success",
                                     message = $"成功接收到 {waypoints.Count} 个航点任务。",
                                     count = waypoints.Count
                                 }, HttpStatusCode.OK);
@@ -169,6 +171,7 @@ namespace MissionPlanner.GCSViews
                                 Console.WriteLine("解析JSON失败：" + ex.Message);
                                 SendJsonResponse(context, new
                                 {
+                                    status = "Failure",
                                     error = "无效的JSON格式",
                                     detail = ex.Message
                                 }, HttpStatusCode.BadRequest);
@@ -184,35 +187,57 @@ namespace MissionPlanner.GCSViews
                 {
                     try
                     {
-                        string mode = parts[1];
-                        MainV2.comPort.setMode(mode);
+                        string uavid = parts[1];
+                        string mode = parts[2];
+                        foreach (var port in MainV2.Comports)
+                        {
+                            foreach (var mav in port.MAVlist)
+                            {
+                                if (mav.sysid + "" == uavid) {
+                                    port.setMode(mav.sysid, mav.compid, mode);
+                                }
+                            }
+                        }
+
                         Thread.Sleep(1000);
-                        if (MainV2.comPort.MAV.cs.mode == mode)
+                        foreach (var port in MainV2.Comports)
                         {
-                            SendJsonResponse(context, new
+                            foreach (var mav in port.MAVlist)
                             {
-                                message = "模式切换成功。",
-                                detail = "成功"
-                            });
+                                if (mav.sysid + "" == uavid)
+                                {
+                                    if (mav.cs.mode == mode)
+                                    {
+
+                                        SendJsonResponse(context, new
+                                        {
+                                            status = "Success",
+                                            message = "模式切换成功。",
+                                            detail = "成功"
+                                        });
+                                    }
+                                    else {
+                                        SendJsonResponse(context, new
+                                        {
+                                            status = "Failure",
+                                            message = "模式切换失败。",
+                                            detail = "失败"
+                                        });
+                                    }
+                                }
+                            }
                         }
-                        else
-                        {
-                            SendJsonResponse(context, new
-                            {
-                                message = "模式切换失败。",
-                                detail = "失败"
-                            });
-                        }
+
                     }
                     catch (Exception ex)
                     {
 
                     }
                 }
-                if (parts.Length >= 1 && (parts[0] == "UnArm"))
+                if (parts.Length >= 1 && (parts[1] == "UnArm"))
                 {
 
-
+                    string uavid = parts[0];
                     if (context.Request.HttpMethod == "POST")
                     {
                         using (var reader = new StreamReader(context.Request.InputStream, Encoding.UTF8))
@@ -222,34 +247,54 @@ namespace MissionPlanner.GCSViews
                             int count = 0;
                             try
                             {
-                                while (MainV2.comPort.MAV.cs.armed && count < 3)
+
+                                foreach (var port in MainV2.Comports)
                                 {
-                                    count++;
-                                    MainV2.comPort.doARM(false);
-                                     Thread.Sleep(1000);
-                                }
-                                if (!MainV2.comPort.MAV.cs.armed)
-                                {
-                                    SendJsonResponse(context, new
+                                    foreach (var mav in port.MAVlist)
                                     {
-                                        message = "上锁成功。",
-                                        detail = "成功"
-                                    }, HttpStatusCode.OK);
+                                        if (mav.sysid + "" == uavid)
+                                        {
+                                            port.doARM(mav.sysid, mav.compid, false);
+                                        }
+                                    }
                                 }
-                                else
+                                Thread.Sleep(1000);
+                                foreach (var port in MainV2.Comports)
                                 {
-                                    SendJsonResponse(context, new
+                                    foreach (var mav in port.MAVlist)
                                     {
-                                        message = "上锁失败。",
-                                        detail = "失败"
-                                    }, HttpStatusCode.OK);
+                                        if (mav.sysid + "" == uavid)
+                                        {
+                                            if (!mav.cs.armed) {
+
+                                                SendJsonResponse(context, new
+                                                {
+                                                    status = "Success",
+                                                    message = "上锁成功。",
+                                                    detail = "成功"
+                                                }, HttpStatusCode.OK);
+                                            }
+                                            else
+                                            {
+                                                SendJsonResponse(context, new
+                                                {
+                                                    status = "Failure",
+                                                    message = "上锁失败。",
+                                                    detail = "失败"
+                                                }, HttpStatusCode.OK);
+                                            }
+                                        }
+                                    }
                                 }
+
+
                             }
                             catch (Exception ex)
                             {
                                 Console.WriteLine("解析JSON失败：" + ex.Message);
                                 SendJsonResponse(context, new
                                 {
+                                    status = "Failure",
                                     error = "无效的JSON格式",
                                     detail = ex.Message
                                 }, HttpStatusCode.BadRequest);
@@ -261,10 +306,10 @@ namespace MissionPlanner.GCSViews
                         SendJsonResponse(context, new { error = "不支持的命令或方法。" }, HttpStatusCode.MethodNotAllowed);
                     }
                 }
-                if (parts.Length >= 1 && (parts[0] == "Arm"))
+                if (parts.Length >= 1 && (parts[1] == "Arm"))
                 {
 
-
+                    string uavid = parts[0];
                     if (context.Request.HttpMethod == "POST")
                     {
                         using (var reader = new StreamReader(context.Request.InputStream, Encoding.UTF8))
@@ -272,29 +317,47 @@ namespace MissionPlanner.GCSViews
                             string requestBody = reader.ReadToEnd();
                             Console.WriteLine("请求体内容：" + requestBody);
                             int count = 0;
+
                             try
                             {
-                                while (!MainV2.comPort.MAV.cs.armed && count < 3)
+
+                                foreach (var port in MainV2.Comports)
                                 {
-                                    count++;
-                                    MainV2.comPort.doARM(true,true);
-                                    Thread.Sleep(1000);
-                                }
-                                if (MainV2.comPort.MAV.cs.armed)
-                                {
-                                SendJsonResponse(context, new
-                                {
-                                    message = "上锁成功。",
-                                    detail = "成功"
-                                }, HttpStatusCode.OK);
-                                }
-                                else
-                                {
-                                    SendJsonResponse(context, new
+                                    foreach (var mav in port.MAVlist)
                                     {
-                                        message = "上锁失败。",
-                                        detail = "失败"
-                                    }, HttpStatusCode.OK);
+                                        if (mav.sysid + "" == uavid)
+                                        {
+                                            port.doARM(mav.sysid, mav.compid, true, true);
+                                        }
+                                    }
+                                }
+                                Thread.Sleep(1000);
+                                foreach (var port in MainV2.Comports)
+                                {
+                                    foreach (var mav in port.MAVlist)
+                                    {
+                                        if (mav.sysid + "" == uavid)
+                                        {
+                                            if (mav.cs.armed)
+                                            {
+                                                SendJsonResponse(context, new
+                                                {
+                                                    status = "Success",
+                                                    message = "上锁成功。",
+                                                    detail = "成功"
+                                                }, HttpStatusCode.OK);
+                                            }
+                                            else
+                                            {
+                                                SendJsonResponse(context, new
+                                                {
+                                                    status = "Failure",
+                                                    message = "上锁失败。",
+                                                    detail = "失败"
+                                                }, HttpStatusCode.OK);
+                                            }
+                                        }
+                                    }
                                 }
                             }
                             catch (Exception ex)
@@ -302,6 +365,7 @@ namespace MissionPlanner.GCSViews
                                 Console.WriteLine("解析JSON失败：" + ex.Message);
                                 SendJsonResponse(context, new
                                 {
+                                    status = "Failure",
                                     error = "无效的JSON格式",
                                     detail = ex.Message
                                 }, HttpStatusCode.BadRequest);
@@ -313,10 +377,10 @@ namespace MissionPlanner.GCSViews
                         SendJsonResponse(context, new { error = "不支持的命令或方法。" }, HttpStatusCode.MethodNotAllowed);
                     }
                 }
-                if (parts.Length >= 1 && parts[0] == "TakeOff")
+                if (parts.Length >= 1 && parts[1] == "TakeOff")
                 {
 
-
+                    string uavid = parts[0];
                     if (context.Request.HttpMethod == "POST")
                     {
                         using (var reader = new StreamReader(context.Request.InputStream, Encoding.UTF8))
@@ -327,22 +391,33 @@ namespace MissionPlanner.GCSViews
                             try
                             {
                                 var command_params = JsonConvert.DeserializeObject<command_type_obj>(requestBody);
-
-                                MainV2.comPort.setMode(MainV2.comPort.MAV.sysid, MainV2.comPort.MAV.compid, "GUIDED");
-
-                                MainV2.comPort.doCommand(MainV2.comPort.MAV.sysid, MainV2.comPort.MAV.compid, MAVLink.MAV_CMD.TAKEOFF, 0, 0, 0, 0, 0, 0, int.Parse(command_params.takeOff));
-
-                                SendJsonResponse(context, new
+                                foreach (var port in MainV2.Comports)
                                 {
-                                    message = $"起飞 {command_params.takeOff} 高度。",
-                                    detail = "成功"
-                                }, HttpStatusCode.OK);
+                                    foreach (var mav in port.MAVlist)
+                                    {
+                                        if (mav.sysid + "" == uavid)
+                                        {
+                                            port.setMode(mav.sysid, mav.compid, "GUIDED");
+
+                                            port.doCommand(mav.sysid, mav.compid, MAVLink.MAV_CMD.TAKEOFF, 0, 0, 0, 0, 0, 0, int.Parse(command_params.takeOff));
+                                            SendJsonResponse(context, new
+                                            {
+                                                status = "Success",
+                                                message = $"指点飞行。",
+                                                detail = "成功"
+                                            }, HttpStatusCode.OK);
+                                        }
+                                    }
+                                }
+
+
                             }
                             catch (Exception ex)
                             {
                                 Console.WriteLine("解析JSON失败：" + ex.Message);
                                 SendJsonResponse(context, new
                                 {
+                                    status = "Failure",
                                     error = "无效的JSON格式",
                                     detail = ex.Message
                                 }, HttpStatusCode.BadRequest);
@@ -354,10 +429,10 @@ namespace MissionPlanner.GCSViews
                         SendJsonResponse(context, new { error = "不支持的命令或方法。" }, HttpStatusCode.MethodNotAllowed);
                     }
                 }
-                if (parts.Length >= 1 && parts[0] == "PointFlight")
+                if (parts.Length >= 1 && parts[1] == "PointFlight")
                 {
 
-
+                    string uavid = parts[0];
                     if (context.Request.HttpMethod == "POST")
                     {
                         using (var reader = new StreamReader(context.Request.InputStream, Encoding.UTF8))
@@ -367,30 +442,41 @@ namespace MissionPlanner.GCSViews
 
                             try
                             {
-                                var command_params = JsonConvert.DeserializeObject<command_type_obj>(requestBody);
-
-                                Locationwp gotohere = new Locationwp();
-
-                                gotohere.id = (ushort)MAVLink.MAV_CMD.WAYPOINT;
-                                gotohere.alt = float.Parse(command_params.height); // back to m
-                                gotohere.lat = double.Parse(command_params.latitude);
-                                gotohere.lng = double.Parse(command_params.longitude);
-
-                                
-                               MainV2.comPort.setGuidedModeWP(gotohere);
-                                  
-                                                           
-                                SendJsonResponse(context, new
+                                foreach (var port in MainV2.Comports)
                                 {
-                                    message = $"起飞 {command_params.takeOff} 高度。",
-                                    detail = "成功"
-                                }, HttpStatusCode.OK);
+                                    foreach (var mav in port.MAVlist)
+                                    {
+                                        if (mav.sysid + "" == uavid)
+                                        {
+                                            var command_params = JsonConvert.DeserializeObject<command_type_obj>(requestBody);
+
+                                            Locationwp gotohere = new Locationwp();
+
+                                            gotohere.id = (ushort)MAVLink.MAV_CMD.WAYPOINT;
+                                            gotohere.alt = float.Parse(command_params.height); // back to m
+                                            gotohere.lat = double.Parse(command_params.latitude);
+                                            gotohere.lng = double.Parse(command_params.longitude);
+
+                                            port.setGuidedModeWP(mav.sysid, mav.compid, gotohere, true);
+
+
+
+                                            SendJsonResponse(context, new
+                                            {
+                                                status = "Success",
+                                                message = $"起飞 {command_params.takeOff} 高度。",
+                                                detail = "成功"
+                                            }, HttpStatusCode.OK);
+                                        }
+                                    }
+                                }
                             }
                             catch (Exception ex)
                             {
                                 Console.WriteLine("解析JSON失败：" + ex.Message);
                                 SendJsonResponse(context, new
                                 {
+                                    status = "Failure",
                                     error = "无效的JSON格式",
                                     detail = ex.Message
                                 }, HttpStatusCode.BadRequest);
@@ -429,74 +515,87 @@ namespace MissionPlanner.GCSViews
                 Console.WriteLine("飞控未连接");
                 return;
             }
-            List<Locationwp> commands = new List<Locationwp>();
 
-            Locationwp temp1 = new Locationwp();
-            // 清除当前任务
-            MainV2.comPort.MAV.wps.Clear();
-
-            Locationwp home = new Locationwp();
-            try
+            foreach (var port in MainV2.Comports)
             {
-                home.frame = (byte)MAVLink.MAV_FRAME.GLOBAL;
-                home.id = (ushort)MAVLink.MAV_CMD.WAYPOINT;
-                home.lat = (MainV2.comPort.MAV.cs.PlannedHomeLocation.Lat);
-                home.lng = (MainV2.comPort.MAV.cs.PlannedHomeLocation.Lng);
-                home.alt = ((float)MainV2.comPort.MAV.cs.PlannedHomeLocation.Alt); // use saved home
-            }
-            catch
-            {
-                throw new Exception("Your home location is invalid");
-            }
-            commands.Insert(0, home);
-            
-            foreach (var wp in waypoints)
-            {
-                double lat, lon, alt;
-
-                if (!double.TryParse(wp.latitude, out lat) ||
-                    !double.TryParse(wp.longitude, out lon) ||
-                    !double.TryParse(wp.Height, out alt))
+                foreach (var mav in port.MAVlist)
                 {
-                    Console.WriteLine($"跳过无效航点：{wp.id}");
-                    continue;
+                    if (mav.sysid + "" == uavId)
+                    {
+
+
+                        List<Locationwp> commands = new List<Locationwp>();
+
+                        Locationwp temp1 = new Locationwp();
+                        // 清除当前任务
+                        mav.wps.Clear();
+
+                        Locationwp home = new Locationwp();
+                        try
+                        {
+                            home.frame = (byte)MAVLink.MAV_FRAME.GLOBAL;
+                            home.id = (ushort)MAVLink.MAV_CMD.WAYPOINT;
+                            home.lat = (mav.cs.PlannedHomeLocation.Lat);
+                            home.lng = (mav.cs.PlannedHomeLocation.Lng);
+                            home.alt = ((float)mav.cs.PlannedHomeLocation.Alt); // use saved home
+                        }
+                        catch
+                        {
+                            throw new Exception("Your home location is invalid");
+                        }
+                        commands.Insert(0, home);
+
+                        foreach (var wp in waypoints)
+                        {
+                            double lat, lon, alt;
+
+                            if (!double.TryParse(wp.latitude, out lat) ||
+                                !double.TryParse(wp.longitude, out lon) ||
+                                !double.TryParse(wp.Height, out alt))
+                            {
+                                Console.WriteLine($"跳过无效航点：{wp.id}");
+                                continue;
+                            }
+
+
+                            Locationwp temp = new Locationwp();
+
+                            temp.id = (ushort)16;
+
+                            temp.p1 = 0;
+
+                            temp.alt = (float)alt;
+
+                            temp.lat = (double)lat;
+
+                            temp.lng = (double)lon;
+
+                            temp.p2 = 0;
+
+                            temp.p3 = 0;
+
+                            temp.p4 = 0;
+
+                            temp.Tag = "0";
+
+                            temp.frame = 3;
+                            //MainV2.comPort.MAV.wps.Add(item);
+                            commands.Add(temp);
+                        }
+
+                        Console.WriteLine($"已加载 {waypoints.Count} 个航点到任务列表");
+
+                        // 如果你想自动上传任务到飞控：
+                        mav_mission.upload(port, mav.sysid,
+                                                    mav.compid, 0,
+                                                     commands,
+                                                     (percent, status) =>
+                                                     {
+                                                     }).ConfigureAwait(false);
+
+                    }
                 }
-
-                
-                Locationwp temp = new Locationwp();
-
-                temp.id = (ushort)16;
-
-                temp.p1 = 0;
-
-                temp.alt = (float)alt;
-
-                temp.lat = (double)lat;
-
-                temp.lng = (double)lon;
-
-                temp.p2 = 0;
-
-                temp.p3 = 0;
-
-                temp.p4 = 0;
-
-                temp.Tag = "0";
-
-                temp.frame = 3;
-                //MainV2.comPort.MAV.wps.Add(item);
-                commands.Add(temp);
             }
-
-            Console.WriteLine($"已加载 {waypoints.Count} 个航点到任务列表");
-
-            // 如果你想自动上传任务到飞控：
-            mav_mission.upload(MainV2.comPort, MainV2.comPort.MAV.sysid,
-                                        MainV2.comPort.MAV.compid, 0,
-                                         commands,
-                                         (percent, status) =>
-                                         {
-                                         }).ConfigureAwait(false);
         }
 
         private void SendJsonResponse(HttpListenerContext context, object obj, HttpStatusCode code = HttpStatusCode.OK)
@@ -519,21 +618,21 @@ namespace MissionPlanner.GCSViews
         // 定义无人机状态类
         public class DroneStatus
         {
-            public string UAVId { get; set; }
-            public string Longitude { get; set; }
-            public string Latitude { get; set; }
-            public string Altitude { get; set; }
-            public string RelativeHeight { get; set; }
-            public string AirSpeed { get; set; }
-            public string Groundspeed { get; set; }
-            public string Pitch { get; set; }
-            public string Roll { get; set; }
-            public string Yaw { get; set; }
-            public string Batterylevel { get; set; }
-            public string Linkqualitygcs { get; set; }
-            public string Satcount { get; set; }
-            public string TimeInAir { get; set; }
-            public string DateTime { get; set; }
+            public string uavId { get; set; }
+            public string longitude { get; set; }
+            public string latitude { get; set; }
+            public string altitude { get; set; }
+            public string relativeHeight { get; set; }
+            public string airSpeed { get; set; }
+            public string groundSpeed { get; set; }
+            public string pitch { get; set; }
+            public string roll { get; set; }
+            public string yaw { get; set; }
+            public string batteryLevel { get; set; }
+            public string linkQualityGcs { get; set; }
+            public string satCount { get; set; }
+            public string timeInAir { get; set; }
+            public string dateTime { get; set; }
         }
 
 
@@ -547,38 +646,42 @@ namespace MissionPlanner.GCSViews
         /// <param name="e"></param>
         private async void sendMassage(object sender, ElapsedEventArgs e)
         {
-           
-                // 创建要发送的数据
-                var droneData = new DroneStatus
+            foreach (var port in MainV2.Comports)
+            {
+                foreach (var mav in port.MAVlist)
                 {
-                    UAVId = MainV2.comPort.MAV.sysid+"",
-                    Longitude = MainV2.comPort.MAV.cs.lng+"",
-                    Latitude = MainV2.comPort.MAV.cs.lat+"",
-                    Altitude = MainV2.comPort.MAV.cs.altasl + "",
-                    RelativeHeight = MainV2.comPort.MAV.cs.alt + "",
-                    AirSpeed = MainV2.comPort.MAV.cs.airspeed + "",
-                    Groundspeed = MainV2.comPort.MAV.cs.groundspeed + "",
-                    Pitch = MainV2.comPort.MAV.cs.pitch + "",
-                    Roll = MainV2.comPort.MAV.cs.roll + "",
-                    Yaw = MainV2.comPort.MAV.cs.yaw + "",
-                    Batterylevel = MainV2.comPort.MAV.cs.battery_voltage + "",
-                    Linkqualitygcs = MainV2.comPort.MAV.cs.linkqualitygcs + "",
-                    Satcount = MainV2.comPort.MAV.cs.satcount + "",
-                    TimeInAir = MainV2.comPort.MAV.cs.timeInAir + "",
-                    DateTime = DateTime.Now.ToString()
-                };
+                    // 创建要发送的数据
+                    var droneData = new DroneStatus
+                    {
+                        uavId = mav.sysid + "",
+                        longitude = mav.cs.lng + "",
+                        latitude = mav.cs.lat + "",
+                        altitude = mav.cs.altasl + "",
+                        relativeHeight = mav.cs.alt + "",
+                        airSpeed = mav.cs.airspeed + "",
+                        groundSpeed = mav.cs.groundspeed + "",
+                        pitch = mav.cs.pitch + "",
+                        roll = mav.cs.roll + "",
+                        yaw = mav.cs.yaw + "",
+                        batteryLevel = mav.cs.battery_voltage + "",
+                        linkQualityGcs = mav.cs.linkqualitygcs + "",
+                        satCount = mav.cs.satcount + "",
+                        timeInAir = mav.cs.timeInAir + "",
+                        dateTime = DateTime.Now.ToString()
+                    };
 
-                // 将对象序列化为 JSON 字符串
-                string json = JsonConvert.SerializeObject(droneData);
+                    // 将对象序列化为 JSON 字符串
+                    string json = JsonConvert.SerializeObject(droneData);
 
-                // 构建 HTTP 请求内容
-                var content = new StringContent(json, Encoding.UTF8, "application/json");
+                    // 构建 HTTP 请求内容
+                    var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-                // 创建 HttpClient 并发送 POST 请求
-                
+                    // 创建 HttpClient 并发送 POST 请求
+
                     try
                     {
-                        var response = await _httpClient.PostAsync("http://localhost:5030/uav_status/api/data", content);
+                        //var response = await _httpClient.PostAsync("http://192.168.1.108:9085/uav_status/api/data", content);
+                        var response = await _httpClient.PostAsync("http://localhost:9085/uav_status/api/data", content);
 
                         Console.WriteLine($"HTTP Status Code: {response.StatusCode}");
 
@@ -596,9 +699,10 @@ namespace MissionPlanner.GCSViews
                     {
                         Console.WriteLine("发送失败：" + ex.Message);
                     }
-                
+
+                }
             }
-        
+        } 
 
 
 
