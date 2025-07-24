@@ -81,8 +81,8 @@ namespace MissionPlanner.GCSViews
                 return;
 
             httpListener = new HttpListener();
-            //httpListener.Prefixes.Add("http://192.168.1.20:5031/uav_control/api/");
-            httpListener.Prefixes.Add("http://localhost:5031/uav_control/api/");
+            httpListener.Prefixes.Add("http://192.168.1.20:5031/uav_control/api/");
+            //httpListener.Prefixes.Add("http://localhost:5031/uav_control/api/");
             httpListener.Start();
 
             httpThread = new Thread(ListenLoop)
@@ -316,7 +316,7 @@ namespace MissionPlanner.GCSViews
                         {
                             string requestBody = reader.ReadToEnd();
                             Console.WriteLine("请求体内容：" + requestBody);
-                            int count = 0;
+                          
 
                             try
                             {
@@ -343,7 +343,7 @@ namespace MissionPlanner.GCSViews
                                                 SendJsonResponse(context, new
                                                 {
                                                     status = "Success",
-                                                    message = "上锁成功。",
+                                                    message = "解锁锁成功。",
                                                     detail = "成功"
                                                 }, HttpStatusCode.OK);
                                             }
@@ -352,7 +352,7 @@ namespace MissionPlanner.GCSViews
                                                 SendJsonResponse(context, new
                                                 {
                                                     status = "Failure",
-                                                    message = "上锁失败。",
+                                                    message = "解锁失败。",
                                                     detail = "失败"
                                                 }, HttpStatusCode.OK);
                                             }
@@ -680,8 +680,8 @@ namespace MissionPlanner.GCSViews
 
                     try
                     {
-                        //var response = await _httpClient.PostAsync("http://192.168.1.108:9085/uav_status/api/data", content);
-                        var response = await _httpClient.PostAsync("http://localhost:9085/uav_status/api/data", content);
+                        var response = await _httpClient.PostAsync("http://192.168.1.108:9085/uav_status/api/data", content);
+                        //var response = await _httpClient.PostAsync("http://localhost:9085/uav_status/api/data", content);
 
                         Console.WriteLine($"HTTP Status Code: {response.StatusCode}");
 
