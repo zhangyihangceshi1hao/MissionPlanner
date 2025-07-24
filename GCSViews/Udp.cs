@@ -141,7 +141,151 @@ namespace MissionPlanner.GCSViews
             if (url.StartsWith("/uav_control/api/"))
             {
                 string[] parts = url.Substring("/uav_control/api/".Length).Split('/');
-                if (parts.Length >= 1 && parts[0] == "UploadWayPoint")
+
+
+                if (parts.Length >= 1 && parts[0] == "FHYUploadWayPoint")
+                {
+                    string uavid = parts[1];
+
+                    if (context.Request.HttpMethod == "POST")
+                    {
+                        using (var reader = new StreamReader(context.Request.InputStream, Encoding.UTF8))
+                        {
+                            string requestBody = reader.ReadToEnd();
+                            Console.WriteLine("请求体内容：" + requestBody);
+
+                            try
+                            {
+                                var waypoints = JsonConvert.DeserializeObject<List<Waypoint>>(requestBody);
+
+                                // 处理上传的航点数据
+                                //ProcessWaypoints(uavid, "1", waypoints);
+                                foreach (var port in MainV2.Comports)
+                                {
+                                    foreach (var mav in port.MAVlist)
+                                    {
+                                        if (mav.sysid + "" == uavid)
+                                        {
+
+
+                                            List<Locationwp> commands = new List<Locationwp>();
+
+                                            Locationwp temp1 = new Locationwp();
+                                            // 清除当前任务
+                                            mav.wps.Clear();
+
+                                            Locationwp home = new Locationwp();
+                                            try
+                                            {
+                                                home.frame = (byte)MAVLink.MAV_FRAME.GLOBAL;
+                                                home.id = (ushort)MAVLink.MAV_CMD.WAYPOINT;
+                                                home.lat = (mav.cs.PlannedHomeLocation.Lat);
+                                                home.lng = (mav.cs.PlannedHomeLocation.Lng);
+                                                home.alt = ((float)mav.cs.PlannedHomeLocation.Alt); // use saved home
+                                            }
+                                            catch
+                                            {
+                                                throw new Exception("Your home location is invalid");
+                                            }
+                                            commands.Insert(0, home);
+
+                                                
+                                                Locationwp temp = new Locationwp();
+
+                                                temp.id = (ushort)84;
+
+                                                temp.p1 = 0;
+
+                                                temp.alt = float.Parse(waypoints[0].Height);
+
+                                                temp.lat = double.Parse(waypoints[0].latitude);
+
+                                                temp.lng = double.Parse(waypoints[0].longitude);
+
+                                                temp.p2 = 0;
+
+                                                temp.p3 = 0;
+
+                                                temp.p4 = 0;
+
+                                                temp.Tag = "0";
+
+                                                temp.frame = 3;
+                                                //MainV2.comPort.MAV.wps.Add(item);
+                                                commands.Add(temp);
+
+                                                Locationwp temp2 = new Locationwp();
+
+                                                temp2.id = (ushort)17;
+
+                                                temp2.p1 = 0;
+
+                                                temp2.alt = float.Parse(waypoints[1].Height);
+
+                                                temp2.lat = double.Parse(waypoints[1].latitude);
+
+                                                temp2.lng = double.Parse(waypoints[1].longitude);
+
+                                                temp2.p2 = 0;
+
+                                                temp2.p3 = 0;
+
+                                                temp2.p4 = 0;
+
+                                                temp2.Tag = "0";
+
+                                                temp2.frame = 3;
+                                                //MainV2.comPort.MAV.wps.Add(item);
+                                                commands.Add(temp2);
+
+
+                                                Console.WriteLine($"已加载 {waypoints.Count} 个航点到任务列表");
+
+                                                // 如果你想自动上传任务到飞控：
+                                                mav_mission.upload(port, mav.sysid,
+                                                                            mav.compid, 0,
+                                                                             commands,
+                                                                             (percent, status) =>
+                                                                             {
+                                                                             }).ConfigureAwait(false);
+
+                                            Thread.Sleep(1000);
+                                            port.setMode(mav.sysid, mav.compid, "Auto");
+                                            Thread.Sleep(500);
+                                            port.doARM(mav.sysid, mav.compid, true, true);
+
+                                        }
+
+                                            
+
+                                        
+                                    }
+                                }
+
+                                SendJsonResponse(context, new
+                                {
+                                    status = "Success",
+                                    message = $"垂起成功接收到 {waypoints.Count} 个航点任务。",
+                                    count = waypoints.Count
+                                }, HttpStatusCode.OK);
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine("解析JSON失败：" + ex.Message);
+                                SendJsonResponse(context, new
+                                {
+                                    status = "Failure",
+                                    error = "垂起无效的JSON格式",
+                                    detail = ex.Message
+                                }, HttpStatusCode.BadRequest);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        SendJsonResponse(context, new { error = "不支持的命令或方法。" }, HttpStatusCode.MethodNotAllowed);
+                    }
+                }else if (parts.Length >= 1 && parts[0] == "UploadWayPoint")
                 {
                     string uavid = parts[1];
 
@@ -193,7 +337,8 @@ namespace MissionPlanner.GCSViews
                         {
                             foreach (var mav in port.MAVlist)
                             {
-                                if (mav.sysid + "" == uavid) {
+                                if (mav.sysid + "" == uavid)
+                                {
                                     port.setMode(mav.sysid, mav.compid, mode);
                                 }
                             }
@@ -216,7 +361,8 @@ namespace MissionPlanner.GCSViews
                                             detail = "成功"
                                         });
                                     }
-                                    else {
+                                    else
+                                    {
                                         SendJsonResponse(context, new
                                         {
                                             status = "Failure",
