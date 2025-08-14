@@ -294,6 +294,7 @@ messageName = {
     [12915] = 'OPEN_DRONE_ID_MESSAGE_PACK',
     [12919] = 'OPEN_DRONE_ID_SYSTEM_UPDATE',
     [12920] = 'HYGROMETER_SENSOR',
+    [12921] = 'PPS_TCP',
     [10001] = 'UAVIONIX_ADSB_OUT_CFG',
     [10002] = 'UAVIONIX_ADSB_OUT_DYNAMIC',
     [10003] = 'UAVIONIX_ADSB_TRANSCEIVER_HEALTH_REPORT',
@@ -10569,6 +10570,9 @@ f.OPEN_DRONE_ID_SYSTEM_UPDATE_timestamp = ProtoField.new("timestamp (uint32_t)",
 f.HYGROMETER_SENSOR_id = ProtoField.new("id (uint8_t)", "mavlink_proto.HYGROMETER_SENSOR_id", ftypes.UINT8, nil)
 f.HYGROMETER_SENSOR_temperature = ProtoField.new("temperature (int16_t)", "mavlink_proto.HYGROMETER_SENSOR_temperature", ftypes.INT16, nil)
 f.HYGROMETER_SENSOR_humidity = ProtoField.new("humidity (uint16_t)", "mavlink_proto.HYGROMETER_SENSOR_humidity", ftypes.UINT16, nil)
+
+f.PPS_TCP_frequency = ProtoField.new("frequency (int32_t)", "mavlink_proto.PPS_TCP_frequency", ftypes.INT32, nil)
+f.PPS_TCP_enable = ProtoField.new("enable (uint8_t)", "mavlink_proto.PPS_TCP_enable", ftypes.UINT8, nil)
 
 f.UAVIONIX_ADSB_OUT_CFG_ICAO = ProtoField.new("ICAO (uint32_t)", "mavlink_proto.UAVIONIX_ADSB_OUT_CFG_ICAO", ftypes.UINT32, nil)
 f.UAVIONIX_ADSB_OUT_CFG_callsign = ProtoField.new("callsign (char)", "mavlink_proto.UAVIONIX_ADSB_OUT_CFG_callsign", ftypes.STRING, nil)
@@ -52188,6 +52192,23 @@ function payload_fns.payload_12920(buffer, tree, msgid, offset, limit, pinfo)
     tvbrange = padded(offset + 2, 2)
     value = tvbrange:le_uint()
     subtree = tree:add_le(f.HYGROMETER_SENSOR_humidity, tvbrange, value)
+end
+-- dissect payload of message type PPS_TCP
+function payload_fns.payload_12921(buffer, tree, msgid, offset, limit, pinfo)
+    local padded, field_offset, value, subtree, tvbrange
+    if (offset + 5 > limit) then
+        padded = buffer(0, limit):bytes()
+        padded:set_size(offset + 5)
+        padded = padded:tvb("Untruncated payload")
+    else
+        padded = buffer
+    end
+    tvbrange = padded(offset + 0, 4)
+    value = tvbrange:le_int()
+    subtree = tree:add_le(f.PPS_TCP_frequency, tvbrange, value)
+    tvbrange = padded(offset + 4, 1)
+    value = tvbrange:le_uint()
+    subtree = tree:add_le(f.PPS_TCP_enable, tvbrange, value)
 end
 -- dissect payload of message type UAVIONIX_ADSB_OUT_CFG
 function payload_fns.payload_10001(buffer, tree, msgid, offset, limit, pinfo)

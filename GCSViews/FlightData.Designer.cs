@@ -49,6 +49,7 @@ namespace MissionPlanner.GCSViews
             this.tabActions = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.BUT_SendMSG = new MissionPlanner.Controls.MyButton();
+            this.BUT_TCP = new MissionPlanner.Controls.MyButton();
             this.BUT_abortland = new MissionPlanner.Controls.MyButton();
             this.modifyandSetLoiterRad = new MissionPlanner.Controls.ModifyandSet();
             this.BUT_clear_track = new MissionPlanner.Controls.MyButton();
@@ -736,6 +737,7 @@ namespace MissionPlanner.GCSViews
             // tableLayoutPanel1
             // 
             resources.ApplyResources(this.tableLayoutPanel1, "tableLayoutPanel1");
+            this.tableLayoutPanel1.Controls.Add(this.BUT_TCP, 1, 4);
             this.tableLayoutPanel1.Controls.Add(this.BUT_SendMSG, 2, 4);
             this.tableLayoutPanel1.Controls.Add(this.BUT_abortland, 4, 4);
             this.tableLayoutPanel1.Controls.Add(this.modifyandSetLoiterRad, 4, 2);
@@ -760,6 +762,19 @@ namespace MissionPlanner.GCSViews
             this.tableLayoutPanel1.Controls.Add(this.BUT_quickauto, 2, 0);
             this.tableLayoutPanel1.Controls.Add(this.BUT_setmode, 1, 2);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+
+            // 
+            // BUT_TCP
+            // 
+            this.BUT_TCP.ColorMouseDown = System.Drawing.Color.Empty;
+            this.BUT_TCP.ColorMouseOver = System.Drawing.Color.Empty;
+            this.BUT_TCP.ColorNotEnabled = System.Drawing.Color.Empty;
+            resources.ApplyResources(this.BUT_TCP, "BUT_TCP");
+            this.BUT_TCP.Name = "BUT_TCP";
+            this.BUT_TCP.TextColorNotEnabled = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(87)))), ((int)(((byte)(4)))));
+            this.BUT_TCP.UseVisualStyleBackColor = true;
+            this.BUT_TCP.Click += new System.EventHandler(this.BUT_TCP_Click);
+
             // 
             // BUT_SendMSG
             // 
@@ -3105,6 +3120,7 @@ namespace MissionPlanner.GCSViews
         private ToolStripMenuItem showIconsToolStripMenuItem;
         private ToolStripMenuItem multiLineToolStripMenuItem;
         private Controls.MyButton BUT_SendMSG;
+        private Controls.MyButton BUT_TCP;
         public Panel panel_persistent;
         public System.Windows.Forms.TabPage tabAuxFunction;
         private FlowLayoutPanel flowLayoutPanel1;

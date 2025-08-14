@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 
 public partial class MAVLink
 {
-    public const string MAVLINK_BUILD_DATE = "Wed Apr 10 2024";
+    public const string MAVLINK_BUILD_DATE = "Wed Aug 13 2025";
     public const string MAVLINK_WIRE_PROTOCOL_VERSION = "2.0";
     public const int MAVLINK_MAX_PAYLOAD_LEN = 255;
 
@@ -319,6 +319,7 @@ public partial class MAVLink
         new message_info(12918, "OPEN_DRONE_ID_ARM_STATUS", 139, 51, 51, typeof( mavlink_open_drone_id_arm_status_t )),
         new message_info(12919, "OPEN_DRONE_ID_SYSTEM_UPDATE", 7, 18, 18, typeof( mavlink_open_drone_id_system_update_t )),
         new message_info(12920, "HYGROMETER_SENSOR", 20, 5, 5, typeof( mavlink_hygrometer_sensor_t )),
+        new message_info(12921, "PPS_TCP", 17, 5, 5, typeof( mavlink_pps_tcp_t )),
         new message_info(42000, "ICAROUS_HEARTBEAT", 227, 1, 1, typeof( mavlink_icarous_heartbeat_t )),
         new message_info(42001, "ICAROUS_KINEMATIC_BANDS", 239, 46, 46, typeof( mavlink_icarous_kinematic_bands_t )),
         new message_info(50001, "CUBEPILOT_RAW_RC", 246, 32, 32, typeof( mavlink_cubepilot_raw_rc_t )),
@@ -648,6 +649,7 @@ public partial class MAVLink
         OPEN_DRONE_ID_ARM_STATUS = 12918,
         OPEN_DRONE_ID_SYSTEM_UPDATE = 12919,
         HYGROMETER_SENSOR = 12920,
+        PPS_TCP = 12921,
         ICAROUS_HEARTBEAT = 42000,
         ICAROUS_KINEMATIC_BANDS = 42001,
         CUBEPILOT_RAW_RC = 50001,
@@ -30411,6 +30413,45 @@ public partial class MAVLink
         [Description("Hygrometer ID")]
         //[FieldOffset(4)]
         public  byte id;
+    };
+
+    
+    /// extensions_start 0
+    [StructLayout(LayoutKind.Sequential,Pack=1,Size=5)]
+    ///<summary> Command to set or control the jamming frequency in Hz. </summary>
+    public struct mavlink_pps_tcp_t
+    {
+        /// packet ordered constructor
+        public mavlink_pps_tcp_t(int frequency,byte enable) 
+        {
+            this.frequency = frequency;
+            this.enable = enable;
+            
+        }
+        
+        /// packet xml order
+        public static mavlink_pps_tcp_t PopulateXMLOrder(int frequency,byte enable) 
+        {
+            var msg = new mavlink_pps_tcp_t();
+
+            msg.frequency = frequency;
+            msg.enable = enable;
+            
+            return msg;
+        }
+        
+
+        /// <summary>Radio frequency in Hz   </summary>
+        [Units("")]
+        [Description("Radio frequency in Hz")]
+        //[FieldOffset(0)]
+        public  int frequency;
+
+        /// <summary>Enable state: 0=Disable, 1=Enable   </summary>
+        [Units("")]
+        [Description("Enable state: 0=Disable, 1=Enable")]
+        //[FieldOffset(4)]
+        public  byte enable;
     };
 
     
