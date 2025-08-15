@@ -32,6 +32,15 @@
             this.myButton1 = new MissionPlanner.Controls.MyButton();
             this.label1 = new System.Windows.Forms.Label();
             this.myButton2 = new MissionPlanner.Controls.MyButton();
+            this.myButton3 = new MissionPlanner.Controls.MyButton();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.dataGrid1 = new System.Windows.Forms.DataGrid();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGrid1)).BeginInit();
             this.SuspendLayout();
             // 
             // textBox1
@@ -43,9 +52,9 @@
             // 
             // myButton1
             // 
-            this.myButton1.Location = new System.Drawing.Point(288, 63);
+            this.myButton1.Location = new System.Drawing.Point(288, 60);
             this.myButton1.Name = "myButton1";
-            this.myButton1.Size = new System.Drawing.Size(100, 23);
+            this.myButton1.Size = new System.Drawing.Size(100, 26);
             this.myButton1.TabIndex = 1;
             this.myButton1.Text = "开始干扰";
             this.myButton1.TextColorNotEnabled = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(87)))), ((int)(((byte)(4)))));
@@ -63,26 +72,98 @@
             // 
             // myButton2
             // 
-            this.myButton2.Location = new System.Drawing.Point(400, 63);
+            this.myButton2.Location = new System.Drawing.Point(394, 60);
             this.myButton2.Name = "myButton2";
-            this.myButton2.Size = new System.Drawing.Size(100, 23);
+            this.myButton2.Size = new System.Drawing.Size(100, 26);
             this.myButton2.TabIndex = 1;
             this.myButton2.Text = "结束干扰";
             this.myButton2.TextColorNotEnabled = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(87)))), ((int)(((byte)(4)))));
             this.myButton2.UseVisualStyleBackColor = true;
             this.myButton2.Click += new System.EventHandler(this.myButton2_Click);
             // 
+            // myButton3
+            // 
+            this.myButton3.Location = new System.Drawing.Point(288, 106);
+            this.myButton3.Name = "myButton3";
+            this.myButton3.Size = new System.Drawing.Size(100, 26);
+            this.myButton3.TabIndex = 3;
+            this.myButton3.Text = "开始侦察";
+            this.myButton3.TextColorNotEnabled = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(87)))), ((int)(((byte)(4)))));
+            this.myButton3.UseVisualStyleBackColor = true;
+            this.myButton3.Click += new System.EventHandler(this.myButton3_Click);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(57, 104);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(26, 18);
+            this.label2.TabIndex = 4;
+            this.label2.Text = "IP";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(57, 146);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(44, 18);
+            this.label3.TabIndex = 5;
+            this.label3.Text = "Port";
+            // 
+            // textBox2
+            // 
+            this.textBox2.Location = new System.Drawing.Point(134, 104);
+            this.textBox2.Name = "textBox2";
+            this.textBox2.Size = new System.Drawing.Size(131, 28);
+            this.textBox2.TabIndex = 6;
+            // 
+            // textBox3
+            // 
+            this.textBox3.Location = new System.Drawing.Point(134, 143);
+            this.textBox3.Name = "textBox3";
+            this.textBox3.Size = new System.Drawing.Size(131, 28);
+            this.textBox3.TabIndex = 7;
+            // 
+            // dataGridView1
+            // 
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Location = new System.Drawing.Point(51, 221);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.RowHeadersWidth = 62;
+            this.dataGridView1.RowTemplate.Height = 30;
+            this.dataGridView1.Size = new System.Drawing.Size(460, 472);
+            this.dataGridView1.TabIndex = 8;
+           
+            // 
+            // dataGrid1
+            // 
+            this.dataGrid1.DataMember = "";
+            this.dataGrid1.HeaderForeColor = System.Drawing.SystemColors.ControlText;
+            this.dataGrid1.Location = new System.Drawing.Point(328, 467);
+            this.dataGrid1.Name = "dataGrid1";
+            this.dataGrid1.Size = new System.Drawing.Size(8, 8);
+            this.dataGrid1.TabIndex = 9;
+            // 
             // controllerTCP
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(567, 140);
+            this.ClientSize = new System.Drawing.Size(422, 527);
+            this.Controls.Add(this.dataGrid1);
+            this.Controls.Add(this.dataGridView1);
+            this.Controls.Add(this.textBox3);
+            this.Controls.Add(this.textBox2);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.myButton3);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.myButton2);
             this.Controls.Add(this.myButton1);
             this.Controls.Add(this.textBox1);
             this.Name = "controllerTCP";
             this.Text = "controllerTCP";
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGrid1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -94,5 +175,12 @@
         private Controls.MyButton myButton1;
         private System.Windows.Forms.Label label1;
         private Controls.MyButton myButton2;
+        private Controls.MyButton myButton3;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.TextBox textBox3;
+        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.DataGrid dataGrid1;
     }
 }
