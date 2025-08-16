@@ -37,10 +37,6 @@
             this.label3 = new System.Windows.Forms.Label();
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.textBox3 = new System.Windows.Forms.TextBox();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.dataGrid1 = new System.Windows.Forms.DataGrid();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGrid1)).BeginInit();
             this.SuspendLayout();
             // 
             // textBox1
@@ -124,33 +120,11 @@
             this.textBox3.Size = new System.Drawing.Size(131, 28);
             this.textBox3.TabIndex = 7;
             // 
-            // dataGridView1
-            // 
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(51, 221);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.RowHeadersWidth = 62;
-            this.dataGridView1.RowTemplate.Height = 30;
-            this.dataGridView1.Size = new System.Drawing.Size(460, 472);
-            this.dataGridView1.TabIndex = 8;
-           
-            // 
-            // dataGrid1
-            // 
-            this.dataGrid1.DataMember = "";
-            this.dataGrid1.HeaderForeColor = System.Drawing.SystemColors.ControlText;
-            this.dataGrid1.Location = new System.Drawing.Point(328, 467);
-            this.dataGrid1.Name = "dataGrid1";
-            this.dataGrid1.Size = new System.Drawing.Size(8, 8);
-            this.dataGrid1.TabIndex = 9;
-            // 
             // controllerTCP
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(422, 527);
-            this.Controls.Add(this.dataGrid1);
-            this.Controls.Add(this.dataGridView1);
+            this.ClientSize = new System.Drawing.Size(565, 248);
             this.Controls.Add(this.textBox3);
             this.Controls.Add(this.textBox2);
             this.Controls.Add(this.label3);
@@ -162,8 +136,6 @@
             this.Controls.Add(this.textBox1);
             this.Name = "controllerTCP";
             this.Text = "controllerTCP";
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGrid1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -180,7 +152,5 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.TextBox textBox3;
-        private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.DataGrid dataGrid1;
     }
 }

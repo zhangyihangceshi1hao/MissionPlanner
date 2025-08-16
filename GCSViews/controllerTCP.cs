@@ -19,9 +19,10 @@ namespace MissionPlanner.GCSViews
     {
         // ========= 新增：TCP 相关字段 =========
         private TcpClient _client;
-        private CancellationTokenSource _cts;
-        private Task _readerTask;
-
+        private Thread tcpThread;
+        private CancellationTokenSource _cancellationTokenSource;
+        private Task _receiveTask;
+      
         // 可选：默认地址和端口（若没有 textBoxIP/textBoxPort 会使用）
         private const string DefaultHost = "127.0.0.1";
         private const int DefaultPort = 9000;
@@ -29,47 +30,10 @@ namespace MissionPlanner.GCSViews
         public controllerTCP()
         {
             InitializeComponent();
-            InitializeDataGridView();
-            // 确保按钮文字初始状态
-            if (myButton3 != null) myButton3.Text = "开始侦察";
+           
+        }
 
-            // 窗体关闭时清理网络资源
-            this.FormClosing += async (s, e) =>
-            {
-                try { await StopAsync(); } catch { /* 忽略 */ }
-            };
-        }
-        // 初始化 DataGridView 控件
-        private void InitializeDataGridView()
-        {
-            // 添加列到 DataGridView
-            dataGridView1.Columns.Add("MagicNum", "MagicNum");
-            dataGridView1.Columns.Add("DataSize", "DataSize");
-            dataGridView1.Columns.Add("DataType", "DataType");
-            dataGridView1.Columns.Add("LenPack", "LenPack");
-            dataGridView1.Columns.Add("ZeroByte", "ZeroByte");
-            dataGridView1.Columns.Add("Version", "Version");
-            dataGridView1.Columns.Add("SequenceNum", "SequenceNum");
-            dataGridView1.Columns.Add("StateInfo", "StateInfo");
-            dataGridView1.Columns.Add("SerialNum", "SerialNum");
-            dataGridView1.Columns.Add("Longitude", "Longitude");
-            dataGridView1.Columns.Add("Latitude", "Latitude");
-            dataGridView1.Columns.Add("Altitude", "Altitude");
-            dataGridView1.Columns.Add("Height", "Height");
-            dataGridView1.Columns.Add("VNorth", "VNorth");
-            dataGridView1.Columns.Add("VEast", "VEast");
-            dataGridView1.Columns.Add("VUp", "VUp");
-            dataGridView1.Columns.Add("Yaw", "Yaw");
-            dataGridView1.Columns.Add("GpsTime", "GpsTime");
-            dataGridView1.Columns.Add("RcLatitude", "RcLatitude");
-            dataGridView1.Columns.Add("RcLongitude", "RcLongitude");
-            dataGridView1.Columns.Add("HomeLongitude", "HomeLongitude");
-            dataGridView1.Columns.Add("HomeLatitude", "HomeLatitude");
-            dataGridView1.Columns.Add("DeviceType", "DeviceType");
-            dataGridView1.Columns.Add("UuidLen", "UuidLen");
-            dataGridView1.Columns.Add("Uuid", "UUID");
-            dataGridView1.Columns.Add("Crc", "CRC");
-        }
+        
 
 
         private void myButton1_Click(object sender, EventArgs e)
@@ -94,80 +58,119 @@ namespace MissionPlanner.GCSViews
         {
             if (myButton3.Text == "开始侦察")
             {
-                myButton3.Enabled = false;
-                try
-                {
-                    await StartAsync();
                     myButton3.Text = "结束侦察";
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("连接或启动失败：\n" + ex.Message);
-                }
-                finally
-                {
-                    myButton3.Enabled = true;
-                }
+                 StartClientAsync();
+
+
             }
             else
             {
-                myButton3.Enabled = false;
-                try
-                {
-                    await StopAsync();
-                    myButton3.Text = "开始侦察";
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("停止失败：\n" + ex.Message);
-                }
-                finally
-                {
-                    myButton3.Enabled = true;
-                }
+                myButton3.Text = "开始侦察";
+                 StopClient();
             }
         }
-        private async Task StartAsync()
+
+        private async Task StartClientAsync()
         {
-            if (_client != null) return; // 已在运行
-
-            string host = FindTextBoxText("textBox2") ?? DefaultHost;
-            int port = ParsePort(FindTextBoxText("textBox3")) ?? DefaultPort;
-
-            _cts = new CancellationTokenSource();
-            _client = new TcpClient();
-            await _client.ConnectAsync(host, port);
-            NetworkStream ns = _client.GetStream();
-            ns.ReadTimeout = 30000;
-            ns.WriteTimeout = 30000;
-
-            _readerTask = Task.Run(() => ReadLoopAsync(ns, _cts.Token));
-            AppendLog($"[INFO] 已连接到 {host}:{port}\r\n");
-        }
-
-        private async Task StopAsync()
-        {
-            if (_client == null) return;
-
             try
             {
-                _cts?.Cancel();
-                try { _client.Close(); } catch { /* 忽略 */ }
+                _client = new TcpClient();
+                _cancellationTokenSource = new CancellationTokenSource();
+                string serverIp = FindTextBoxText("textBox2") ?? DefaultHost;
+                int port = ParsePort(FindTextBoxText("textBox3")) ?? DefaultPort;
+                await _client.ConnectAsync(serverIp, port);
+             
 
-                if (_readerTask != null)
+                var stream = _client.GetStream();
+                var buffer = new byte[1024];
+
+                _receiveTask = Task.Run(async () =>
                 {
-                    await Task.WhenAny(_readerTask, Task.Delay(2000));
-                }
+                    try
+                    {
+                        while (!_cancellationTokenSource.Token.IsCancellationRequested)
+                        {
+                            if (_client.Connected && stream.DataAvailable)
+                            {
+                                int bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length);
+                                if (bytesRead <= 0)
+                                    break;
+
+                                // 从字节数组转换为结构体
+                                PacketData packet = ByteArrayToStructure<PacketData>(buffer);
+                                if (packet.MagicNum == 0x00B20E00) // 假设这里是 MagicNum
+                                {
+
+                                    Console.WriteLine("=== 收到数据包 (PacketData) ===");
+                                    Console.WriteLine($"MagicNum     : 0x{packet.MagicNum:X8}");
+                                    Console.WriteLine($"DataSize     : {packet.DataSize}");
+                                    Console.WriteLine($"DataType     : 0x{packet.DataType:X8}");
+                                    Console.WriteLine($"LenPack      : {packet.LenPack}");
+                                    Console.WriteLine($"ZeroByte     : {packet.ZeroByte}");
+                                    Console.WriteLine($"Version      : {packet.Version}");
+                                    Console.WriteLine($"SequenceNum  : {packet.SequenceNum}");
+                                    Console.WriteLine($"StateInfo    : 0x{packet.StateInfo:X4}");
+                                    Console.WriteLine($"SerialNum    : {packet.SerialNum?.TrimEnd('\0') ?? "null"}");
+                                    Console.WriteLine($"Longitude    : {packet.Longitude}");
+                                    Console.WriteLine($"Latitude     : {packet.Latitude}");
+                                    Console.WriteLine($"Altitude     : {packet.Altitude}");
+                                    Console.WriteLine($"Height       : {packet.Height}");
+                                    Console.WriteLine($"VNorth       : {packet.VNorth}");
+                                    Console.WriteLine($"VEast        : {packet.VEast}");
+                                    Console.WriteLine($"VUp          : {packet.VUp}");
+                                    Console.WriteLine($"Yaw          : {packet.Yaw}");
+                                    Console.WriteLine($"GpsTime      : {packet.GpsTime}");
+                                    Console.WriteLine($"RcLatitude   : {packet.RcLatitude}");
+                                    Console.WriteLine($"RcLongitude  : {packet.RcLongitude}");
+                                    Console.WriteLine($"HomeLongitude: {packet.HomeLongitude}");
+                                    Console.WriteLine($"HomeLatitude : {packet.HomeLatitude}");
+                                    Console.WriteLine($"DeviceType   : {packet.DeviceType}");
+                                    Console.WriteLine($"UuidLen      : {packet.UuidLen}");
+
+                                    // 打印 Uuid（十六进制格式）
+                                    if (packet.Uuid != null && packet.UuidLen > 0)
+                                    {
+                                        string uuidHex = string.Join(" ", packet.Uuid.Take(packet.UuidLen).Select(b => b.ToString("X2")));
+                                        Console.WriteLine($"Uuid         : {uuidHex}");
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine($"Uuid         : (null or zero length)");
+                                    }
+
+                                    Console.WriteLine($"Crc          : 0x{packet.Crc:X4}");
+                                    Console.WriteLine("==============================");
+
+                                }
+
+                            }
+                            else
+                            {
+                                await Task.Delay(10);
+                            }
+                        }
+                    }
+                    catch (Exception ex) when (!(ex is OperationCanceledException))
+                    {
+                       
+                    }
+                }, _cancellationTokenSource.Token);
             }
-            finally
+            catch (Exception ex)
             {
-                _readerTask = null;
-                _client = null;
-                _cts?.Dispose();
-                _cts = null;
-                AppendLog($"[INFO] 已停止侦察并断开连接\r\n");
+         
             }
         }
+        private void StopClient()
+        {
+            _cancellationTokenSource?.Cancel();
+            _client?.Close();
+            _client?.Dispose();
+            _client = null;
+           
+        }
+       
+
         // ========= 新增：PacketData 结构体 =========
         [StructLayout(LayoutKind.Sequential, Pack = 1)]
         public struct PacketData
@@ -208,7 +211,7 @@ namespace MissionPlanner.GCSViews
             try
             {
                 byte[] buffer = new byte[4096]; // 假设最大字节数
-                while (!ct.IsCancellationRequested)
+                while (true)
                 {
                     int bytesRead = await ns.ReadAsync(buffer, 0, buffer.Length, ct);
                     if (bytesRead <= 0)
@@ -218,53 +221,54 @@ namespace MissionPlanner.GCSViews
                     PacketData packet = ByteArrayToStructure<PacketData>(buffer);
                     if (packet.MagicNum == 0x00B20E00) // 假设这里是 MagicNum
                     {
-                       
 
-                        // 将数据包填充到 DataGridView
-                        FillDataGridView(packet);
+                        Console.WriteLine("=== 收到数据包 (PacketData) ===");
+                        Console.WriteLine($"MagicNum     : 0x{packet.MagicNum:X8}");
+                        Console.WriteLine($"DataSize     : {packet.DataSize}");
+                        Console.WriteLine($"DataType     : 0x{packet.DataType:X8}");
+                        Console.WriteLine($"LenPack      : {packet.LenPack}");
+                        Console.WriteLine($"ZeroByte     : {packet.ZeroByte}");
+                        Console.WriteLine($"Version      : {packet.Version}");
+                        Console.WriteLine($"SequenceNum  : {packet.SequenceNum}");
+                        Console.WriteLine($"StateInfo    : 0x{packet.StateInfo:X4}");
+                        Console.WriteLine($"SerialNum    : {packet.SerialNum?.TrimEnd('\0') ?? "null"}");
+                        Console.WriteLine($"Longitude    : {packet.Longitude}");
+                        Console.WriteLine($"Latitude     : {packet.Latitude}");
+                        Console.WriteLine($"Altitude     : {packet.Altitude}");
+                        Console.WriteLine($"Height       : {packet.Height}");
+                        Console.WriteLine($"VNorth       : {packet.VNorth}");
+                        Console.WriteLine($"VEast        : {packet.VEast}");
+                        Console.WriteLine($"VUp          : {packet.VUp}");
+                        Console.WriteLine($"Yaw          : {packet.Yaw}");
+                        Console.WriteLine($"GpsTime      : {packet.GpsTime}");
+                        Console.WriteLine($"RcLatitude   : {packet.RcLatitude}");
+                        Console.WriteLine($"RcLongitude  : {packet.RcLongitude}");
+                        Console.WriteLine($"HomeLongitude: {packet.HomeLongitude}");
+                        Console.WriteLine($"HomeLatitude : {packet.HomeLatitude}");
+                        Console.WriteLine($"DeviceType   : {packet.DeviceType}");
+                        Console.WriteLine($"UuidLen      : {packet.UuidLen}");
+
+                        // 打印 Uuid（十六进制格式）
+                        if (packet.Uuid != null && packet.UuidLen > 0)
+                        {
+                            string uuidHex = string.Join(" ", packet.Uuid.Take(packet.UuidLen).Select(b => b.ToString("X2")));
+                            Console.WriteLine($"Uuid         : {uuidHex}");
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Uuid         : (null or zero length)");
+                        }
+
+                        Console.WriteLine($"Crc          : 0x{packet.Crc:X4}");
+                        Console.WriteLine("==============================");
+
                     }
                 }
             }
             catch (Exception ex)
             {
-                AppendLog($"读取数据包异常: {ex.Message}\r\n");
+               
             }
-        }
-        // 填充 DataGridView
-        private void FillDataGridView(PacketData packet)
-        {
-            // 清空现有数据
-            dataGridView1.Rows.Clear();
-
-            // 添加新的一行
-            dataGridView1.Rows.Add(
-                packet.MagicNum.ToString("X8"),
-                packet.DataSize,
-                packet.DataType,
-                packet.LenPack,
-                packet.ZeroByte,
-                packet.Version,
-                packet.SequenceNum,
-                packet.StateInfo,
-                packet.SerialNum,
-                packet.Longitude,
-                packet.Latitude,
-                packet.Altitude,
-                packet.Height,
-                packet.VNorth,
-                packet.VEast,
-                packet.VUp,
-                packet.Yaw,
-                packet.GpsTime,
-                packet.RcLatitude,
-                packet.RcLongitude,
-                packet.HomeLongitude,
-                packet.HomeLatitude,
-                packet.DeviceType,
-                packet.UuidLen,
-                BitConverter.ToString(packet.Uuid),
-                packet.Crc.ToString("X4")
-            );
         }
 
         // 辅助方法：将字节数组转换为结构体
@@ -285,22 +289,6 @@ namespace MissionPlanner.GCSViews
             return obj;
         }
 
-        // ========= 新增：UI 辅助 =========
-        private void AppendLog(string text)
-        {
-            try
-            {
-                Control c = this.Controls.Find("txtLog", true).FirstOrDefault();
-                if (c is TextBox txt && !txt.IsDisposed)
-                {
-                    if (txt.InvokeRequired)
-                        txt.BeginInvoke(new Action(() => txt.AppendText(text)));
-                    else
-                        txt.AppendText(text);
-                }
-            }
-            catch { /* 忽略所有 UI 日志异常 */ }
-        }
 
         private string FindTextBoxText(string name)
         {
@@ -314,6 +302,6 @@ namespace MissionPlanner.GCSViews
             return null;
         }
 
-        
+
     }
 }
