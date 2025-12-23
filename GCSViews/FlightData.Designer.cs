@@ -49,6 +49,7 @@ namespace MissionPlanner.GCSViews
             this.tabActions = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.BUT_SendMSG = new MissionPlanner.Controls.MyButton();
+            this.BUT_LIDE_ENGINE = new MissionPlanner.Controls.MyButton();
             this.BUT_abortland = new MissionPlanner.Controls.MyButton();
             this.modifyandSetLoiterRad = new MissionPlanner.Controls.ModifyandSet();
             this.BUT_clear_track = new MissionPlanner.Controls.MyButton();
@@ -736,6 +737,7 @@ namespace MissionPlanner.GCSViews
             // tableLayoutPanel1
             // 
             resources.ApplyResources(this.tableLayoutPanel1, "tableLayoutPanel1");
+            this.tableLayoutPanel1.Controls.Add(this.BUT_LIDE_ENGINE, 1, 4);
             this.tableLayoutPanel1.Controls.Add(this.BUT_SendMSG, 2, 4);
             this.tableLayoutPanel1.Controls.Add(this.BUT_abortland, 4, 4);
             this.tableLayoutPanel1.Controls.Add(this.modifyandSetLoiterRad, 4, 2);
@@ -770,7 +772,17 @@ namespace MissionPlanner.GCSViews
             this.BUT_SendMSG.Name = "BUT_SendMSG";
             this.toolTip1.SetToolTip(this.BUT_SendMSG, resources.GetString("BUT_SendMSG.ToolTip"));
             this.BUT_SendMSG.UseVisualStyleBackColor = true;
-            this.BUT_SendMSG.Click += new System.EventHandler(this.BUT_SendMSG_Click);
+            this.BUT_SendMSG.Click += new System.EventHandler(this.BUT_SendMSG_Click); // 
+            // BUT_LIDE_ENGINE
+            // 
+            this.BUT_LIDE_ENGINE.ColorMouseDown = System.Drawing.Color.Empty;
+            this.BUT_LIDE_ENGINE.ColorMouseOver = System.Drawing.Color.Empty;
+            this.BUT_LIDE_ENGINE.ColorNotEnabled = System.Drawing.Color.Empty;
+            resources.ApplyResources(this.BUT_LIDE_ENGINE, "BUT_LIDE_ENGINE");
+            this.BUT_LIDE_ENGINE.Name = "BUT_LIDE_ENGINE";
+            this.toolTip1.SetToolTip(this.BUT_LIDE_ENGINE, resources.GetString("BUT_LIDE_ENGINE.ToolTip"));
+            this.BUT_LIDE_ENGINE.UseVisualStyleBackColor = true;
+            this.BUT_LIDE_ENGINE.Click += new System.EventHandler(this.BUT_LIDE_ENGINE_Click);
             // 
             // BUT_abortland
             // 
@@ -3105,6 +3117,7 @@ namespace MissionPlanner.GCSViews
         private ToolStripMenuItem showIconsToolStripMenuItem;
         private ToolStripMenuItem multiLineToolStripMenuItem;
         private Controls.MyButton BUT_SendMSG;
+        private Controls.MyButton BUT_LIDE_ENGINE;
         public Panel panel_persistent;
         public System.Windows.Forms.TabPage tabAuxFunction;
         private FlowLayoutPanel flowLayoutPanel1;

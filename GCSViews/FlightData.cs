@@ -1245,6 +1245,12 @@ namespace MissionPlanner.GCSViews
                 CustomMessageBox.Show(Strings.ErrorNoResponce, Strings.ERROR);
             }
         }
+        private void BUT_LIDE_ENGINE_Click(object sender, EventArgs e)
+        {
+            var form = new LideEngine();
+
+            form.Show();
+        }
 
         private string tlogdir = Settings.Instance.LogDir;
 

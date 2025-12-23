@@ -11,6 +11,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
 using System.Text;
+using static MAVLink;
 
 namespace MissionPlanner
 {
@@ -99,6 +100,75 @@ namespace MissionPlanner
         // current firmware
         public Firmwares firmware = Firmwares.ArduCopter2;
         private bool gotwind;
+
+        // lide_engine 字段定义
+        public float engine_runtime_hours;
+        public float fuel_rate_instant;
+        public ushort engine_runtime_minutes;
+        public ushort fuel_consumption_ml;
+        public byte engine_system_status;
+        public byte engine_running;
+        public byte maintenance_status;
+
+        public byte throttle_feedback;
+        public ushort engine_rpm;
+        public float cylinder_temp_1;
+        public float cylinder_temp_2;
+        public float cylinder_temp_3;
+        public float cylinder_temp_4;
+
+        public float exhaust_temp_1;
+        public float exhaust_temp_2;
+        public float exhaust_temp_3;
+        public float exhaust_temp_4;
+        public float cooling_door_duty_1;
+        public float cooling_door_duty_2;
+        public float cooling_door_duty_3;
+        public float cooling_door_duty_4;
+
+        public float fuel_pressure_target;
+        public float fuel_pressure_actual;
+        public ushort fuel_pump_rpm;
+        public float rail_pressure_target;
+        public float rail_pressure_actual;
+        public float system_voltage;
+        public ushort oil_consumption;
+
+        public float throttle1_deviation;
+        public float throttle1_position;
+        public float throttle2_deviation;
+        public float throttle2_position;
+        public float intake_temperature;
+        public float environment_pressure;
+        public float oil_level;
+
+        public byte fault_byte1;
+        public byte fault_byte2;
+        public byte fault_byte3;
+        public byte fault_byte4;
+        public byte fault_byte5;
+        public byte fault_byte6;
+        public byte fault_byte7;
+        public byte fault_byte8;
+        public float adjust_coefficient1;
+        public float adjust_coefficient2;
+        public float adjust_coefficient3;
+        public float adjust_coefficient4;
+
+        public byte engine_status_summary;
+        public ushort engine_rpm_summary;
+        public byte throttle_feedback_summary;
+        public float cylinder_temp_max;
+        public float exhaust_temp_max;
+        public float fuel_pressure_target_summary;
+        public float rail_pressure_target_summary;
+        public float system_voltage_summary;
+        public float engine_runtime_hours_summary;
+        public ushort engine_runtime_minutes_summary;
+        public byte fault_count;
+        public byte maintenance_status_summary;
+        public byte engine_health_score;
+        public ushort maintenance_time_remaining;
 
         // HIL
         public int hilch1; // { get; set; }
@@ -301,6 +371,9 @@ namespace MissionPlanner
                     _groundcourse = value;
             }
         }
+
+
+
 
         // position
         [DisplayFieldName("lat.Field")]
@@ -2225,6 +2298,100 @@ namespace MissionPlanner
             {
                 switch (mavLinkMessage.msgid)
                 {
+
+                    // 状态消息解析
+                    case (uint)MAVLink.MAVLINK_MSG_ID.LIDE_CAN_STATUS1:
+                        var status1 = mavLinkMessage.ToStructure<MAVLink.mavlink_lide_can_status1_t>();
+                        engine_runtime_hours = status1.engine_runtime_hours;
+                        fuel_rate_instant = status1.fuel_rate_instant;
+                        engine_runtime_minutes = status1.engine_runtime_minutes;
+                        fuel_consumption_ml = status1.fuel_consumption_ml;
+                        engine_system_status = status1.engine_system_status;
+                        engine_running = status1.engine_running;
+                        maintenance_status = status1.maintenance_status;
+                        break;
+
+                    case (uint)MAVLink.MAVLINK_MSG_ID.LIDE_CAN_STATUS2:
+                        var status2 = mavLinkMessage.ToStructure<MAVLink.mavlink_lide_can_status2_t>();
+                        throttle_feedback = status2.throttle_feedback;
+                        engine_rpm = status2.engine_rpm;
+                        cylinder_temp_1 = status2.cylinder_temp_1;
+                        cylinder_temp_2 = status2.cylinder_temp_2;
+                        cylinder_temp_3 = status2.cylinder_temp_3;
+                        cylinder_temp_4 = status2.cylinder_temp_4;
+                        break;
+
+                    case (uint)MAVLink.MAVLINK_MSG_ID.LIDE_CAN_STATUS3:
+                        var status3 = mavLinkMessage.ToStructure<MAVLink.mavlink_lide_can_status3_t>();
+                        exhaust_temp_1 = status3.exhaust_temp_1;
+                        exhaust_temp_2 = status3.exhaust_temp_2;
+                        exhaust_temp_3 = status3.exhaust_temp_3;
+                        exhaust_temp_4 = status3.exhaust_temp_4;
+                        cooling_door_duty_1 = status3.cooling_door_duty_1;
+                        cooling_door_duty_2 = status3.cooling_door_duty_2;
+                        cooling_door_duty_3 = status3.cooling_door_duty_3;
+                        cooling_door_duty_4 = status3.cooling_door_duty_4;
+                        break;
+
+                    case (uint)MAVLink.MAVLINK_MSG_ID.LIDE_CAN_STATUS4:
+                        var status4 = mavLinkMessage.ToStructure<MAVLink.mavlink_lide_can_status4_t>();
+                        fuel_pressure_target = status4.fuel_pressure_target;
+                        fuel_pressure_actual = status4.fuel_pressure_actual;
+                        fuel_pump_rpm = status4.fuel_pump_rpm;
+                        rail_pressure_target = status4.rail_pressure_target;
+                        rail_pressure_actual = status4.rail_pressure_actual;
+                        system_voltage = status4.system_voltage;
+                        oil_consumption = status4.oil_consumption;
+                        break;
+
+                    case (uint)MAVLink.MAVLINK_MSG_ID.LIDE_CAN_STATUS5:
+                        var status5 = mavLinkMessage.ToStructure<MAVLink.mavlink_lide_can_status5_t>();
+                        throttle1_deviation = status5.throttle1_deviation;
+                        throttle1_position = status5.throttle1_position;
+                        throttle2_deviation = status5.throttle2_deviation;
+                        throttle2_position = status5.throttle2_position;
+                        intake_temperature = status5.intake_temperature;
+                        environment_pressure = status5.environment_pressure;
+                        oil_level = status5.oil_level;
+                        break;
+
+                    case (uint)MAVLink.MAVLINK_MSG_ID.LIDE_CAN_STATUS6:
+                        var status6 = mavLinkMessage.ToStructure<MAVLink.mavlink_lide_can_status6_t>();
+                        fault_byte1 = status6.fault_byte1;
+                        fault_byte2 = status6.fault_byte2;
+                        fault_byte3 = status6.fault_byte3;
+                        fault_byte4 = status6.fault_byte4;
+                        fault_byte5 = status6.fault_byte5;
+                        fault_byte6 = status6.fault_byte6;
+                        break;
+
+                    case (uint)MAVLink.MAVLINK_MSG_ID.LIDE_CAN_STATUS7:
+                        var status7 = mavLinkMessage.ToStructure<MAVLink.mavlink_lide_can_status7_t>();
+                        fault_byte7 = status7.fault_byte7;
+                        fault_byte8 = status7.fault_byte8;
+                        adjust_coefficient1 = status7.adjust_coefficient1;
+                        adjust_coefficient2 = status7.adjust_coefficient2;
+                        adjust_coefficient3 = status7.adjust_coefficient3;
+                        adjust_coefficient4 = status7.adjust_coefficient4;
+                        break;
+
+                    case (uint)MAVLink.MAVLINK_MSG_ID.LIDE_ENGINE_SUMMARY:
+                        var summary = mavLinkMessage.ToStructure<MAVLink.mavlink_lide_engine_summary_t>();
+                        engine_status_summary = summary.engine_status;
+                        engine_rpm_summary = summary.engine_rpm;
+                        throttle_feedback_summary = summary.throttle_feedback;
+                        cylinder_temp_max = summary.cylinder_temp_max;
+                        exhaust_temp_max = summary.exhaust_temp_max;
+                        fuel_pressure_target_summary = summary.fuel_pressure_target;
+                        rail_pressure_target_summary = summary.rail_pressure_target;
+                        system_voltage_summary = summary.system_voltage;
+                        engine_runtime_hours_summary = summary.engine_runtime_hours;
+                        engine_runtime_minutes_summary = summary.engine_runtime_minutes;
+                        fault_count = summary.fault_count;
+                        maintenance_status_summary = summary.maintenance_status;
+                        engine_health_score = summary.engine_health_score;
+                        maintenance_time_remaining = summary.maintenance_time_remaining;
+                        break;
                     case (uint)MAVLink.MAVLINK_MSG_ID.RC_CHANNELS_SCALED:
 
                         // hil mavlink 0.9

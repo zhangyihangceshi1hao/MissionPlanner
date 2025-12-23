@@ -294,6 +294,15 @@ messageName = {
     [12915] = 'OPEN_DRONE_ID_MESSAGE_PACK',
     [12919] = 'OPEN_DRONE_ID_SYSTEM_UPDATE',
     [12920] = 'HYGROMETER_SENSOR',
+    [12921] = 'LIDE_CAN_CONTROL',
+    [12922] = 'LIDE_CAN_STATUS1',
+    [12923] = 'LIDE_CAN_STATUS2',
+    [12924] = 'LIDE_CAN_STATUS3',
+    [12925] = 'LIDE_CAN_STATUS4',
+    [12926] = 'LIDE_CAN_STATUS5',
+    [12927] = 'LIDE_CAN_STATUS6',
+    [12928] = 'LIDE_CAN_STATUS7',
+    [12929] = 'LIDE_ENGINE_SUMMARY',
     [10001] = 'UAVIONIX_ADSB_OUT_CFG',
     [10002] = 'UAVIONIX_ADSB_OUT_DYNAMIC',
     [10003] = 'UAVIONIX_ADSB_TRANSCEIVER_HEALTH_REPORT',
@@ -10569,6 +10578,82 @@ f.OPEN_DRONE_ID_SYSTEM_UPDATE_timestamp = ProtoField.new("timestamp (uint32_t)",
 f.HYGROMETER_SENSOR_id = ProtoField.new("id (uint8_t)", "mavlink_proto.HYGROMETER_SENSOR_id", ftypes.UINT8, nil)
 f.HYGROMETER_SENSOR_temperature = ProtoField.new("temperature (int16_t)", "mavlink_proto.HYGROMETER_SENSOR_temperature", ftypes.INT16, nil)
 f.HYGROMETER_SENSOR_humidity = ProtoField.new("humidity (uint16_t)", "mavlink_proto.HYGROMETER_SENSOR_humidity", ftypes.UINT16, nil)
+
+f.LIDE_CAN_CONTROL_throttle_request = ProtoField.new("throttle_request (uint16_t)", "mavlink_proto.LIDE_CAN_CONTROL_throttle_request", ftypes.UINT16, nil)
+f.LIDE_CAN_CONTROL_altitude = ProtoField.new("altitude (uint16_t)", "mavlink_proto.LIDE_CAN_CONTROL_altitude", ftypes.UINT16, nil)
+f.LIDE_CAN_CONTROL_airspeed = ProtoField.new("airspeed (uint8_t)", "mavlink_proto.LIDE_CAN_CONTROL_airspeed", ftypes.UINT8, nil)
+f.LIDE_CAN_CONTROL_control_command = ProtoField.new("control_command (uint8_t)", "mavlink_proto.LIDE_CAN_CONTROL_control_command", ftypes.UINT8, nil)
+f.LIDE_CAN_CONTROL_reserved1 = ProtoField.new("reserved1 (uint8_t)", "mavlink_proto.LIDE_CAN_CONTROL_reserved1", ftypes.UINT8, nil)
+f.LIDE_CAN_CONTROL_reserved2 = ProtoField.new("reserved2 (uint8_t)", "mavlink_proto.LIDE_CAN_CONTROL_reserved2", ftypes.UINT8, nil)
+
+f.LIDE_CAN_STATUS1_engine_system_status = ProtoField.new("engine_system_status (uint8_t)", "mavlink_proto.LIDE_CAN_STATUS1_engine_system_status", ftypes.UINT8, nil)
+f.LIDE_CAN_STATUS1_engine_running = ProtoField.new("engine_running (uint8_t)", "mavlink_proto.LIDE_CAN_STATUS1_engine_running", ftypes.UINT8, nil)
+f.LIDE_CAN_STATUS1_maintenance_status = ProtoField.new("maintenance_status (uint8_t)", "mavlink_proto.LIDE_CAN_STATUS1_maintenance_status", ftypes.UINT8, nil)
+f.LIDE_CAN_STATUS1_engine_runtime_hours = ProtoField.new("engine_runtime_hours (float)", "mavlink_proto.LIDE_CAN_STATUS1_engine_runtime_hours", ftypes.FLOAT, nil)
+f.LIDE_CAN_STATUS1_engine_runtime_minutes = ProtoField.new("engine_runtime_minutes (uint16_t)", "mavlink_proto.LIDE_CAN_STATUS1_engine_runtime_minutes", ftypes.UINT16, nil)
+f.LIDE_CAN_STATUS1_fuel_consumption_ml = ProtoField.new("fuel_consumption_ml (uint16_t)", "mavlink_proto.LIDE_CAN_STATUS1_fuel_consumption_ml", ftypes.UINT16, nil)
+f.LIDE_CAN_STATUS1_fuel_rate_instant = ProtoField.new("fuel_rate_instant (float)", "mavlink_proto.LIDE_CAN_STATUS1_fuel_rate_instant", ftypes.FLOAT, nil)
+
+f.LIDE_CAN_STATUS2_throttle_feedback = ProtoField.new("throttle_feedback (uint8_t)", "mavlink_proto.LIDE_CAN_STATUS2_throttle_feedback", ftypes.UINT8, nil)
+f.LIDE_CAN_STATUS2_engine_rpm = ProtoField.new("engine_rpm (uint16_t)", "mavlink_proto.LIDE_CAN_STATUS2_engine_rpm", ftypes.UINT16, nil)
+f.LIDE_CAN_STATUS2_cylinder_temp_1 = ProtoField.new("cylinder_temp_1 (float)", "mavlink_proto.LIDE_CAN_STATUS2_cylinder_temp_1", ftypes.FLOAT, nil)
+f.LIDE_CAN_STATUS2_cylinder_temp_2 = ProtoField.new("cylinder_temp_2 (float)", "mavlink_proto.LIDE_CAN_STATUS2_cylinder_temp_2", ftypes.FLOAT, nil)
+f.LIDE_CAN_STATUS2_cylinder_temp_3 = ProtoField.new("cylinder_temp_3 (float)", "mavlink_proto.LIDE_CAN_STATUS2_cylinder_temp_3", ftypes.FLOAT, nil)
+f.LIDE_CAN_STATUS2_cylinder_temp_4 = ProtoField.new("cylinder_temp_4 (float)", "mavlink_proto.LIDE_CAN_STATUS2_cylinder_temp_4", ftypes.FLOAT, nil)
+
+f.LIDE_CAN_STATUS3_exhaust_temp_1 = ProtoField.new("exhaust_temp_1 (float)", "mavlink_proto.LIDE_CAN_STATUS3_exhaust_temp_1", ftypes.FLOAT, nil)
+f.LIDE_CAN_STATUS3_exhaust_temp_2 = ProtoField.new("exhaust_temp_2 (float)", "mavlink_proto.LIDE_CAN_STATUS3_exhaust_temp_2", ftypes.FLOAT, nil)
+f.LIDE_CAN_STATUS3_exhaust_temp_3 = ProtoField.new("exhaust_temp_3 (float)", "mavlink_proto.LIDE_CAN_STATUS3_exhaust_temp_3", ftypes.FLOAT, nil)
+f.LIDE_CAN_STATUS3_exhaust_temp_4 = ProtoField.new("exhaust_temp_4 (float)", "mavlink_proto.LIDE_CAN_STATUS3_exhaust_temp_4", ftypes.FLOAT, nil)
+f.LIDE_CAN_STATUS3_cooling_door_duty_1 = ProtoField.new("cooling_door_duty_1 (float)", "mavlink_proto.LIDE_CAN_STATUS3_cooling_door_duty_1", ftypes.FLOAT, nil)
+f.LIDE_CAN_STATUS3_cooling_door_duty_2 = ProtoField.new("cooling_door_duty_2 (float)", "mavlink_proto.LIDE_CAN_STATUS3_cooling_door_duty_2", ftypes.FLOAT, nil)
+f.LIDE_CAN_STATUS3_cooling_door_duty_3 = ProtoField.new("cooling_door_duty_3 (float)", "mavlink_proto.LIDE_CAN_STATUS3_cooling_door_duty_3", ftypes.FLOAT, nil)
+f.LIDE_CAN_STATUS3_cooling_door_duty_4 = ProtoField.new("cooling_door_duty_4 (float)", "mavlink_proto.LIDE_CAN_STATUS3_cooling_door_duty_4", ftypes.FLOAT, nil)
+
+f.LIDE_CAN_STATUS4_fuel_pressure_target = ProtoField.new("fuel_pressure_target (float)", "mavlink_proto.LIDE_CAN_STATUS4_fuel_pressure_target", ftypes.FLOAT, nil)
+f.LIDE_CAN_STATUS4_fuel_pressure_actual = ProtoField.new("fuel_pressure_actual (float)", "mavlink_proto.LIDE_CAN_STATUS4_fuel_pressure_actual", ftypes.FLOAT, nil)
+f.LIDE_CAN_STATUS4_fuel_pump_rpm = ProtoField.new("fuel_pump_rpm (uint16_t)", "mavlink_proto.LIDE_CAN_STATUS4_fuel_pump_rpm", ftypes.UINT16, nil)
+f.LIDE_CAN_STATUS4_rail_pressure_target = ProtoField.new("rail_pressure_target (float)", "mavlink_proto.LIDE_CAN_STATUS4_rail_pressure_target", ftypes.FLOAT, nil)
+f.LIDE_CAN_STATUS4_rail_pressure_actual = ProtoField.new("rail_pressure_actual (float)", "mavlink_proto.LIDE_CAN_STATUS4_rail_pressure_actual", ftypes.FLOAT, nil)
+f.LIDE_CAN_STATUS4_system_voltage = ProtoField.new("system_voltage (float)", "mavlink_proto.LIDE_CAN_STATUS4_system_voltage", ftypes.FLOAT, nil)
+f.LIDE_CAN_STATUS4_oil_consumption = ProtoField.new("oil_consumption (uint16_t)", "mavlink_proto.LIDE_CAN_STATUS4_oil_consumption", ftypes.UINT16, nil)
+
+f.LIDE_CAN_STATUS5_throttle1_deviation = ProtoField.new("throttle1_deviation (float)", "mavlink_proto.LIDE_CAN_STATUS5_throttle1_deviation", ftypes.FLOAT, nil)
+f.LIDE_CAN_STATUS5_throttle1_position = ProtoField.new("throttle1_position (float)", "mavlink_proto.LIDE_CAN_STATUS5_throttle1_position", ftypes.FLOAT, nil)
+f.LIDE_CAN_STATUS5_throttle2_deviation = ProtoField.new("throttle2_deviation (float)", "mavlink_proto.LIDE_CAN_STATUS5_throttle2_deviation", ftypes.FLOAT, nil)
+f.LIDE_CAN_STATUS5_throttle2_position = ProtoField.new("throttle2_position (float)", "mavlink_proto.LIDE_CAN_STATUS5_throttle2_position", ftypes.FLOAT, nil)
+f.LIDE_CAN_STATUS5_intake_temperature = ProtoField.new("intake_temperature (float)", "mavlink_proto.LIDE_CAN_STATUS5_intake_temperature", ftypes.FLOAT, nil)
+f.LIDE_CAN_STATUS5_environment_pressure = ProtoField.new("environment_pressure (float)", "mavlink_proto.LIDE_CAN_STATUS5_environment_pressure", ftypes.FLOAT, nil)
+f.LIDE_CAN_STATUS5_oil_level = ProtoField.new("oil_level (float)", "mavlink_proto.LIDE_CAN_STATUS5_oil_level", ftypes.FLOAT, nil)
+
+f.LIDE_CAN_STATUS6_fault_byte1 = ProtoField.new("fault_byte1 (uint8_t)", "mavlink_proto.LIDE_CAN_STATUS6_fault_byte1", ftypes.UINT8, nil)
+f.LIDE_CAN_STATUS6_fault_byte2 = ProtoField.new("fault_byte2 (uint8_t)", "mavlink_proto.LIDE_CAN_STATUS6_fault_byte2", ftypes.UINT8, nil)
+f.LIDE_CAN_STATUS6_fault_byte3 = ProtoField.new("fault_byte3 (uint8_t)", "mavlink_proto.LIDE_CAN_STATUS6_fault_byte3", ftypes.UINT8, nil)
+f.LIDE_CAN_STATUS6_fault_byte4 = ProtoField.new("fault_byte4 (uint8_t)", "mavlink_proto.LIDE_CAN_STATUS6_fault_byte4", ftypes.UINT8, nil)
+f.LIDE_CAN_STATUS6_fault_byte5 = ProtoField.new("fault_byte5 (uint8_t)", "mavlink_proto.LIDE_CAN_STATUS6_fault_byte5", ftypes.UINT8, nil)
+f.LIDE_CAN_STATUS6_fault_byte6 = ProtoField.new("fault_byte6 (uint8_t)", "mavlink_proto.LIDE_CAN_STATUS6_fault_byte6", ftypes.UINT8, nil)
+
+f.LIDE_CAN_STATUS7_fault_byte7 = ProtoField.new("fault_byte7 (uint8_t)", "mavlink_proto.LIDE_CAN_STATUS7_fault_byte7", ftypes.UINT8, nil)
+f.LIDE_CAN_STATUS7_fault_byte8 = ProtoField.new("fault_byte8 (uint8_t)", "mavlink_proto.LIDE_CAN_STATUS7_fault_byte8", ftypes.UINT8, nil)
+f.LIDE_CAN_STATUS7_adjust_coefficient1 = ProtoField.new("adjust_coefficient1 (float)", "mavlink_proto.LIDE_CAN_STATUS7_adjust_coefficient1", ftypes.FLOAT, nil)
+f.LIDE_CAN_STATUS7_adjust_coefficient2 = ProtoField.new("adjust_coefficient2 (float)", "mavlink_proto.LIDE_CAN_STATUS7_adjust_coefficient2", ftypes.FLOAT, nil)
+f.LIDE_CAN_STATUS7_adjust_coefficient3 = ProtoField.new("adjust_coefficient3 (float)", "mavlink_proto.LIDE_CAN_STATUS7_adjust_coefficient3", ftypes.FLOAT, nil)
+f.LIDE_CAN_STATUS7_adjust_coefficient4 = ProtoField.new("adjust_coefficient4 (float)", "mavlink_proto.LIDE_CAN_STATUS7_adjust_coefficient4", ftypes.FLOAT, nil)
+
+f.LIDE_ENGINE_SUMMARY_engine_status = ProtoField.new("engine_status (uint8_t)", "mavlink_proto.LIDE_ENGINE_SUMMARY_engine_status", ftypes.UINT8, nil)
+f.LIDE_ENGINE_SUMMARY_engine_rpm = ProtoField.new("engine_rpm (uint16_t)", "mavlink_proto.LIDE_ENGINE_SUMMARY_engine_rpm", ftypes.UINT16, nil)
+f.LIDE_ENGINE_SUMMARY_throttle_feedback = ProtoField.new("throttle_feedback (uint8_t)", "mavlink_proto.LIDE_ENGINE_SUMMARY_throttle_feedback", ftypes.UINT8, nil)
+f.LIDE_ENGINE_SUMMARY_cylinder_temp_max = ProtoField.new("cylinder_temp_max (float)", "mavlink_proto.LIDE_ENGINE_SUMMARY_cylinder_temp_max", ftypes.FLOAT, nil)
+f.LIDE_ENGINE_SUMMARY_exhaust_temp_max = ProtoField.new("exhaust_temp_max (float)", "mavlink_proto.LIDE_ENGINE_SUMMARY_exhaust_temp_max", ftypes.FLOAT, nil)
+f.LIDE_ENGINE_SUMMARY_fuel_pressure_target = ProtoField.new("fuel_pressure_target (float)", "mavlink_proto.LIDE_ENGINE_SUMMARY_fuel_pressure_target", ftypes.FLOAT, nil)
+f.LIDE_ENGINE_SUMMARY_rail_pressure_target = ProtoField.new("rail_pressure_target (float)", "mavlink_proto.LIDE_ENGINE_SUMMARY_rail_pressure_target", ftypes.FLOAT, nil)
+f.LIDE_ENGINE_SUMMARY_system_voltage = ProtoField.new("system_voltage (float)", "mavlink_proto.LIDE_ENGINE_SUMMARY_system_voltage", ftypes.FLOAT, nil)
+f.LIDE_ENGINE_SUMMARY_engine_runtime_hours = ProtoField.new("engine_runtime_hours (float)", "mavlink_proto.LIDE_ENGINE_SUMMARY_engine_runtime_hours", ftypes.FLOAT, nil)
+f.LIDE_ENGINE_SUMMARY_engine_runtime_minutes = ProtoField.new("engine_runtime_minutes (uint16_t)", "mavlink_proto.LIDE_ENGINE_SUMMARY_engine_runtime_minutes", ftypes.UINT16, nil)
+f.LIDE_ENGINE_SUMMARY_fault_count = ProtoField.new("fault_count (uint8_t)", "mavlink_proto.LIDE_ENGINE_SUMMARY_fault_count", ftypes.UINT8, nil)
+f.LIDE_ENGINE_SUMMARY_maintenance_status = ProtoField.new("maintenance_status (uint8_t)", "mavlink_proto.LIDE_ENGINE_SUMMARY_maintenance_status", ftypes.UINT8, nil)
+f.LIDE_ENGINE_SUMMARY_engine_health_score = ProtoField.new("engine_health_score (uint8_t)", "mavlink_proto.LIDE_ENGINE_SUMMARY_engine_health_score", ftypes.UINT8, nil)
+f.LIDE_ENGINE_SUMMARY_maintenance_time_remaining = ProtoField.new("maintenance_time_remaining (uint16_t)", "mavlink_proto.LIDE_ENGINE_SUMMARY_maintenance_time_remaining", ftypes.UINT16, nil)
 
 f.UAVIONIX_ADSB_OUT_CFG_ICAO = ProtoField.new("ICAO (uint32_t)", "mavlink_proto.UAVIONIX_ADSB_OUT_CFG_ICAO", ftypes.UINT32, nil)
 f.UAVIONIX_ADSB_OUT_CFG_callsign = ProtoField.new("callsign (char)", "mavlink_proto.UAVIONIX_ADSB_OUT_CFG_callsign", ftypes.STRING, nil)
@@ -52188,6 +52273,306 @@ function payload_fns.payload_12920(buffer, tree, msgid, offset, limit, pinfo)
     tvbrange = padded(offset + 2, 2)
     value = tvbrange:le_uint()
     subtree = tree:add_le(f.HYGROMETER_SENSOR_humidity, tvbrange, value)
+end
+-- dissect payload of message type LIDE_CAN_CONTROL
+function payload_fns.payload_12921(buffer, tree, msgid, offset, limit, pinfo)
+    local padded, field_offset, value, subtree, tvbrange
+    if (offset + 8 > limit) then
+        padded = buffer(0, limit):bytes()
+        padded:set_size(offset + 8)
+        padded = padded:tvb("Untruncated payload")
+    else
+        padded = buffer
+    end
+    tvbrange = padded(offset + 0, 2)
+    value = tvbrange:le_uint()
+    subtree = tree:add_le(f.LIDE_CAN_CONTROL_throttle_request, tvbrange, value)
+    tvbrange = padded(offset + 2, 2)
+    value = tvbrange:le_uint()
+    subtree = tree:add_le(f.LIDE_CAN_CONTROL_altitude, tvbrange, value)
+    tvbrange = padded(offset + 4, 1)
+    value = tvbrange:le_uint()
+    subtree = tree:add_le(f.LIDE_CAN_CONTROL_airspeed, tvbrange, value)
+    tvbrange = padded(offset + 5, 1)
+    value = tvbrange:le_uint()
+    subtree = tree:add_le(f.LIDE_CAN_CONTROL_control_command, tvbrange, value)
+    tvbrange = padded(offset + 6, 1)
+    value = tvbrange:le_uint()
+    subtree = tree:add_le(f.LIDE_CAN_CONTROL_reserved1, tvbrange, value)
+    tvbrange = padded(offset + 7, 1)
+    value = tvbrange:le_uint()
+    subtree = tree:add_le(f.LIDE_CAN_CONTROL_reserved2, tvbrange, value)
+end
+-- dissect payload of message type LIDE_CAN_STATUS1
+function payload_fns.payload_12922(buffer, tree, msgid, offset, limit, pinfo)
+    local padded, field_offset, value, subtree, tvbrange
+    if (offset + 15 > limit) then
+        padded = buffer(0, limit):bytes()
+        padded:set_size(offset + 15)
+        padded = padded:tvb("Untruncated payload")
+    else
+        padded = buffer
+    end
+    tvbrange = padded(offset + 12, 1)
+    value = tvbrange:le_uint()
+    subtree = tree:add_le(f.LIDE_CAN_STATUS1_engine_system_status, tvbrange, value)
+    tvbrange = padded(offset + 13, 1)
+    value = tvbrange:le_uint()
+    subtree = tree:add_le(f.LIDE_CAN_STATUS1_engine_running, tvbrange, value)
+    tvbrange = padded(offset + 14, 1)
+    value = tvbrange:le_uint()
+    subtree = tree:add_le(f.LIDE_CAN_STATUS1_maintenance_status, tvbrange, value)
+    tvbrange = padded(offset + 0, 4)
+    value = tvbrange:le_float()
+    subtree = tree:add_le(f.LIDE_CAN_STATUS1_engine_runtime_hours, tvbrange, value)
+    tvbrange = padded(offset + 8, 2)
+    value = tvbrange:le_uint()
+    subtree = tree:add_le(f.LIDE_CAN_STATUS1_engine_runtime_minutes, tvbrange, value)
+    tvbrange = padded(offset + 10, 2)
+    value = tvbrange:le_uint()
+    subtree = tree:add_le(f.LIDE_CAN_STATUS1_fuel_consumption_ml, tvbrange, value)
+    tvbrange = padded(offset + 4, 4)
+    value = tvbrange:le_float()
+    subtree = tree:add_le(f.LIDE_CAN_STATUS1_fuel_rate_instant, tvbrange, value)
+end
+-- dissect payload of message type LIDE_CAN_STATUS2
+function payload_fns.payload_12923(buffer, tree, msgid, offset, limit, pinfo)
+    local padded, field_offset, value, subtree, tvbrange
+    if (offset + 19 > limit) then
+        padded = buffer(0, limit):bytes()
+        padded:set_size(offset + 19)
+        padded = padded:tvb("Untruncated payload")
+    else
+        padded = buffer
+    end
+    tvbrange = padded(offset + 18, 1)
+    value = tvbrange:le_uint()
+    subtree = tree:add_le(f.LIDE_CAN_STATUS2_throttle_feedback, tvbrange, value)
+    tvbrange = padded(offset + 16, 2)
+    value = tvbrange:le_uint()
+    subtree = tree:add_le(f.LIDE_CAN_STATUS2_engine_rpm, tvbrange, value)
+    tvbrange = padded(offset + 0, 4)
+    value = tvbrange:le_float()
+    subtree = tree:add_le(f.LIDE_CAN_STATUS2_cylinder_temp_1, tvbrange, value)
+    tvbrange = padded(offset + 4, 4)
+    value = tvbrange:le_float()
+    subtree = tree:add_le(f.LIDE_CAN_STATUS2_cylinder_temp_2, tvbrange, value)
+    tvbrange = padded(offset + 8, 4)
+    value = tvbrange:le_float()
+    subtree = tree:add_le(f.LIDE_CAN_STATUS2_cylinder_temp_3, tvbrange, value)
+    tvbrange = padded(offset + 12, 4)
+    value = tvbrange:le_float()
+    subtree = tree:add_le(f.LIDE_CAN_STATUS2_cylinder_temp_4, tvbrange, value)
+end
+-- dissect payload of message type LIDE_CAN_STATUS3
+function payload_fns.payload_12924(buffer, tree, msgid, offset, limit, pinfo)
+    local padded, field_offset, value, subtree, tvbrange
+    if (offset + 32 > limit) then
+        padded = buffer(0, limit):bytes()
+        padded:set_size(offset + 32)
+        padded = padded:tvb("Untruncated payload")
+    else
+        padded = buffer
+    end
+    tvbrange = padded(offset + 0, 4)
+    value = tvbrange:le_float()
+    subtree = tree:add_le(f.LIDE_CAN_STATUS3_exhaust_temp_1, tvbrange, value)
+    tvbrange = padded(offset + 4, 4)
+    value = tvbrange:le_float()
+    subtree = tree:add_le(f.LIDE_CAN_STATUS3_exhaust_temp_2, tvbrange, value)
+    tvbrange = padded(offset + 8, 4)
+    value = tvbrange:le_float()
+    subtree = tree:add_le(f.LIDE_CAN_STATUS3_exhaust_temp_3, tvbrange, value)
+    tvbrange = padded(offset + 12, 4)
+    value = tvbrange:le_float()
+    subtree = tree:add_le(f.LIDE_CAN_STATUS3_exhaust_temp_4, tvbrange, value)
+    tvbrange = padded(offset + 16, 4)
+    value = tvbrange:le_float()
+    subtree = tree:add_le(f.LIDE_CAN_STATUS3_cooling_door_duty_1, tvbrange, value)
+    tvbrange = padded(offset + 20, 4)
+    value = tvbrange:le_float()
+    subtree = tree:add_le(f.LIDE_CAN_STATUS3_cooling_door_duty_2, tvbrange, value)
+    tvbrange = padded(offset + 24, 4)
+    value = tvbrange:le_float()
+    subtree = tree:add_le(f.LIDE_CAN_STATUS3_cooling_door_duty_3, tvbrange, value)
+    tvbrange = padded(offset + 28, 4)
+    value = tvbrange:le_float()
+    subtree = tree:add_le(f.LIDE_CAN_STATUS3_cooling_door_duty_4, tvbrange, value)
+end
+-- dissect payload of message type LIDE_CAN_STATUS4
+function payload_fns.payload_12925(buffer, tree, msgid, offset, limit, pinfo)
+    local padded, field_offset, value, subtree, tvbrange
+    if (offset + 24 > limit) then
+        padded = buffer(0, limit):bytes()
+        padded:set_size(offset + 24)
+        padded = padded:tvb("Untruncated payload")
+    else
+        padded = buffer
+    end
+    tvbrange = padded(offset + 0, 4)
+    value = tvbrange:le_float()
+    subtree = tree:add_le(f.LIDE_CAN_STATUS4_fuel_pressure_target, tvbrange, value)
+    tvbrange = padded(offset + 4, 4)
+    value = tvbrange:le_float()
+    subtree = tree:add_le(f.LIDE_CAN_STATUS4_fuel_pressure_actual, tvbrange, value)
+    tvbrange = padded(offset + 20, 2)
+    value = tvbrange:le_uint()
+    subtree = tree:add_le(f.LIDE_CAN_STATUS4_fuel_pump_rpm, tvbrange, value)
+    tvbrange = padded(offset + 8, 4)
+    value = tvbrange:le_float()
+    subtree = tree:add_le(f.LIDE_CAN_STATUS4_rail_pressure_target, tvbrange, value)
+    tvbrange = padded(offset + 12, 4)
+    value = tvbrange:le_float()
+    subtree = tree:add_le(f.LIDE_CAN_STATUS4_rail_pressure_actual, tvbrange, value)
+    tvbrange = padded(offset + 16, 4)
+    value = tvbrange:le_float()
+    subtree = tree:add_le(f.LIDE_CAN_STATUS4_system_voltage, tvbrange, value)
+    tvbrange = padded(offset + 22, 2)
+    value = tvbrange:le_uint()
+    subtree = tree:add_le(f.LIDE_CAN_STATUS4_oil_consumption, tvbrange, value)
+end
+-- dissect payload of message type LIDE_CAN_STATUS5
+function payload_fns.payload_12926(buffer, tree, msgid, offset, limit, pinfo)
+    local padded, field_offset, value, subtree, tvbrange
+    if (offset + 28 > limit) then
+        padded = buffer(0, limit):bytes()
+        padded:set_size(offset + 28)
+        padded = padded:tvb("Untruncated payload")
+    else
+        padded = buffer
+    end
+    tvbrange = padded(offset + 0, 4)
+    value = tvbrange:le_float()
+    subtree = tree:add_le(f.LIDE_CAN_STATUS5_throttle1_deviation, tvbrange, value)
+    tvbrange = padded(offset + 4, 4)
+    value = tvbrange:le_float()
+    subtree = tree:add_le(f.LIDE_CAN_STATUS5_throttle1_position, tvbrange, value)
+    tvbrange = padded(offset + 8, 4)
+    value = tvbrange:le_float()
+    subtree = tree:add_le(f.LIDE_CAN_STATUS5_throttle2_deviation, tvbrange, value)
+    tvbrange = padded(offset + 12, 4)
+    value = tvbrange:le_float()
+    subtree = tree:add_le(f.LIDE_CAN_STATUS5_throttle2_position, tvbrange, value)
+    tvbrange = padded(offset + 16, 4)
+    value = tvbrange:le_float()
+    subtree = tree:add_le(f.LIDE_CAN_STATUS5_intake_temperature, tvbrange, value)
+    tvbrange = padded(offset + 20, 4)
+    value = tvbrange:le_float()
+    subtree = tree:add_le(f.LIDE_CAN_STATUS5_environment_pressure, tvbrange, value)
+    tvbrange = padded(offset + 24, 4)
+    value = tvbrange:le_float()
+    subtree = tree:add_le(f.LIDE_CAN_STATUS5_oil_level, tvbrange, value)
+end
+-- dissect payload of message type LIDE_CAN_STATUS6
+function payload_fns.payload_12927(buffer, tree, msgid, offset, limit, pinfo)
+    local padded, field_offset, value, subtree, tvbrange
+    if (offset + 6 > limit) then
+        padded = buffer(0, limit):bytes()
+        padded:set_size(offset + 6)
+        padded = padded:tvb("Untruncated payload")
+    else
+        padded = buffer
+    end
+    tvbrange = padded(offset + 0, 1)
+    value = tvbrange:le_uint()
+    subtree = tree:add_le(f.LIDE_CAN_STATUS6_fault_byte1, tvbrange, value)
+    tvbrange = padded(offset + 1, 1)
+    value = tvbrange:le_uint()
+    subtree = tree:add_le(f.LIDE_CAN_STATUS6_fault_byte2, tvbrange, value)
+    tvbrange = padded(offset + 2, 1)
+    value = tvbrange:le_uint()
+    subtree = tree:add_le(f.LIDE_CAN_STATUS6_fault_byte3, tvbrange, value)
+    tvbrange = padded(offset + 3, 1)
+    value = tvbrange:le_uint()
+    subtree = tree:add_le(f.LIDE_CAN_STATUS6_fault_byte4, tvbrange, value)
+    tvbrange = padded(offset + 4, 1)
+    value = tvbrange:le_uint()
+    subtree = tree:add_le(f.LIDE_CAN_STATUS6_fault_byte5, tvbrange, value)
+    tvbrange = padded(offset + 5, 1)
+    value = tvbrange:le_uint()
+    subtree = tree:add_le(f.LIDE_CAN_STATUS6_fault_byte6, tvbrange, value)
+end
+-- dissect payload of message type LIDE_CAN_STATUS7
+function payload_fns.payload_12928(buffer, tree, msgid, offset, limit, pinfo)
+    local padded, field_offset, value, subtree, tvbrange
+    if (offset + 18 > limit) then
+        padded = buffer(0, limit):bytes()
+        padded:set_size(offset + 18)
+        padded = padded:tvb("Untruncated payload")
+    else
+        padded = buffer
+    end
+    tvbrange = padded(offset + 16, 1)
+    value = tvbrange:le_uint()
+    subtree = tree:add_le(f.LIDE_CAN_STATUS7_fault_byte7, tvbrange, value)
+    tvbrange = padded(offset + 17, 1)
+    value = tvbrange:le_uint()
+    subtree = tree:add_le(f.LIDE_CAN_STATUS7_fault_byte8, tvbrange, value)
+    tvbrange = padded(offset + 0, 4)
+    value = tvbrange:le_float()
+    subtree = tree:add_le(f.LIDE_CAN_STATUS7_adjust_coefficient1, tvbrange, value)
+    tvbrange = padded(offset + 4, 4)
+    value = tvbrange:le_float()
+    subtree = tree:add_le(f.LIDE_CAN_STATUS7_adjust_coefficient2, tvbrange, value)
+    tvbrange = padded(offset + 8, 4)
+    value = tvbrange:le_float()
+    subtree = tree:add_le(f.LIDE_CAN_STATUS7_adjust_coefficient3, tvbrange, value)
+    tvbrange = padded(offset + 12, 4)
+    value = tvbrange:le_float()
+    subtree = tree:add_le(f.LIDE_CAN_STATUS7_adjust_coefficient4, tvbrange, value)
+end
+-- dissect payload of message type LIDE_ENGINE_SUMMARY
+function payload_fns.payload_12929(buffer, tree, msgid, offset, limit, pinfo)
+    local padded, field_offset, value, subtree, tvbrange
+    if (offset + 35 > limit) then
+        padded = buffer(0, limit):bytes()
+        padded:set_size(offset + 35)
+        padded = padded:tvb("Untruncated payload")
+    else
+        padded = buffer
+    end
+    tvbrange = padded(offset + 30, 1)
+    value = tvbrange:le_uint()
+    subtree = tree:add_le(f.LIDE_ENGINE_SUMMARY_engine_status, tvbrange, value)
+    tvbrange = padded(offset + 24, 2)
+    value = tvbrange:le_uint()
+    subtree = tree:add_le(f.LIDE_ENGINE_SUMMARY_engine_rpm, tvbrange, value)
+    tvbrange = padded(offset + 31, 1)
+    value = tvbrange:le_uint()
+    subtree = tree:add_le(f.LIDE_ENGINE_SUMMARY_throttle_feedback, tvbrange, value)
+    tvbrange = padded(offset + 0, 4)
+    value = tvbrange:le_float()
+    subtree = tree:add_le(f.LIDE_ENGINE_SUMMARY_cylinder_temp_max, tvbrange, value)
+    tvbrange = padded(offset + 4, 4)
+    value = tvbrange:le_float()
+    subtree = tree:add_le(f.LIDE_ENGINE_SUMMARY_exhaust_temp_max, tvbrange, value)
+    tvbrange = padded(offset + 8, 4)
+    value = tvbrange:le_float()
+    subtree = tree:add_le(f.LIDE_ENGINE_SUMMARY_fuel_pressure_target, tvbrange, value)
+    tvbrange = padded(offset + 12, 4)
+    value = tvbrange:le_float()
+    subtree = tree:add_le(f.LIDE_ENGINE_SUMMARY_rail_pressure_target, tvbrange, value)
+    tvbrange = padded(offset + 16, 4)
+    value = tvbrange:le_float()
+    subtree = tree:add_le(f.LIDE_ENGINE_SUMMARY_system_voltage, tvbrange, value)
+    tvbrange = padded(offset + 20, 4)
+    value = tvbrange:le_float()
+    subtree = tree:add_le(f.LIDE_ENGINE_SUMMARY_engine_runtime_hours, tvbrange, value)
+    tvbrange = padded(offset + 26, 2)
+    value = tvbrange:le_uint()
+    subtree = tree:add_le(f.LIDE_ENGINE_SUMMARY_engine_runtime_minutes, tvbrange, value)
+    tvbrange = padded(offset + 32, 1)
+    value = tvbrange:le_uint()
+    subtree = tree:add_le(f.LIDE_ENGINE_SUMMARY_fault_count, tvbrange, value)
+    tvbrange = padded(offset + 33, 1)
+    value = tvbrange:le_uint()
+    subtree = tree:add_le(f.LIDE_ENGINE_SUMMARY_maintenance_status, tvbrange, value)
+    tvbrange = padded(offset + 34, 1)
+    value = tvbrange:le_uint()
+    subtree = tree:add_le(f.LIDE_ENGINE_SUMMARY_engine_health_score, tvbrange, value)
+    tvbrange = padded(offset + 28, 2)
+    value = tvbrange:le_uint()
+    subtree = tree:add_le(f.LIDE_ENGINE_SUMMARY_maintenance_time_remaining, tvbrange, value)
 end
 -- dissect payload of message type UAVIONIX_ADSB_OUT_CFG
 function payload_fns.payload_10001(buffer, tree, msgid, offset, limit, pinfo)

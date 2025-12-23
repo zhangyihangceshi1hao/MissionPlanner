@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 
 public partial class MAVLink
 {
-    public const string MAVLINK_BUILD_DATE = "Wed Apr 10 2024";
+    public const string MAVLINK_BUILD_DATE = "Tue Dec 23 2025";
     public const string MAVLINK_WIRE_PROTOCOL_VERSION = "2.0";
     public const int MAVLINK_MAX_PAYLOAD_LEN = 255;
 
@@ -319,6 +319,15 @@ public partial class MAVLink
         new message_info(12918, "OPEN_DRONE_ID_ARM_STATUS", 139, 51, 51, typeof( mavlink_open_drone_id_arm_status_t )),
         new message_info(12919, "OPEN_DRONE_ID_SYSTEM_UPDATE", 7, 18, 18, typeof( mavlink_open_drone_id_system_update_t )),
         new message_info(12920, "HYGROMETER_SENSOR", 20, 5, 5, typeof( mavlink_hygrometer_sensor_t )),
+        new message_info(12921, "LIDE_CAN_CONTROL", 21, 8, 8, typeof( mavlink_lide_can_control_t )),
+        new message_info(12922, "LIDE_CAN_STATUS1", 61, 15, 15, typeof( mavlink_lide_can_status1_t )),
+        new message_info(12923, "LIDE_CAN_STATUS2", 148, 19, 19, typeof( mavlink_lide_can_status2_t )),
+        new message_info(12924, "LIDE_CAN_STATUS3", 91, 32, 32, typeof( mavlink_lide_can_status3_t )),
+        new message_info(12925, "LIDE_CAN_STATUS4", 208, 24, 24, typeof( mavlink_lide_can_status4_t )),
+        new message_info(12926, "LIDE_CAN_STATUS5", 161, 28, 28, typeof( mavlink_lide_can_status5_t )),
+        new message_info(12927, "LIDE_CAN_STATUS6", 108, 6, 6, typeof( mavlink_lide_can_status6_t )),
+        new message_info(12928, "LIDE_CAN_STATUS7", 81, 18, 18, typeof( mavlink_lide_can_status7_t )),
+        new message_info(12929, "LIDE_ENGINE_SUMMARY", 16, 35, 35, typeof( mavlink_lide_engine_summary_t )),
         new message_info(42000, "ICAROUS_HEARTBEAT", 227, 1, 1, typeof( mavlink_icarous_heartbeat_t )),
         new message_info(42001, "ICAROUS_KINEMATIC_BANDS", 239, 46, 46, typeof( mavlink_icarous_kinematic_bands_t )),
         new message_info(50001, "CUBEPILOT_RAW_RC", 246, 32, 32, typeof( mavlink_cubepilot_raw_rc_t )),
@@ -648,6 +657,15 @@ public partial class MAVLink
         OPEN_DRONE_ID_ARM_STATUS = 12918,
         OPEN_DRONE_ID_SYSTEM_UPDATE = 12919,
         HYGROMETER_SENSOR = 12920,
+        LIDE_CAN_CONTROL = 12921,
+        LIDE_CAN_STATUS1 = 12922,
+        LIDE_CAN_STATUS2 = 12923,
+        LIDE_CAN_STATUS3 = 12924,
+        LIDE_CAN_STATUS4 = 12925,
+        LIDE_CAN_STATUS5 = 12926,
+        LIDE_CAN_STATUS6 = 12927,
+        LIDE_CAN_STATUS7 = 12928,
+        LIDE_ENGINE_SUMMARY = 12929,
         ICAROUS_HEARTBEAT = 42000,
         ICAROUS_KINEMATIC_BANDS = 42001,
         CUBEPILOT_RAW_RC = 50001,
@@ -30411,6 +30429,749 @@ public partial class MAVLink
         [Description("Hygrometer ID")]
         //[FieldOffset(4)]
         public  byte id;
+    };
+
+    
+    /// extensions_start 0
+    [StructLayout(LayoutKind.Sequential,Pack=1,Size=8)]
+    ///<summary> 砺德CAN控制命令 (飞控->发动机) </summary>
+    public struct mavlink_lide_can_control_t
+    {
+        /// packet ordered constructor
+        public mavlink_lide_can_control_t(ushort throttle_request,ushort altitude,byte airspeed,byte control_command,byte reserved1,byte reserved2) 
+        {
+            this.throttle_request = throttle_request;
+            this.altitude = altitude;
+            this.airspeed = airspeed;
+            this.control_command = control_command;
+            this.reserved1 = reserved1;
+            this.reserved2 = reserved2;
+            
+        }
+        
+        /// packet xml order
+        public static mavlink_lide_can_control_t PopulateXMLOrder(ushort throttle_request,ushort altitude,byte airspeed,byte control_command,byte reserved1,byte reserved2) 
+        {
+            var msg = new mavlink_lide_can_control_t();
+
+            msg.throttle_request = throttle_request;
+            msg.altitude = altitude;
+            msg.airspeed = airspeed;
+            msg.control_command = control_command;
+            msg.reserved1 = reserved1;
+            msg.reserved2 = reserved2;
+            
+            return msg;
+        }
+        
+
+        /// <summary> 			  油门请求 (0-1000对应0-100%) 		     </summary>
+        [Units("")]
+        [Description(" 			  油门请求 (0-1000对应0-100%) 		  ")]
+        //[FieldOffset(0)]
+        public  ushort throttle_request;
+
+        /// <summary> 			  当前海拔 (米) 		     </summary>
+        [Units("")]
+        [Description(" 			  当前海拔 (米) 		  ")]
+        //[FieldOffset(2)]
+        public  ushort altitude;
+
+        /// <summary> 			  空速 (m/s) 		     </summary>
+        [Units("")]
+        [Description(" 			  空速 (m/s) 		  ")]
+        //[FieldOffset(4)]
+        public  byte airspeed;
+
+        /// <summary> 			  控制命令 		     </summary>
+        [Units("")]
+        [Description(" 			  控制命令 		  ")]
+        //[FieldOffset(5)]
+        public  byte control_command;
+
+        /// <summary> 			  预留 		     </summary>
+        [Units("")]
+        [Description(" 			  预留 		  ")]
+        //[FieldOffset(6)]
+        public  byte reserved1;
+
+        /// <summary> 			  预留 		     </summary>
+        [Units("")]
+        [Description(" 			  预留 		  ")]
+        //[FieldOffset(7)]
+        public  byte reserved2;
+    };
+
+    
+    /// extensions_start 0
+    [StructLayout(LayoutKind.Sequential,Pack=1,Size=15)]
+    ///<summary> 砺德CAN状态消息1 - 发动机系统状态 </summary>
+    public struct mavlink_lide_can_status1_t
+    {
+        /// packet ordered constructor
+        public mavlink_lide_can_status1_t(float engine_runtime_hours,float fuel_rate_instant,ushort engine_runtime_minutes,ushort fuel_consumption_ml,byte engine_system_status,byte engine_running,byte maintenance_status) 
+        {
+            this.engine_runtime_hours = engine_runtime_hours;
+            this.fuel_rate_instant = fuel_rate_instant;
+            this.engine_runtime_minutes = engine_runtime_minutes;
+            this.fuel_consumption_ml = fuel_consumption_ml;
+            this.engine_system_status = engine_system_status;
+            this.engine_running = engine_running;
+            this.maintenance_status = maintenance_status;
+            
+        }
+        
+        /// packet xml order
+        public static mavlink_lide_can_status1_t PopulateXMLOrder(byte engine_system_status,byte engine_running,byte maintenance_status,float engine_runtime_hours,ushort engine_runtime_minutes,ushort fuel_consumption_ml,float fuel_rate_instant) 
+        {
+            var msg = new mavlink_lide_can_status1_t();
+
+            msg.engine_system_status = engine_system_status;
+            msg.engine_running = engine_running;
+            msg.maintenance_status = maintenance_status;
+            msg.engine_runtime_hours = engine_runtime_hours;
+            msg.engine_runtime_minutes = engine_runtime_minutes;
+            msg.fuel_consumption_ml = fuel_consumption_ml;
+            msg.fuel_rate_instant = fuel_rate_instant;
+            
+            return msg;
+        }
+        
+
+        /// <summary> 			  发动机总运行时间 (小时) 		     </summary>
+        [Units("")]
+        [Description(" 			  发动机总运行时间 (小时) 		  ")]
+        //[FieldOffset(0)]
+        public  float engine_runtime_hours;
+
+        /// <summary> 			  瞬时油耗 (L/h) 		     </summary>
+        [Units("")]
+        [Description(" 			  瞬时油耗 (L/h) 		  ")]
+        //[FieldOffset(4)]
+        public  float fuel_rate_instant;
+
+        /// <summary> 			  当前运行时间 (分钟) 		     </summary>
+        [Units("")]
+        [Description(" 			  当前运行时间 (分钟) 		  ")]
+        //[FieldOffset(8)]
+        public  ushort engine_runtime_minutes;
+
+        /// <summary> 			  当前油耗 (ml) 		     </summary>
+        [Units("")]
+        [Description(" 			  当前油耗 (ml) 		  ")]
+        //[FieldOffset(10)]
+        public  ushort fuel_consumption_ml;
+
+        /// <summary> 			  发动机系统状态 (1:正常, 2:异常, 3:警告) 		     </summary>
+        [Units("")]
+        [Description(" 			  发动机系统状态 (1:正常, 2:异常, 3:警告) 		  ")]
+        //[FieldOffset(12)]
+        public  byte engine_system_status;
+
+        /// <summary> 			  发动机运行状态 (0:停止, 1:运行) 		     </summary>
+        [Units("")]
+        [Description(" 			  发动机运行状态 (0:停止, 1:运行) 		  ")]
+        //[FieldOffset(13)]
+        public  byte engine_running;
+
+        /// <summary> 			  维保状态 (0:正常, 1:100h保养, 2:200h保养, 3:300h大修) 		     </summary>
+        [Units("")]
+        [Description(" 			  维保状态 (0:正常, 1:100h保养, 2:200h保养, 3:300h大修) 		  ")]
+        //[FieldOffset(14)]
+        public  byte maintenance_status;
+    };
+
+    
+    /// extensions_start 0
+    [StructLayout(LayoutKind.Sequential,Pack=1,Size=19)]
+    ///<summary> 砺德CAN状态消息2 - 油门反馈和缸头温度 </summary>
+    public struct mavlink_lide_can_status2_t
+    {
+        /// packet ordered constructor
+        public mavlink_lide_can_status2_t(float cylinder_temp_1,float cylinder_temp_2,float cylinder_temp_3,float cylinder_temp_4,ushort engine_rpm,byte throttle_feedback) 
+        {
+            this.cylinder_temp_1 = cylinder_temp_1;
+            this.cylinder_temp_2 = cylinder_temp_2;
+            this.cylinder_temp_3 = cylinder_temp_3;
+            this.cylinder_temp_4 = cylinder_temp_4;
+            this.engine_rpm = engine_rpm;
+            this.throttle_feedback = throttle_feedback;
+            
+        }
+        
+        /// packet xml order
+        public static mavlink_lide_can_status2_t PopulateXMLOrder(byte throttle_feedback,ushort engine_rpm,float cylinder_temp_1,float cylinder_temp_2,float cylinder_temp_3,float cylinder_temp_4) 
+        {
+            var msg = new mavlink_lide_can_status2_t();
+
+            msg.throttle_feedback = throttle_feedback;
+            msg.engine_rpm = engine_rpm;
+            msg.cylinder_temp_1 = cylinder_temp_1;
+            msg.cylinder_temp_2 = cylinder_temp_2;
+            msg.cylinder_temp_3 = cylinder_temp_3;
+            msg.cylinder_temp_4 = cylinder_temp_4;
+            
+            return msg;
+        }
+        
+
+        /// <summary> 			  1缸缸头温度 (°C) 		     </summary>
+        [Units("")]
+        [Description(" 			  1缸缸头温度 (°C) 		  ")]
+        //[FieldOffset(0)]
+        public  float cylinder_temp_1;
+
+        /// <summary> 			  2缸缸头温度 (°C) 		     </summary>
+        [Units("")]
+        [Description(" 			  2缸缸头温度 (°C) 		  ")]
+        //[FieldOffset(4)]
+        public  float cylinder_temp_2;
+
+        /// <summary> 			  3缸缸头温度 (°C) 		     </summary>
+        [Units("")]
+        [Description(" 			  3缸缸头温度 (°C) 		  ")]
+        //[FieldOffset(8)]
+        public  float cylinder_temp_3;
+
+        /// <summary> 			  4缸缸头温度 (°C) 		     </summary>
+        [Units("")]
+        [Description(" 			  4缸缸头温度 (°C) 		  ")]
+        //[FieldOffset(12)]
+        public  float cylinder_temp_4;
+
+        /// <summary> 			  发动机转速 (RPM) 		     </summary>
+        [Units("")]
+        [Description(" 			  发动机转速 (RPM) 		  ")]
+        //[FieldOffset(16)]
+        public  ushort engine_rpm;
+
+        /// <summary> 			  油门反馈百分比 (0-100%) 		     </summary>
+        [Units("")]
+        [Description(" 			  油门反馈百分比 (0-100%) 		  ")]
+        //[FieldOffset(18)]
+        public  byte throttle_feedback;
+    };
+
+    
+    /// extensions_start 0
+    [StructLayout(LayoutKind.Sequential,Pack=1,Size=32)]
+    ///<summary> 砺德CAN状态消息3 - 排气温度和冷风门 </summary>
+    public struct mavlink_lide_can_status3_t
+    {
+        /// packet ordered constructor
+        public mavlink_lide_can_status3_t(float exhaust_temp_1,float exhaust_temp_2,float exhaust_temp_3,float exhaust_temp_4,float cooling_door_duty_1,float cooling_door_duty_2,float cooling_door_duty_3,float cooling_door_duty_4) 
+        {
+            this.exhaust_temp_1 = exhaust_temp_1;
+            this.exhaust_temp_2 = exhaust_temp_2;
+            this.exhaust_temp_3 = exhaust_temp_3;
+            this.exhaust_temp_4 = exhaust_temp_4;
+            this.cooling_door_duty_1 = cooling_door_duty_1;
+            this.cooling_door_duty_2 = cooling_door_duty_2;
+            this.cooling_door_duty_3 = cooling_door_duty_3;
+            this.cooling_door_duty_4 = cooling_door_duty_4;
+            
+        }
+        
+        /// packet xml order
+        public static mavlink_lide_can_status3_t PopulateXMLOrder(float exhaust_temp_1,float exhaust_temp_2,float exhaust_temp_3,float exhaust_temp_4,float cooling_door_duty_1,float cooling_door_duty_2,float cooling_door_duty_3,float cooling_door_duty_4) 
+        {
+            var msg = new mavlink_lide_can_status3_t();
+
+            msg.exhaust_temp_1 = exhaust_temp_1;
+            msg.exhaust_temp_2 = exhaust_temp_2;
+            msg.exhaust_temp_3 = exhaust_temp_3;
+            msg.exhaust_temp_4 = exhaust_temp_4;
+            msg.cooling_door_duty_1 = cooling_door_duty_1;
+            msg.cooling_door_duty_2 = cooling_door_duty_2;
+            msg.cooling_door_duty_3 = cooling_door_duty_3;
+            msg.cooling_door_duty_4 = cooling_door_duty_4;
+            
+            return msg;
+        }
+        
+
+        /// <summary> 			  1缸排气温度 (°C) 		     </summary>
+        [Units("")]
+        [Description(" 			  1缸排气温度 (°C) 		  ")]
+        //[FieldOffset(0)]
+        public  float exhaust_temp_1;
+
+        /// <summary> 			  2缸排气温度 (°C) 		     </summary>
+        [Units("")]
+        [Description(" 			  2缸排气温度 (°C) 		  ")]
+        //[FieldOffset(4)]
+        public  float exhaust_temp_2;
+
+        /// <summary> 			  3缸排气温度 (°C) 		     </summary>
+        [Units("")]
+        [Description(" 			  3缸排气温度 (°C) 		  ")]
+        //[FieldOffset(8)]
+        public  float exhaust_temp_3;
+
+        /// <summary> 			  4缸排气温度 (°C) 		     </summary>
+        [Units("")]
+        [Description(" 			  4缸排气温度 (°C) 		  ")]
+        //[FieldOffset(12)]
+        public  float exhaust_temp_4;
+
+        /// <summary> 			  冷风门1占空比 (%) 		     </summary>
+        [Units("")]
+        [Description(" 			  冷风门1占空比 (%) 		  ")]
+        //[FieldOffset(16)]
+        public  float cooling_door_duty_1;
+
+        /// <summary> 			  冷风门2占空比 (%) 		     </summary>
+        [Units("")]
+        [Description(" 			  冷风门2占空比 (%) 		  ")]
+        //[FieldOffset(20)]
+        public  float cooling_door_duty_2;
+
+        /// <summary> 			  冷风门3占空比 (%) 		     </summary>
+        [Units("")]
+        [Description(" 			  冷风门3占空比 (%) 		  ")]
+        //[FieldOffset(24)]
+        public  float cooling_door_duty_3;
+
+        /// <summary> 			  冷风门4占空比 (%) 		     </summary>
+        [Units("")]
+        [Description(" 			  冷风门4占空比 (%) 		  ")]
+        //[FieldOffset(28)]
+        public  float cooling_door_duty_4;
+    };
+
+    
+    /// extensions_start 0
+    [StructLayout(LayoutKind.Sequential,Pack=1,Size=24)]
+    ///<summary> 砺德CAN状态消息4 - 燃油系统和滑油消耗 </summary>
+    public struct mavlink_lide_can_status4_t
+    {
+        /// packet ordered constructor
+        public mavlink_lide_can_status4_t(float fuel_pressure_target,float fuel_pressure_actual,float rail_pressure_target,float rail_pressure_actual,float system_voltage,ushort fuel_pump_rpm,ushort oil_consumption) 
+        {
+            this.fuel_pressure_target = fuel_pressure_target;
+            this.fuel_pressure_actual = fuel_pressure_actual;
+            this.rail_pressure_target = rail_pressure_target;
+            this.rail_pressure_actual = rail_pressure_actual;
+            this.system_voltage = system_voltage;
+            this.fuel_pump_rpm = fuel_pump_rpm;
+            this.oil_consumption = oil_consumption;
+            
+        }
+        
+        /// packet xml order
+        public static mavlink_lide_can_status4_t PopulateXMLOrder(float fuel_pressure_target,float fuel_pressure_actual,ushort fuel_pump_rpm,float rail_pressure_target,float rail_pressure_actual,float system_voltage,ushort oil_consumption) 
+        {
+            var msg = new mavlink_lide_can_status4_t();
+
+            msg.fuel_pressure_target = fuel_pressure_target;
+            msg.fuel_pressure_actual = fuel_pressure_actual;
+            msg.fuel_pump_rpm = fuel_pump_rpm;
+            msg.rail_pressure_target = rail_pressure_target;
+            msg.rail_pressure_actual = rail_pressure_actual;
+            msg.system_voltage = system_voltage;
+            msg.oil_consumption = oil_consumption;
+            
+            return msg;
+        }
+        
+
+        /// <summary> 			  设定低压燃油压力 (kPa) 		     </summary>
+        [Units("")]
+        [Description(" 			  设定低压燃油压力 (kPa) 		  ")]
+        //[FieldOffset(0)]
+        public  float fuel_pressure_target;
+
+        /// <summary> 			  实际低压燃油压力 (kPa) 		     </summary>
+        [Units("")]
+        [Description(" 			  实际低压燃油压力 (kPa) 		  ")]
+        //[FieldOffset(4)]
+        public  float fuel_pressure_actual;
+
+        /// <summary> 			  设定轨压燃油压力 (Bar) 		     </summary>
+        [Units("")]
+        [Description(" 			  设定轨压燃油压力 (Bar) 		  ")]
+        //[FieldOffset(8)]
+        public  float rail_pressure_target;
+
+        /// <summary> 			  实际轨压燃油压力 (Bar) 		     </summary>
+        [Units("")]
+        [Description(" 			  实际轨压燃油压力 (Bar) 		  ")]
+        //[FieldOffset(12)]
+        public  float rail_pressure_actual;
+
+        /// <summary> 			  系统电压 (V) 		     </summary>
+        [Units("")]
+        [Description(" 			  系统电压 (V) 		  ")]
+        //[FieldOffset(16)]
+        public  float system_voltage;
+
+        /// <summary> 			  低压油泵转速 (RPM) 		     </summary>
+        [Units("")]
+        [Description(" 			  低压油泵转速 (RPM) 		  ")]
+        //[FieldOffset(20)]
+        public  ushort fuel_pump_rpm;
+
+        /// <summary> 			  当前滑油消耗 (ml) 		     </summary>
+        [Units("")]
+        [Description(" 			  当前滑油消耗 (ml) 		  ")]
+        //[FieldOffset(22)]
+        public  ushort oil_consumption;
+    };
+
+    
+    /// extensions_start 0
+    [StructLayout(LayoutKind.Sequential,Pack=1,Size=28)]
+    ///<summary> 砺德CAN状态消息5 - 节气门和环境参数 </summary>
+    public struct mavlink_lide_can_status5_t
+    {
+        /// packet ordered constructor
+        public mavlink_lide_can_status5_t(float throttle1_deviation,float throttle1_position,float throttle2_deviation,float throttle2_position,float intake_temperature,float environment_pressure,float oil_level) 
+        {
+            this.throttle1_deviation = throttle1_deviation;
+            this.throttle1_position = throttle1_position;
+            this.throttle2_deviation = throttle2_deviation;
+            this.throttle2_position = throttle2_position;
+            this.intake_temperature = intake_temperature;
+            this.environment_pressure = environment_pressure;
+            this.oil_level = oil_level;
+            
+        }
+        
+        /// packet xml order
+        public static mavlink_lide_can_status5_t PopulateXMLOrder(float throttle1_deviation,float throttle1_position,float throttle2_deviation,float throttle2_position,float intake_temperature,float environment_pressure,float oil_level) 
+        {
+            var msg = new mavlink_lide_can_status5_t();
+
+            msg.throttle1_deviation = throttle1_deviation;
+            msg.throttle1_position = throttle1_position;
+            msg.throttle2_deviation = throttle2_deviation;
+            msg.throttle2_position = throttle2_position;
+            msg.intake_temperature = intake_temperature;
+            msg.environment_pressure = environment_pressure;
+            msg.oil_level = oil_level;
+            
+            return msg;
+        }
+        
+
+        /// <summary> 			  节气门1开度偏差 (%) 		     </summary>
+        [Units("")]
+        [Description(" 			  节气门1开度偏差 (%) 		  ")]
+        //[FieldOffset(0)]
+        public  float throttle1_deviation;
+
+        /// <summary> 			  节气门1当前开度 (%) 		     </summary>
+        [Units("")]
+        [Description(" 			  节气门1当前开度 (%) 		  ")]
+        //[FieldOffset(4)]
+        public  float throttle1_position;
+
+        /// <summary> 			  节气门2开度偏差 (%) 		     </summary>
+        [Units("")]
+        [Description(" 			  节气门2开度偏差 (%) 		  ")]
+        //[FieldOffset(8)]
+        public  float throttle2_deviation;
+
+        /// <summary> 			  节气门2当前开度 (%) 		     </summary>
+        [Units("")]
+        [Description(" 			  节气门2当前开度 (%) 		  ")]
+        //[FieldOffset(12)]
+        public  float throttle2_position;
+
+        /// <summary> 			  进气温度 (°C) 		     </summary>
+        [Units("")]
+        [Description(" 			  进气温度 (°C) 		  ")]
+        //[FieldOffset(16)]
+        public  float intake_temperature;
+
+        /// <summary> 			  环境压力 (kPa) 		     </summary>
+        [Units("")]
+        [Description(" 			  环境压力 (kPa) 		  ")]
+        //[FieldOffset(20)]
+        public  float environment_pressure;
+
+        /// <summary> 			  油位 (%) 		     </summary>
+        [Units("")]
+        [Description(" 			  油位 (%) 		  ")]
+        //[FieldOffset(24)]
+        public  float oil_level;
+    };
+
+    
+    /// extensions_start 0
+    [StructLayout(LayoutKind.Sequential,Pack=1,Size=6)]
+    ///<summary> 砺德CAN状态消息6 - 故障状态字节1-6 </summary>
+    public struct mavlink_lide_can_status6_t
+    {
+        /// packet ordered constructor
+        public mavlink_lide_can_status6_t(byte fault_byte1,byte fault_byte2,byte fault_byte3,byte fault_byte4,byte fault_byte5,byte fault_byte6) 
+        {
+            this.fault_byte1 = fault_byte1;
+            this.fault_byte2 = fault_byte2;
+            this.fault_byte3 = fault_byte3;
+            this.fault_byte4 = fault_byte4;
+            this.fault_byte5 = fault_byte5;
+            this.fault_byte6 = fault_byte6;
+            
+        }
+        
+        /// packet xml order
+        public static mavlink_lide_can_status6_t PopulateXMLOrder(byte fault_byte1,byte fault_byte2,byte fault_byte3,byte fault_byte4,byte fault_byte5,byte fault_byte6) 
+        {
+            var msg = new mavlink_lide_can_status6_t();
+
+            msg.fault_byte1 = fault_byte1;
+            msg.fault_byte2 = fault_byte2;
+            msg.fault_byte3 = fault_byte3;
+            msg.fault_byte4 = fault_byte4;
+            msg.fault_byte5 = fault_byte5;
+            msg.fault_byte6 = fault_byte6;
+            
+            return msg;
+        }
+        
+
+        /// <summary> 			  故障状态字节1 		     </summary>
+        [Units("")]
+        [Description(" 			  故障状态字节1 		  ")]
+        //[FieldOffset(0)]
+        public  byte fault_byte1;
+
+        /// <summary> 			  故障状态字节2 		     </summary>
+        [Units("")]
+        [Description(" 			  故障状态字节2 		  ")]
+        //[FieldOffset(1)]
+        public  byte fault_byte2;
+
+        /// <summary> 			  故障状态字节3 		     </summary>
+        [Units("")]
+        [Description(" 			  故障状态字节3 		  ")]
+        //[FieldOffset(2)]
+        public  byte fault_byte3;
+
+        /// <summary> 			  故障状态字节4 		     </summary>
+        [Units("")]
+        [Description(" 			  故障状态字节4 		  ")]
+        //[FieldOffset(3)]
+        public  byte fault_byte4;
+
+        /// <summary> 			  故障状态字节5 		     </summary>
+        [Units("")]
+        [Description(" 			  故障状态字节5 		  ")]
+        //[FieldOffset(4)]
+        public  byte fault_byte5;
+
+        /// <summary> 			  故障状态字节6 		     </summary>
+        [Units("")]
+        [Description(" 			  故障状态字节6 		  ")]
+        //[FieldOffset(5)]
+        public  byte fault_byte6;
+    };
+
+    
+    /// extensions_start 0
+    [StructLayout(LayoutKind.Sequential,Pack=1,Size=18)]
+    ///<summary> 砺德CAN状态消息7 - 故障状态字节7-8和调整系数 </summary>
+    public struct mavlink_lide_can_status7_t
+    {
+        /// packet ordered constructor
+        public mavlink_lide_can_status7_t(float adjust_coefficient1,float adjust_coefficient2,float adjust_coefficient3,float adjust_coefficient4,byte fault_byte7,byte fault_byte8) 
+        {
+            this.adjust_coefficient1 = adjust_coefficient1;
+            this.adjust_coefficient2 = adjust_coefficient2;
+            this.adjust_coefficient3 = adjust_coefficient3;
+            this.adjust_coefficient4 = adjust_coefficient4;
+            this.fault_byte7 = fault_byte7;
+            this.fault_byte8 = fault_byte8;
+            
+        }
+        
+        /// packet xml order
+        public static mavlink_lide_can_status7_t PopulateXMLOrder(byte fault_byte7,byte fault_byte8,float adjust_coefficient1,float adjust_coefficient2,float adjust_coefficient3,float adjust_coefficient4) 
+        {
+            var msg = new mavlink_lide_can_status7_t();
+
+            msg.fault_byte7 = fault_byte7;
+            msg.fault_byte8 = fault_byte8;
+            msg.adjust_coefficient1 = adjust_coefficient1;
+            msg.adjust_coefficient2 = adjust_coefficient2;
+            msg.adjust_coefficient3 = adjust_coefficient3;
+            msg.adjust_coefficient4 = adjust_coefficient4;
+            
+            return msg;
+        }
+        
+
+        /// <summary> 			  调整系数1 		     </summary>
+        [Units("")]
+        [Description(" 			  调整系数1 		  ")]
+        //[FieldOffset(0)]
+        public  float adjust_coefficient1;
+
+        /// <summary> 			  调整系数2 		     </summary>
+        [Units("")]
+        [Description(" 			  调整系数2 		  ")]
+        //[FieldOffset(4)]
+        public  float adjust_coefficient2;
+
+        /// <summary> 			  调整系数3 		     </summary>
+        [Units("")]
+        [Description(" 			  调整系数3 		  ")]
+        //[FieldOffset(8)]
+        public  float adjust_coefficient3;
+
+        /// <summary> 			  调整系数4 		     </summary>
+        [Units("")]
+        [Description(" 			  调整系数4 		  ")]
+        //[FieldOffset(12)]
+        public  float adjust_coefficient4;
+
+        /// <summary> 			  故障状态字节7 		     </summary>
+        [Units("")]
+        [Description(" 			  故障状态字节7 		  ")]
+        //[FieldOffset(16)]
+        public  byte fault_byte7;
+
+        /// <summary> 			  故障状态字节8 		     </summary>
+        [Units("")]
+        [Description(" 			  故障状态字节8 		  ")]
+        //[FieldOffset(17)]
+        public  byte fault_byte8;
+    };
+
+    
+    /// extensions_start 0
+    [StructLayout(LayoutKind.Sequential,Pack=1,Size=35)]
+    ///<summary> 砺德发动机汇总状态 </summary>
+    public struct mavlink_lide_engine_summary_t
+    {
+        /// packet ordered constructor
+        public mavlink_lide_engine_summary_t(float cylinder_temp_max,float exhaust_temp_max,float fuel_pressure_target,float rail_pressure_target,float system_voltage,float engine_runtime_hours,ushort engine_rpm,ushort engine_runtime_minutes,ushort maintenance_time_remaining,byte engine_status,byte throttle_feedback,byte fault_count,byte maintenance_status,byte engine_health_score) 
+        {
+            this.cylinder_temp_max = cylinder_temp_max;
+            this.exhaust_temp_max = exhaust_temp_max;
+            this.fuel_pressure_target = fuel_pressure_target;
+            this.rail_pressure_target = rail_pressure_target;
+            this.system_voltage = system_voltage;
+            this.engine_runtime_hours = engine_runtime_hours;
+            this.engine_rpm = engine_rpm;
+            this.engine_runtime_minutes = engine_runtime_minutes;
+            this.maintenance_time_remaining = maintenance_time_remaining;
+            this.engine_status = engine_status;
+            this.throttle_feedback = throttle_feedback;
+            this.fault_count = fault_count;
+            this.maintenance_status = maintenance_status;
+            this.engine_health_score = engine_health_score;
+            
+        }
+        
+        /// packet xml order
+        public static mavlink_lide_engine_summary_t PopulateXMLOrder(byte engine_status,ushort engine_rpm,byte throttle_feedback,float cylinder_temp_max,float exhaust_temp_max,float fuel_pressure_target,float rail_pressure_target,float system_voltage,float engine_runtime_hours,ushort engine_runtime_minutes,byte fault_count,byte maintenance_status,byte engine_health_score,ushort maintenance_time_remaining) 
+        {
+            var msg = new mavlink_lide_engine_summary_t();
+
+            msg.engine_status = engine_status;
+            msg.engine_rpm = engine_rpm;
+            msg.throttle_feedback = throttle_feedback;
+            msg.cylinder_temp_max = cylinder_temp_max;
+            msg.exhaust_temp_max = exhaust_temp_max;
+            msg.fuel_pressure_target = fuel_pressure_target;
+            msg.rail_pressure_target = rail_pressure_target;
+            msg.system_voltage = system_voltage;
+            msg.engine_runtime_hours = engine_runtime_hours;
+            msg.engine_runtime_minutes = engine_runtime_minutes;
+            msg.fault_count = fault_count;
+            msg.maintenance_status = maintenance_status;
+            msg.engine_health_score = engine_health_score;
+            msg.maintenance_time_remaining = maintenance_time_remaining;
+            
+            return msg;
+        }
+        
+
+        /// <summary> 			  最高缸头温度 (°C) 		     </summary>
+        [Units("")]
+        [Description(" 			  最高缸头温度 (°C) 		  ")]
+        //[FieldOffset(0)]
+        public  float cylinder_temp_max;
+
+        /// <summary> 			  最高排气温度 (°C) 		     </summary>
+        [Units("")]
+        [Description(" 			  最高排气温度 (°C) 		  ")]
+        //[FieldOffset(4)]
+        public  float exhaust_temp_max;
+
+        /// <summary> 			  设定燃油压力 (kPa) 		     </summary>
+        [Units("")]
+        [Description(" 			  设定燃油压力 (kPa) 		  ")]
+        //[FieldOffset(8)]
+        public  float fuel_pressure_target;
+
+        /// <summary> 			  设定轨压 (Bar) 		     </summary>
+        [Units("")]
+        [Description(" 			  设定轨压 (Bar) 		  ")]
+        //[FieldOffset(12)]
+        public  float rail_pressure_target;
+
+        /// <summary> 			  系统电压 (V) 		     </summary>
+        [Units("")]
+        [Description(" 			  系统电压 (V) 		  ")]
+        //[FieldOffset(16)]
+        public  float system_voltage;
+
+        /// <summary> 			  总运行时间 (小时) 		     </summary>
+        [Units("")]
+        [Description(" 			  总运行时间 (小时) 		  ")]
+        //[FieldOffset(20)]
+        public  float engine_runtime_hours;
+
+        /// <summary> 			  发动机转速 (RPM) 		     </summary>
+        [Units("")]
+        [Description(" 			  发动机转速 (RPM) 		  ")]
+        //[FieldOffset(24)]
+        public  ushort engine_rpm;
+
+        /// <summary> 			  当前运行时间 (分钟) 		     </summary>
+        [Units("")]
+        [Description(" 			  当前运行时间 (分钟) 		  ")]
+        //[FieldOffset(26)]
+        public  ushort engine_runtime_minutes;
+
+        /// <summary> 			  剩余维护时间 (分钟) 		     </summary>
+        [Units("")]
+        [Description(" 			  剩余维护时间 (分钟) 		  ")]
+        //[FieldOffset(28)]
+        public  ushort maintenance_time_remaining;
+
+        /// <summary> 			  发动机总体状态 (1:正常, 2:异常, 3:警告) 		     </summary>
+        [Units("")]
+        [Description(" 			  发动机总体状态 (1:正常, 2:异常, 3:警告) 		  ")]
+        //[FieldOffset(30)]
+        public  byte engine_status;
+
+        /// <summary> 			  油门反馈 (0-100%) 		     </summary>
+        [Units("")]
+        [Description(" 			  油门反馈 (0-100%) 		  ")]
+        //[FieldOffset(31)]
+        public  byte throttle_feedback;
+
+        /// <summary> 			  故障数量 		     </summary>
+        [Units("")]
+        [Description(" 			  故障数量 		  ")]
+        //[FieldOffset(32)]
+        public  byte fault_count;
+
+        /// <summary> 			  维保状态 		     </summary>
+        [Units("")]
+        [Description(" 			  维保状态 		  ")]
+        //[FieldOffset(33)]
+        public  byte maintenance_status;
+
+        /// <summary> 			  健康度评分 (0-100) 		     </summary>
+        [Units("")]
+        [Description(" 			  健康度评分 (0-100) 		  ")]
+        //[FieldOffset(34)]
+        public  byte engine_health_score;
     };
 
     
