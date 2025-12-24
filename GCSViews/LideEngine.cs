@@ -43,7 +43,45 @@ namespace MissionPlanner.GCSViews
             // 更新状态栏
             toolStripStatusLabel2.Text = $"最后更新: {DateTime.Now:HH:mm:ss}";
         }
+        // ========== 辅助函数 ==========
 
+        // 获取发动机状态文本
+        private string GetEngineStatusText(byte status)
+        {
+            switch (status)
+            {
+                case 0: return "预留";
+                case 1: return "正常";
+                case 2: return "异常-尽快返航";
+                case 3: return "警告-停机故障";
+                default: return "未知";
+            }
+        }
+
+        // 获取发动机状态颜色
+        private Color GetEngineStatusColor(byte status)
+        {
+            switch (status)
+            {
+                case 1: return Color.Green;      // 正常 - 绿色
+                case 2: return Color.Orange;     // 异常 - 橙色
+                case 3: return Color.Red;        // 警告 - 红色
+                default: return Color.Gray;      // 其他 - 灰色
+            }
+        }
+
+        // 获取维保状态文本
+        private string GetMaintenanceStatusText(byte status)
+        {
+            switch (status)
+            {
+                case 0: return "正常状态";
+                case 1: return "100小时保养";
+                case 2: return "200小时保养";
+                case 3: return "300小时大修";
+                default: return $"预留({status})";
+            }
+        }
         private void UpdateDisplay()
         {
             try
@@ -63,9 +101,79 @@ namespace MissionPlanner.GCSViews
                 ushort engineRuntimeMinutes = MainV2.comPort.MAV.cs.engine_runtime_minutes;
                 ushort fuelConsumptionMl = MainV2.comPort.MAV.cs.fuel_consumption_ml;
                 float fuelRateInstant = MainV2.comPort.MAV.cs.fuel_rate_instant;
+                // ========== 解析各个bit位 ==========
 
-                lblEngineSystemStatus.Text = GetStatusText(engineSystemStatus);
-                lblEngineSystemStatus.ForeColor = GetStatusColor(engineSystemStatus);
+                // ========== 解析发动机系统状态字节的各个bit位 ==========
+
+                // Bit 0-1: 发动机总体系统状态
+                byte systemStatus = (byte)(engineSystemStatus & 0x03);
+                string systemStatusStr = GetEngineStatusText(systemStatus);
+
+                // Bit 2: ECU上电状态
+                bool isRunning = ((engineSystemStatus >> 2) & 0x01) == 1;
+                string runningStatusStr = isRunning ? "ECU处于上电状态(运行中)" : "ECU处于熄火状态(停止)";
+
+                // Bit 3: 加热完成标志
+                bool heatingCompleted = ((engineSystemStatus >> 3) & 0x01) == 1;
+                string heatingStatusStr = heatingCompleted ? "加热完成" : "未加热/预留";
+
+                // Bit 4: 转速传感器选择
+                bool sensorSelected = ((engineSystemStatus >> 4) & 0x01) == 1;
+                string sensorStr = sensorSelected ? "使用转速传感器2" : "使用转速传感器1";
+
+                // Bit 5-7: 维保提醒
+                byte maintenanceFromStatus = (byte)((engineSystemStatus >> 5) & 0x07);
+                string maintenanceStr = GetMaintenanceStatusText(maintenanceFromStatus);
+
+                // ========== 将所有状态拼接成一个字符串 ==========
+
+                string allStatusText = $"发动机系统状态 (0x{engineSystemStatus:X2}):\n";
+                allStatusText += $"1. 发动机总体系统状态: {systemStatusStr}\n";
+                allStatusText += $"2. ECU上电状态: {runningStatusStr}\n";
+                allStatusText += $"3. 加热状态: {heatingStatusStr}\n";
+                allStatusText += $"4. 转速传感器: {sensorStr}\n";
+                allStatusText += $"5. 维修提醒: {maintenanceStr}\n";
+                allStatusText += $"二进制: {Convert.ToString(engineSystemStatus, 2).PadLeft(8, '0')}";
+
+                // 设置到Label控件
+                lblEngineSystemStatus.Text = allStatusText;
+                lblEngineSystemStatus.ForeColor = GetEngineStatusColor(systemStatus);
+
+                // ========== 或者更紧凑的格式 ==========
+
+                // 选项1：用分号分隔的一行
+                string compactStatus =
+                    $"{systemStatusStr}; " +
+                    $"{runningStatusStr}; " +
+                    $"{heatingStatusStr}; " +
+                    $"{sensorStr}; " +
+                    $"{maintenanceStr}";
+
+                // 选项2：用竖线分隔
+                string lineStatus =
+                    $"状态:{systemStatusStr} | " +
+                    $"ECU:{(isRunning ? "运行" : "停止")} | " +
+                    $"加热:{(heatingCompleted ? "完成" : "未完成")} | " +
+                    $"传感器:{(sensorSelected ? "2" : "1")} | " +
+                    $"维保:{maintenanceFromStatus}";
+
+                // 选项3：带图标的格式（如果支持）
+                string iconStatus =
+                    $"{(systemStatus == 1 ? "✅" : systemStatus == 2 ? "⚠️" : "❌")} {systemStatusStr} | " +
+                    $"{(isRunning ? "🔵" : "⚫")} {(isRunning ? "运行" : "停止")} | " +
+                    $"{(heatingCompleted ? "🔥" : "❄️")} 加热 | " +
+                    $"📊 传感器{(sensorSelected ? "2" : "1")} | " +
+                    $"{(maintenanceFromStatus > 0 ? "🔔" : "🟢")} {maintenanceStr}";
+
+                // 可以根据需要选择一种格式
+                // lblEngineSystemStatus.Text = compactStatus;
+                 lblEngineSystemStatus.Text = lineStatus;
+                 //lblEngineSystemStatus.Text = iconStatus;
+
+
+
+
+
 
                 lblEngineRunning.Text = engineRunning == 1 ? "运行" : "停止";
                 lblEngineRunning.ForeColor = engineRunning == 1 ? Color.Green : Color.Red;

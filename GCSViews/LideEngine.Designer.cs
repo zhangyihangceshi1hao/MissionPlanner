@@ -1378,7 +1378,7 @@
             // 
             this.lblEngineRuntimeMinutes.AutoSize = true;
             this.lblEngineRuntimeMinutes.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lblEngineRuntimeMinutes.Location = new System.Drawing.Point(480, 70);
+            this.lblEngineRuntimeMinutes.Location = new System.Drawing.Point(280, 130);
             this.lblEngineRuntimeMinutes.Name = "lblEngineRuntimeMinutes";
             this.lblEngineRuntimeMinutes.Size = new System.Drawing.Size(29, 15);
             this.lblEngineRuntimeMinutes.TabIndex = 11;
@@ -1388,7 +1388,7 @@
             // 
             this.lblEngineRuntimeHoursStat.AutoSize = true;
             this.lblEngineRuntimeHoursStat.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lblEngineRuntimeHoursStat.Location = new System.Drawing.Point(480, 40);
+            this.lblEngineRuntimeHoursStat.Location = new System.Drawing.Point(280, 100);
             this.lblEngineRuntimeHoursStat.Name = "lblEngineRuntimeHoursStat";
             this.lblEngineRuntimeHoursStat.Size = new System.Drawing.Size(39, 15);
             this.lblEngineRuntimeHoursStat.TabIndex = 10;
@@ -1399,7 +1399,7 @@
             this.lblMaintenanceStatus.AutoSize = true;
             this.lblMaintenanceStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.lblMaintenanceStatus.ForeColor = System.Drawing.Color.Green;
-            this.lblMaintenanceStatus.Location = new System.Drawing.Point(200, 130);
+            this.lblMaintenanceStatus.Location = new System.Drawing.Point(100, 130);
             this.lblMaintenanceStatus.Name = "lblMaintenanceStatus";
             this.lblMaintenanceStatus.Size = new System.Drawing.Size(31, 15);
             this.lblMaintenanceStatus.TabIndex = 9;
@@ -1410,7 +1410,7 @@
             this.lblEngineRunning.AutoSize = true;
             this.lblEngineRunning.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.lblEngineRunning.ForeColor = System.Drawing.Color.Green;
-            this.lblEngineRunning.Location = new System.Drawing.Point(200, 100);
+            this.lblEngineRunning.Location = new System.Drawing.Point(100, 100);
             this.lblEngineRunning.Name = "lblEngineRunning";
             this.lblEngineRunning.Size = new System.Drawing.Size(31, 15);
             this.lblEngineRunning.TabIndex = 8;
@@ -1421,7 +1421,7 @@
             this.lblEngineSystemStatus.AutoSize = true;
             this.lblEngineSystemStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.lblEngineSystemStatus.ForeColor = System.Drawing.Color.Green;
-            this.lblEngineSystemStatus.Location = new System.Drawing.Point(200, 70);
+            this.lblEngineSystemStatus.Location = new System.Drawing.Point(100, 70);
             this.lblEngineSystemStatus.Name = "lblEngineSystemStatus";
             this.lblEngineSystemStatus.Size = new System.Drawing.Size(31, 15);
             this.lblEngineSystemStatus.TabIndex = 7;
@@ -1448,7 +1448,7 @@
             // label39
             // 
             this.label39.AutoSize = true;
-            this.label39.Location = new System.Drawing.Point(380, 70);
+            this.label39.Location = new System.Drawing.Point(180, 130);
             this.label39.Name = "label39";
             this.label39.Size = new System.Drawing.Size(91, 13);
             this.label39.TabIndex = 4;
@@ -1457,7 +1457,7 @@
             // label48
             // 
             this.label48.AutoSize = true;
-            this.label48.Location = new System.Drawing.Point(380, 40);
+            this.label48.Location = new System.Drawing.Point(180, 100);
             this.label48.Name = "label48";
             this.label48.Size = new System.Drawing.Size(91, 13);
             this.label48.TabIndex = 3;
