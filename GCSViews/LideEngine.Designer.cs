@@ -164,6 +164,10 @@
             this.tbThrottleRequest = new System.Windows.Forms.TextBox();
             this.label66 = new System.Windows.Forms.Label();
             this.btnSendControl = new System.Windows.Forms.Button();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.checkBox2 = new System.Windows.Forms.CheckBox();
+            this.checkBox3 = new System.Windows.Forms.CheckBox();
+            this.checkBox4 = new System.Windows.Forms.CheckBox();
             this.timerUpdate = new System.Windows.Forms.Timer(this.components);
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
@@ -212,38 +216,38 @@
             // 
             // groupBox8
             // 
-            this.groupBox8.Controls.Add(this.lblEngineHealthScore);
-            this.groupBox8.Controls.Add(this.label49);
-            this.groupBox8.Controls.Add(this.lblMaintenanceRemaining);
-            this.groupBox8.Controls.Add(this.label47);
-            this.groupBox8.Controls.Add(this.lblFaultCount);
-            this.groupBox8.Controls.Add(this.label45);
-            this.groupBox8.Controls.Add(this.lblEngineRuntimeMins);
-            this.groupBox8.Controls.Add(this.lblEngineRuntimeHours);
-            this.groupBox8.Controls.Add(this.label44);
-            this.groupBox8.Controls.Add(this.lblSystemVoltageSum);
-            this.groupBox8.Controls.Add(this.label42);
-            this.groupBox8.Controls.Add(this.lblRailPressureTargetSum);
-            this.groupBox8.Controls.Add(this.label40);
-            this.groupBox8.Controls.Add(this.lblFuelPressureTargetSum);
-            this.groupBox8.Controls.Add(this.label38);
-            this.groupBox8.Controls.Add(this.lblExhaustTempMax);
-            this.groupBox8.Controls.Add(this.label36);
-            this.groupBox8.Controls.Add(this.lblCylinderTempMax);
-            this.groupBox8.Controls.Add(this.label34);
-            this.groupBox8.Controls.Add(this.lblThrottleFeedbackSum);
-            this.groupBox8.Controls.Add(this.label32);
-            this.groupBox8.Controls.Add(this.lblEngineRpmSum);
-            this.groupBox8.Controls.Add(this.label30);
-            this.groupBox8.Controls.Add(this.lblEngineStatus);
-            this.groupBox8.Controls.Add(this.label28);
-            this.groupBox8.Controls.Add(this.label27);
+            //this.groupBox8.Controls.Add(this.lblEngineHealthScore);
+            //this.groupBox8.Controls.Add(this.label49);
+            //this.groupBox8.Controls.Add(this.lblMaintenanceRemaining);
+            //this.groupBox8.Controls.Add(this.label47);
+            //this.groupBox8.Controls.Add(this.lblFaultCount);
+            //this.groupBox8.Controls.Add(this.label45);
+            //this.groupBox8.Controls.Add(this.lblEngineRuntimeMins);
+            //this.groupBox8.Controls.Add(this.lblEngineRuntimeHours);
+            //this.groupBox8.Controls.Add(this.label44);
+            //this.groupBox8.Controls.Add(this.lblSystemVoltageSum);
+            //this.groupBox8.Controls.Add(this.label42);
+            //this.groupBox8.Controls.Add(this.lblRailPressureTargetSum);
+            //this.groupBox8.Controls.Add(this.label40);
+            //this.groupBox8.Controls.Add(this.lblFuelPressureTargetSum);
+            //this.groupBox8.Controls.Add(this.label38);
+            //this.groupBox8.Controls.Add(this.lblExhaustTempMax);
+            //this.groupBox8.Controls.Add(this.label36);
+            //this.groupBox8.Controls.Add(this.lblCylinderTempMax);
+            //this.groupBox8.Controls.Add(this.label34);
+            //this.groupBox8.Controls.Add(this.lblThrottleFeedbackSum);
+            //this.groupBox8.Controls.Add(this.label32);
+            //this.groupBox8.Controls.Add(this.lblEngineRpmSum);
+            //this.groupBox8.Controls.Add(this.label30);
+            //this.groupBox8.Controls.Add(this.lblEngineStatus);
+            //this.groupBox8.Controls.Add(this.label28);
+            //this.groupBox8.Controls.Add(this.label27);
             this.groupBox8.Location = new System.Drawing.Point(6, 480);
             this.groupBox8.Name = "groupBox8";
             this.groupBox8.Size = new System.Drawing.Size(1180, 188);
             this.groupBox8.TabIndex = 6;
             this.groupBox8.TabStop = false;
-            this.groupBox8.Text = "发动机汇总状态 (LIDE_ENGINE_SUMMARY)";
+            this.groupBox8.Text = "故障状态";
             // 
             // lblEngineHealthScore
             // 
@@ -513,25 +517,25 @@
             this.groupBox7.Controls.Add(this.label24);
             this.groupBox7.Controls.Add(this.label23);
             this.groupBox7.Controls.Add(this.label22);
-            this.groupBox7.Controls.Add(this.cbFaultByte8);
-            this.groupBox7.Controls.Add(this.cbFaultByte7);
-            this.groupBox7.Controls.Add(this.label21);
-            this.groupBox7.Controls.Add(this.cbFaultByte6);
-            this.groupBox7.Controls.Add(this.cbFaultByte5);
-            this.groupBox7.Controls.Add(this.cbFaultByte4);
-            this.groupBox7.Controls.Add(this.cbFaultByte3);
-            this.groupBox7.Controls.Add(this.cbFaultByte2);
-            this.groupBox7.Controls.Add(this.cbFaultByte1);
+            //this.groupBox7.Controls.Add(this.cbFaultByte8);
+            //this.groupBox7.Controls.Add(this.cbFaultByte7);
+            //this.groupBox7.Controls.Add(this.label21);
+            //this.groupBox7.Controls.Add(this.cbFaultByte6);
+            //this.groupBox7.Controls.Add(this.cbFaultByte5);
+            //this.groupBox7.Controls.Add(this.cbFaultByte4);
+            //this.groupBox7.Controls.Add(this.cbFaultByte3);
+            //this.groupBox7.Controls.Add(this.cbFaultByte2);
+            //this.groupBox7.Controls.Add(this.cbFaultByte1);
             this.groupBox7.Location = new System.Drawing.Point(600, 340);
             this.groupBox7.Name = "groupBox7";
             this.groupBox7.Size = new System.Drawing.Size(586, 134);
             this.groupBox7.TabIndex = 5;
             this.groupBox7.TabStop = false;
-            this.groupBox7.Text = "故障状态和调整系数 (LIDE_CAN_STATUS6/7)";
+            this.groupBox7.Text = "调整系数 (LIDE_CAN_STATUS6/7)";
             // 
             // tbAdjustCoefficient4
             // 
-            this.tbAdjustCoefficient4.Location = new System.Drawing.Point(480, 100);
+            this.tbAdjustCoefficient4.Location = new System.Drawing.Point(280, 93);
             this.tbAdjustCoefficient4.Name = "tbAdjustCoefficient4";
             this.tbAdjustCoefficient4.ReadOnly = true;
             this.tbAdjustCoefficient4.Size = new System.Drawing.Size(100, 20);
@@ -540,7 +544,7 @@
             // 
             // tbAdjustCoefficient3
             // 
-            this.tbAdjustCoefficient3.Location = new System.Drawing.Point(480, 70);
+            this.tbAdjustCoefficient3.Location = new System.Drawing.Point(280, 68);
             this.tbAdjustCoefficient3.Name = "tbAdjustCoefficient3";
             this.tbAdjustCoefficient3.ReadOnly = true;
             this.tbAdjustCoefficient3.Size = new System.Drawing.Size(100, 20);
@@ -549,7 +553,7 @@
             // 
             // tbAdjustCoefficient2
             // 
-            this.tbAdjustCoefficient2.Location = new System.Drawing.Point(480, 40);
+            this.tbAdjustCoefficient2.Location = new System.Drawing.Point(280, 43);
             this.tbAdjustCoefficient2.Name = "tbAdjustCoefficient2";
             this.tbAdjustCoefficient2.ReadOnly = true;
             this.tbAdjustCoefficient2.Size = new System.Drawing.Size(100, 20);
@@ -558,7 +562,7 @@
             // 
             // tbAdjustCoefficient1
             // 
-            this.tbAdjustCoefficient1.Location = new System.Drawing.Point(480, 10);
+            this.tbAdjustCoefficient1.Location = new System.Drawing.Point(280, 18);
             this.tbAdjustCoefficient1.Name = "tbAdjustCoefficient1";
             this.tbAdjustCoefficient1.ReadOnly = true;
             this.tbAdjustCoefficient1.Size = new System.Drawing.Size(100, 20);
@@ -568,7 +572,7 @@
             // label25
             // 
             this.label25.AutoSize = true;
-            this.label25.Location = new System.Drawing.Point(380, 103);
+            this.label25.Location = new System.Drawing.Point(160, 95);
             this.label25.Name = "label25";
             this.label25.Size = new System.Drawing.Size(79, 13);
             this.label25.TabIndex = 12;
@@ -577,7 +581,7 @@
             // label24
             // 
             this.label24.AutoSize = true;
-            this.label24.Location = new System.Drawing.Point(380, 73);
+            this.label24.Location = new System.Drawing.Point(160, 70);
             this.label24.Name = "label24";
             this.label24.Size = new System.Drawing.Size(79, 13);
             this.label24.TabIndex = 11;
@@ -586,7 +590,7 @@
             // label23
             // 
             this.label23.AutoSize = true;
-            this.label23.Location = new System.Drawing.Point(380, 43);
+            this.label23.Location = new System.Drawing.Point(160, 45);
             this.label23.Name = "label23";
             this.label23.Size = new System.Drawing.Size(79, 13);
             this.label23.TabIndex = 10;
@@ -595,7 +599,7 @@
             // label22
             // 
             this.label22.AutoSize = true;
-            this.label22.Location = new System.Drawing.Point(380, 13);
+            this.label22.Location = new System.Drawing.Point(160, 20);
             this.label22.Name = "label22";
             this.label22.Size = new System.Drawing.Size(79, 13);
             this.label22.TabIndex = 9;
@@ -1030,7 +1034,7 @@
             // 
             this.lblCoolingDoorDuty4.AutoSize = true;
             this.lblCoolingDoorDuty4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lblCoolingDoorDuty4.Location = new System.Drawing.Point(200, 260);
+            this.lblCoolingDoorDuty4.Location = new System.Drawing.Point(200, 250);
             this.lblCoolingDoorDuty4.Name = "lblCoolingDoorDuty4";
             this.lblCoolingDoorDuty4.Size = new System.Drawing.Size(31, 15);
             this.lblCoolingDoorDuty4.TabIndex = 15;
@@ -1050,7 +1054,7 @@
             // 
             this.lblCoolingDoorDuty2.AutoSize = true;
             this.lblCoolingDoorDuty2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lblCoolingDoorDuty2.Location = new System.Drawing.Point(200, 180);
+            this.lblCoolingDoorDuty2.Location = new System.Drawing.Point(200, 190);
             this.lblCoolingDoorDuty2.Name = "lblCoolingDoorDuty2";
             this.lblCoolingDoorDuty2.Size = new System.Drawing.Size(31, 15);
             this.lblCoolingDoorDuty2.TabIndex = 13;
@@ -1060,7 +1064,7 @@
             // 
             this.lblCoolingDoorDuty1.AutoSize = true;
             this.lblCoolingDoorDuty1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lblCoolingDoorDuty1.Location = new System.Drawing.Point(200, 140);
+            this.lblCoolingDoorDuty1.Location = new System.Drawing.Point(200, 160);
             this.lblCoolingDoorDuty1.Name = "lblCoolingDoorDuty1";
             this.lblCoolingDoorDuty1.Size = new System.Drawing.Size(31, 15);
             this.lblCoolingDoorDuty1.TabIndex = 12;
@@ -1070,7 +1074,7 @@
             // 
             this.lblExhaustTemp4.AutoSize = true;
             this.lblExhaustTemp4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lblExhaustTemp4.Location = new System.Drawing.Point(200, 100);
+            this.lblExhaustTemp4.Location = new System.Drawing.Point(200, 130);
             this.lblExhaustTemp4.Name = "lblExhaustTemp4";
             this.lblExhaustTemp4.Size = new System.Drawing.Size(47, 15);
             this.lblExhaustTemp4.TabIndex = 11;
@@ -1080,7 +1084,7 @@
             // 
             this.lblExhaustTemp3.AutoSize = true;
             this.lblExhaustTemp3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lblExhaustTemp3.Location = new System.Drawing.Point(200, 70);
+            this.lblExhaustTemp3.Location = new System.Drawing.Point(200, 100);
             this.lblExhaustTemp3.Name = "lblExhaustTemp3";
             this.lblExhaustTemp3.Size = new System.Drawing.Size(47, 15);
             this.lblExhaustTemp3.TabIndex = 10;
@@ -1090,7 +1094,7 @@
             // 
             this.lblExhaustTemp2.AutoSize = true;
             this.lblExhaustTemp2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lblExhaustTemp2.Location = new System.Drawing.Point(200, 40);
+            this.lblExhaustTemp2.Location = new System.Drawing.Point(200, 70);
             this.lblExhaustTemp2.Name = "lblExhaustTemp2";
             this.lblExhaustTemp2.Size = new System.Drawing.Size(47, 15);
             this.lblExhaustTemp2.TabIndex = 9;
@@ -1100,7 +1104,7 @@
             // 
             this.lblExhaustTemp1.AutoSize = true;
             this.lblExhaustTemp1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lblExhaustTemp1.Location = new System.Drawing.Point(200, 10);
+            this.lblExhaustTemp1.Location = new System.Drawing.Point(200, 40);
             this.lblExhaustTemp1.Name = "lblExhaustTemp1";
             this.lblExhaustTemp1.Size = new System.Drawing.Size(47, 15);
             this.lblExhaustTemp1.TabIndex = 8;
@@ -1110,7 +1114,7 @@
             // 
             this.label26.AutoSize = true;
             this.label26.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label26.Location = new System.Drawing.Point(20, 260);
+            this.label26.Location = new System.Drawing.Point(20, 250);
             this.label26.Name = "label26";
             this.label26.Size = new System.Drawing.Size(115, 13);
             this.label26.TabIndex = 7;
@@ -1130,7 +1134,7 @@
             // 
             this.label18.AutoSize = true;
             this.label18.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label18.Location = new System.Drawing.Point(20, 180);
+            this.label18.Location = new System.Drawing.Point(20, 190);
             this.label18.Name = "label18";
             this.label18.Size = new System.Drawing.Size(115, 13);
             this.label18.TabIndex = 5;
@@ -1140,7 +1144,7 @@
             // 
             this.label16.AutoSize = true;
             this.label16.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label16.Location = new System.Drawing.Point(20, 140);
+            this.label16.Location = new System.Drawing.Point(20, 160);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(115, 13);
             this.label16.TabIndex = 4;
@@ -1150,7 +1154,7 @@
             // 
             this.label14.AutoSize = true;
             this.label14.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label14.Location = new System.Drawing.Point(20, 100);
+            this.label14.Location = new System.Drawing.Point(20, 130);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(115, 13);
             this.label14.TabIndex = 3;
@@ -1160,7 +1164,7 @@
             // 
             this.label13.AutoSize = true;
             this.label13.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label13.Location = new System.Drawing.Point(20, 70);
+            this.label13.Location = new System.Drawing.Point(20,100);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(115, 13);
             this.label13.TabIndex = 2;
@@ -1170,7 +1174,7 @@
             // 
             this.label11.AutoSize = true;
             this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label11.Location = new System.Drawing.Point(20, 40);
+            this.label11.Location = new System.Drawing.Point(20, 70);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(115, 13);
             this.label11.TabIndex = 1;
@@ -1180,7 +1184,7 @@
             // 
             this.label10.AutoSize = true;
             this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label10.Location = new System.Drawing.Point(20, 10);
+            this.label10.Location = new System.Drawing.Point(20, 40);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(115, 13);
             this.label10.TabIndex = 0;
@@ -1261,7 +1265,7 @@
             // 
             this.lblThrottleFeedback.AutoSize = true;
             this.lblThrottleFeedback.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lblThrottleFeedback.Location = new System.Drawing.Point(200, 70);
+            this.lblThrottleFeedback.Location = new System.Drawing.Point(200, 60);
             this.lblThrottleFeedback.Name = "lblThrottleFeedback";
             this.lblThrottleFeedback.Size = new System.Drawing.Size(29, 15);
             this.lblThrottleFeedback.TabIndex = 6;
@@ -1321,7 +1325,7 @@
             // 
             this.label37.AutoSize = true;
             this.label37.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label37.Location = new System.Drawing.Point(20, 70);
+            this.label37.Location = new System.Drawing.Point(20, 60);
             this.label37.Name = "label37";
             this.label37.Size = new System.Drawing.Size(91, 13);
             this.label37.TabIndex = 0;
@@ -1512,7 +1516,11 @@
             this.groupBox1.Controls.Add(this.tbThrottleRequest);
             this.groupBox1.Controls.Add(this.label66);
             this.groupBox1.Controls.Add(this.btnSendControl);
-            this.groupBox1.Location = new System.Drawing.Point(200, 100);
+            this.groupBox1.Controls.Add(this.checkBox1);
+            this.groupBox1.Controls.Add(this.checkBox2);
+            this.groupBox1.Controls.Add(this.checkBox3);
+            this.groupBox1.Controls.Add(this.checkBox4);
+            this.groupBox1.Location = new System.Drawing.Point(400, 150);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(500, 300);
             this.groupBox1.TabIndex = 0;
@@ -1530,7 +1538,7 @@
             // label71
             // 
             this.label71.AutoSize = true;
-            this.label71.Location = new System.Drawing.Point(50, 253);
+            this.label71.Location = new System.Drawing.Point(30, 253);
             this.label71.Name = "label71";
             this.label71.Size = new System.Drawing.Size(55, 13);
             this.label71.TabIndex = 11;
@@ -1547,7 +1555,7 @@
             // label70
             // 
             this.label70.AutoSize = true;
-            this.label70.Location = new System.Drawing.Point(50, 213);
+            this.label70.Location = new System.Drawing.Point(30, 213);
             this.label70.Name = "label70";
             this.label70.Size = new System.Drawing.Size(55, 13);
             this.label70.TabIndex = 9;
@@ -1559,19 +1567,22 @@
             this.cbControlCommand.FormattingEnabled = true;
             this.cbControlCommand.Items.AddRange(new object[] {
             "0: 无操作",
-            "1: 启动发动机",
-            "2: 停止发动机",
-            "3: 紧急停机",
-            "4: 复位故障"});
+            "1: 停止发动机",
+            "2: 停止加热",
+            "3: 请求加热",
+            "4: 待机",
+            "5: 启动发动机",
+            "6: 摆桨指令"
+            });
             this.cbControlCommand.Location = new System.Drawing.Point(150, 170);
             this.cbControlCommand.Name = "cbControlCommand";
-            this.cbControlCommand.Size = new System.Drawing.Size(200, 21);
+            this.cbControlCommand.Size = new System.Drawing.Size(100, 21);
             this.cbControlCommand.TabIndex = 8;
             // 
             // label69
             // 
             this.label69.AutoSize = true;
-            this.label69.Location = new System.Drawing.Point(50, 173);
+            this.label69.Location = new System.Drawing.Point(30, 173);
             this.label69.Name = "label69";
             this.label69.Size = new System.Drawing.Size(67, 13);
             this.label69.TabIndex = 7;
@@ -1583,16 +1594,16 @@
             this.tbAirspeed.Name = "tbAirspeed";
             this.tbAirspeed.Size = new System.Drawing.Size(100, 20);
             this.tbAirspeed.TabIndex = 6;
-            this.tbAirspeed.Text = "30";
+            this.tbAirspeed.Text = "0.00";
             // 
             // label68
             // 
             this.label68.AutoSize = true;
-            this.label68.Location = new System.Drawing.Point(50, 133);
+            this.label68.Location = new System.Drawing.Point(30, 133);
             this.label68.Name = "label68";
             this.label68.Size = new System.Drawing.Size(55, 13);
             this.label68.TabIndex = 5;
-            this.label68.Text = "空速(m/s):";
+            this.label68.Text = "空速(0-63m/s):";
             // 
             // tbAltitude
             // 
@@ -1600,16 +1611,16 @@
             this.tbAltitude.Name = "tbAltitude";
             this.tbAltitude.Size = new System.Drawing.Size(100, 20);
             this.tbAltitude.TabIndex = 4;
-            this.tbAltitude.Text = "500";
+            this.tbAltitude.Text = "0";
             // 
             // label67
             // 
             this.label67.AutoSize = true;
-            this.label67.Location = new System.Drawing.Point(50, 93);
+            this.label67.Location = new System.Drawing.Point(30, 93);
             this.label67.Name = "label67";
             this.label67.Size = new System.Drawing.Size(67, 13);
             this.label67.TabIndex = 3;
-            this.label67.Text = "当前海拔(米):";
+            this.label67.Text = "当前海拔(0-10000米):";
             // 
             // tbThrottleRequest
             // 
@@ -1617,27 +1628,69 @@
             this.tbThrottleRequest.Name = "tbThrottleRequest";
             this.tbThrottleRequest.Size = new System.Drawing.Size(100, 20);
             this.tbThrottleRequest.TabIndex = 2;
-            this.tbThrottleRequest.Text = "500";
+            this.tbThrottleRequest.Text = "0.0";
             // 
             // label66
             // 
             this.label66.AutoSize = true;
-            this.label66.Location = new System.Drawing.Point(50, 53);
+            this.label66.Location = new System.Drawing.Point(30, 53);
             this.label66.Name = "label66";
             this.label66.Size = new System.Drawing.Size(91, 13);
             this.label66.TabIndex = 1;
-            this.label66.Text = "油门请求(0-1000):";
+            this.label66.Text = "油门请求(0-100%):";
             // 
             // btnSendControl
             // 
             this.btnSendControl.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnSendControl.Location = new System.Drawing.Point(350, 200);
+            this.btnSendControl.Location = new System.Drawing.Point(350, 250);
             this.btnSendControl.Name = "btnSendControl";
             this.btnSendControl.Size = new System.Drawing.Size(100, 40);
             this.btnSendControl.TabIndex = 0;
             this.btnSendControl.Text = "发送控制命令";
             this.btnSendControl.UseVisualStyleBackColor = true;
             this.btnSendControl.Click += new System.EventHandler(this.btnSendControl_Click);
+
+            // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(255, 170);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(115, 22);
+            this.checkBox1.TabIndex = 0;
+            this.checkBox1.Text = "启动指令有效";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            // 
+            // checkBox2
+            // 
+            this.checkBox2.AutoSize = true;
+            this.checkBox2.Location = new System.Drawing.Point(365, 170);
+            this.checkBox2.Name = "checkBox2";
+            this.checkBox2.Size = new System.Drawing.Size(115, 22);
+            this.checkBox2.TabIndex = 0;
+            this.checkBox2.Text = "加热指令有效";
+            this.checkBox2.UseVisualStyleBackColor = true;
+            // 
+            // checkBox3
+            // 
+            this.checkBox3.AutoSize = true;
+            this.checkBox3.Location = new System.Drawing.Point(255, 200);
+            this.checkBox3.Name = "checkBox3";
+            this.checkBox3.Size = new System.Drawing.Size(115, 22);
+            this.checkBox3.TabIndex = 0;
+            this.checkBox3.Text = "海拔字节有效";
+            this.checkBox3.UseVisualStyleBackColor = true;
+            // 
+            // checkBox4
+            // 
+            this.checkBox4.AutoSize = true;
+            this.checkBox4.Location = new System.Drawing.Point(365, 200);
+            this.checkBox4.Name = "checkBox4";
+            this.checkBox4.Size = new System.Drawing.Size(115, 22);
+            this.checkBox4.TabIndex = 0;
+            this.checkBox4.Text = "空速字节有效";
+            this.checkBox4.UseVisualStyleBackColor = true;
+
             // 
             // timerUpdate
             // 
@@ -1840,6 +1893,10 @@
         private System.Windows.Forms.TextBox tbThrottleRequest;
         private System.Windows.Forms.Label label66;
         private System.Windows.Forms.Button btnSendControl;
+        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.CheckBox checkBox2;
+        private System.Windows.Forms.CheckBox checkBox3;
+        private System.Windows.Forms.CheckBox checkBox4;
         private System.Windows.Forms.Timer timerUpdate;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;

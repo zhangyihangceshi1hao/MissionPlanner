@@ -10581,7 +10581,7 @@ f.HYGROMETER_SENSOR_humidity = ProtoField.new("humidity (uint16_t)", "mavlink_pr
 
 f.LIDE_CAN_CONTROL_throttle_request = ProtoField.new("throttle_request (uint16_t)", "mavlink_proto.LIDE_CAN_CONTROL_throttle_request", ftypes.UINT16, nil)
 f.LIDE_CAN_CONTROL_altitude = ProtoField.new("altitude (uint16_t)", "mavlink_proto.LIDE_CAN_CONTROL_altitude", ftypes.UINT16, nil)
-f.LIDE_CAN_CONTROL_airspeed = ProtoField.new("airspeed (uint8_t)", "mavlink_proto.LIDE_CAN_CONTROL_airspeed", ftypes.UINT8, nil)
+f.LIDE_CAN_CONTROL_airspeed = ProtoField.new("airspeed (uint16_t)", "mavlink_proto.LIDE_CAN_CONTROL_airspeed", ftypes.UINT16, nil)
 f.LIDE_CAN_CONTROL_control_command = ProtoField.new("control_command (uint8_t)", "mavlink_proto.LIDE_CAN_CONTROL_control_command", ftypes.UINT8, nil)
 f.LIDE_CAN_CONTROL_reserved1 = ProtoField.new("reserved1 (uint8_t)", "mavlink_proto.LIDE_CAN_CONTROL_reserved1", ftypes.UINT8, nil)
 f.LIDE_CAN_CONTROL_reserved2 = ProtoField.new("reserved2 (uint8_t)", "mavlink_proto.LIDE_CAN_CONTROL_reserved2", ftypes.UINT8, nil)
@@ -52277,9 +52277,9 @@ end
 -- dissect payload of message type LIDE_CAN_CONTROL
 function payload_fns.payload_12921(buffer, tree, msgid, offset, limit, pinfo)
     local padded, field_offset, value, subtree, tvbrange
-    if (offset + 8 > limit) then
+    if (offset + 9 > limit) then
         padded = buffer(0, limit):bytes()
-        padded:set_size(offset + 8)
+        padded:set_size(offset + 9)
         padded = padded:tvb("Untruncated payload")
     else
         padded = buffer
@@ -52290,16 +52290,16 @@ function payload_fns.payload_12921(buffer, tree, msgid, offset, limit, pinfo)
     tvbrange = padded(offset + 2, 2)
     value = tvbrange:le_uint()
     subtree = tree:add_le(f.LIDE_CAN_CONTROL_altitude, tvbrange, value)
-    tvbrange = padded(offset + 4, 1)
+    tvbrange = padded(offset + 4, 2)
     value = tvbrange:le_uint()
     subtree = tree:add_le(f.LIDE_CAN_CONTROL_airspeed, tvbrange, value)
-    tvbrange = padded(offset + 5, 1)
-    value = tvbrange:le_uint()
-    subtree = tree:add_le(f.LIDE_CAN_CONTROL_control_command, tvbrange, value)
     tvbrange = padded(offset + 6, 1)
     value = tvbrange:le_uint()
-    subtree = tree:add_le(f.LIDE_CAN_CONTROL_reserved1, tvbrange, value)
+    subtree = tree:add_le(f.LIDE_CAN_CONTROL_control_command, tvbrange, value)
     tvbrange = padded(offset + 7, 1)
+    value = tvbrange:le_uint()
+    subtree = tree:add_le(f.LIDE_CAN_CONTROL_reserved1, tvbrange, value)
+    tvbrange = padded(offset + 8, 1)
     value = tvbrange:le_uint()
     subtree = tree:add_le(f.LIDE_CAN_CONTROL_reserved2, tvbrange, value)
 end

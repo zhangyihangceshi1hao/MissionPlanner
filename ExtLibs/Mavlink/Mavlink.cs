@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 
 public partial class MAVLink
 {
-    public const string MAVLINK_BUILD_DATE = "Tue Dec 23 2025";
+    public const string MAVLINK_BUILD_DATE = "Wed Dec 24 2025";
     public const string MAVLINK_WIRE_PROTOCOL_VERSION = "2.0";
     public const int MAVLINK_MAX_PAYLOAD_LEN = 255;
 
@@ -319,7 +319,7 @@ public partial class MAVLink
         new message_info(12918, "OPEN_DRONE_ID_ARM_STATUS", 139, 51, 51, typeof( mavlink_open_drone_id_arm_status_t )),
         new message_info(12919, "OPEN_DRONE_ID_SYSTEM_UPDATE", 7, 18, 18, typeof( mavlink_open_drone_id_system_update_t )),
         new message_info(12920, "HYGROMETER_SENSOR", 20, 5, 5, typeof( mavlink_hygrometer_sensor_t )),
-        new message_info(12921, "LIDE_CAN_CONTROL", 21, 8, 8, typeof( mavlink_lide_can_control_t )),
+        new message_info(12921, "LIDE_CAN_CONTROL", 104, 9, 9, typeof( mavlink_lide_can_control_t )),
         new message_info(12922, "LIDE_CAN_STATUS1", 61, 15, 15, typeof( mavlink_lide_can_status1_t )),
         new message_info(12923, "LIDE_CAN_STATUS2", 148, 19, 19, typeof( mavlink_lide_can_status2_t )),
         new message_info(12924, "LIDE_CAN_STATUS3", 91, 32, 32, typeof( mavlink_lide_can_status3_t )),
@@ -30433,12 +30433,12 @@ public partial class MAVLink
 
     
     /// extensions_start 0
-    [StructLayout(LayoutKind.Sequential,Pack=1,Size=8)]
+    [StructLayout(LayoutKind.Sequential,Pack=1,Size=9)]
     ///<summary> Ì¬µ¬CANøÿ÷∆√¸¡Ó (∑…øÿ->∑¢∂Øª˙) </summary>
     public struct mavlink_lide_can_control_t
     {
         /// packet ordered constructor
-        public mavlink_lide_can_control_t(ushort throttle_request,ushort altitude,byte airspeed,byte control_command,byte reserved1,byte reserved2) 
+        public mavlink_lide_can_control_t(ushort throttle_request,ushort altitude,ushort airspeed,byte control_command,byte reserved1,byte reserved2) 
         {
             this.throttle_request = throttle_request;
             this.altitude = altitude;
@@ -30450,7 +30450,7 @@ public partial class MAVLink
         }
         
         /// packet xml order
-        public static mavlink_lide_can_control_t PopulateXMLOrder(ushort throttle_request,ushort altitude,byte airspeed,byte control_command,byte reserved1,byte reserved2) 
+        public static mavlink_lide_can_control_t PopulateXMLOrder(ushort throttle_request,ushort altitude,ushort airspeed,byte control_command,byte reserved1,byte reserved2) 
         {
             var msg = new mavlink_lide_can_control_t();
 
@@ -30481,24 +30481,24 @@ public partial class MAVLink
         [Units("")]
         [Description(" 			  ø’ÀŸ (m/s) 		  ")]
         //[FieldOffset(4)]
-        public  byte airspeed;
+        public  ushort airspeed;
 
         /// <summary> 			  øÿ÷∆√¸¡Ó 		     </summary>
         [Units("")]
         [Description(" 			  øÿ÷∆√¸¡Ó 		  ")]
-        //[FieldOffset(5)]
+        //[FieldOffset(6)]
         public  byte control_command;
 
         /// <summary> 			  ‘§¡Ù 		     </summary>
         [Units("")]
         [Description(" 			  ‘§¡Ù 		  ")]
-        //[FieldOffset(6)]
+        //[FieldOffset(7)]
         public  byte reserved1;
 
         /// <summary> 			  ‘§¡Ù 		     </summary>
         [Units("")]
         [Description(" 			  ‘§¡Ù 		  ")]
-        //[FieldOffset(7)]
+        //[FieldOffset(8)]
         public  byte reserved2;
     };
 
