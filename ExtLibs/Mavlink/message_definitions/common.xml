@@ -6671,7 +6671,7 @@
 
 	  <message id="12923" name="LIDE_CAN_STATUS2">
 		  <description>砺德CAN状态消息2 - 油门反馈和缸头温度</description>
-		  <field type="uint8_t" name="throttle_feedback">
+		  <field type="uint16_t" name="throttle_feedback">
 			  油门反馈百分比 (0-100%)
 		  </field>
 		  <field type="uint16_t" name="engine_rpm">
@@ -6770,7 +6770,7 @@
 	  </message>
 
 	  <message id="12927" name="LIDE_CAN_STATUS6">
-		  <description>砺德CAN状态消息6 - 故障状态字节1-6</description>
+		  <description>砺德CAN状态消息6 - 故障状态字节1-8</description>
 		  <field type="uint8_t" name="fault_byte1">
 			  故障状态字节1
 		  </field>
@@ -6789,16 +6789,17 @@
 		  <field type="uint8_t" name="fault_byte6">
 			  故障状态字节6
 		  </field>
-	  </message>
-
-	  <message id="12928" name="LIDE_CAN_STATUS7">
-		  <description>砺德CAN状态消息7 - 故障状态字节7-8和调整系数</description>
 		  <field type="uint8_t" name="fault_byte7">
 			  故障状态字节7
 		  </field>
 		  <field type="uint8_t" name="fault_byte8">
 			  故障状态字节8
 		  </field>
+	  </message>
+
+	  <message id="12928" name="LIDE_CAN_STATUS7">
+		  <description>砺德CAN状态消息7 - 调整系数</description>
+		  
 		  <field type="float" name="adjust_coefficient1">
 			  调整系数1
 		  </field>
@@ -6821,7 +6822,7 @@
 		  <field type="uint16_t" name="engine_rpm">
 			  发动机转速 (RPM)
 		  </field>
-		  <field type="uint8_t" name="throttle_feedback">
+		  <field type="uint16_t" name="throttle_feedback">
 			  油门反馈 (0-100%)
 		  </field>
 		  <field type="float" name="cylinder_temp_max">
@@ -6851,7 +6852,7 @@
 		  <field type="uint8_t" name="maintenance_status">
 			  维保状态
 		  </field>
-		  <field type="uint8_t" name="engine_health_score">
+		  <field type="uint16_t" name="engine_health_score">
 			  健康度评分 (0-100)
 		  </field>
 		  <field type="uint16_t" name="maintenance_time_remaining">

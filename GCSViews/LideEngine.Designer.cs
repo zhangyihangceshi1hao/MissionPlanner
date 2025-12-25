@@ -59,23 +59,96 @@
             this.label28 = new System.Windows.Forms.Label();
             this.label27 = new System.Windows.Forms.Label();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
-            this.tbAdjustCoefficient4 = new System.Windows.Forms.TextBox();
-            this.tbAdjustCoefficient3 = new System.Windows.Forms.TextBox();
-            this.tbAdjustCoefficient2 = new System.Windows.Forms.TextBox();
-            this.tbAdjustCoefficient1 = new System.Windows.Forms.TextBox();
+            this.tbAdjustCoefficient4 = new System.Windows.Forms.Label();
+            this.tbAdjustCoefficient3 = new System.Windows.Forms.Label();
+            this.tbAdjustCoefficient2 = new System.Windows.Forms.Label();
+            this.tbAdjustCoefficient1 = new System.Windows.Forms.Label();
             this.label25 = new System.Windows.Forms.Label();
             this.label24 = new System.Windows.Forms.Label();
             this.label23 = new System.Windows.Forms.Label();
             this.label22 = new System.Windows.Forms.Label();
-            this.cbFaultByte8 = new System.Windows.Forms.CheckBox();
-            this.cbFaultByte7 = new System.Windows.Forms.CheckBox();
+            //this.cbFaultByte8 = new System.Windows.Forms.CheckBox();
+            //this.cbFaultByte7 = new System.Windows.Forms.CheckBox();
             this.label21 = new System.Windows.Forms.Label();
-            this.cbFaultByte6 = new System.Windows.Forms.CheckBox();
-            this.cbFaultByte5 = new System.Windows.Forms.CheckBox();
-            this.cbFaultByte4 = new System.Windows.Forms.CheckBox();
-            this.cbFaultByte3 = new System.Windows.Forms.CheckBox();
-            this.cbFaultByte2 = new System.Windows.Forms.CheckBox();
-            this.cbFaultByte1 = new System.Windows.Forms.CheckBox();
+            //this.cbFaultByte6 = new System.Windows.Forms.CheckBox();
+            //this.cbFaultByte5 = new System.Windows.Forms.CheckBox();
+            //this.cbFaultByte4 = new System.Windows.Forms.CheckBox();
+            //this.cbFaultByte3 = new System.Windows.Forms.CheckBox();
+            //this.cbFaultByte2 = new System.Windows.Forms.CheckBox();
+            //this.cbFaultByte1 = new System.Windows.Forms.CheckBox();
+            // 字节8初始化语句
+            this.cbFaultByte8Bit7 = new System.Windows.Forms.Label();
+            this.cbFaultByte8Bit6 = new System.Windows.Forms.Label();
+            this.cbFaultByte8Bit5 = new System.Windows.Forms.Label();
+            this.cbFaultByte8Bit4 = new System.Windows.Forms.Label();
+            this.cbFaultByte8Bit3 = new System.Windows.Forms.Label();
+            this.cbFaultByte8Bit2 = new System.Windows.Forms.Label();
+            this.cbFaultByte8Bit1 = new System.Windows.Forms.Label();
+            this.cbFaultByte8Bit0 = new System.Windows.Forms.Label();
+            // 字节7初始化语句
+            this.cbFaultByte7Bit7 = new System.Windows.Forms.Label();
+            this.cbFaultByte7Bit6 = new System.Windows.Forms.Label();
+            this.cbFaultByte7Bit5 = new System.Windows.Forms.Label();
+            this.cbFaultByte7Bit4 = new System.Windows.Forms.Label();
+            this.cbFaultByte7Bit3 = new System.Windows.Forms.Label();
+            this.cbFaultByte7Bit2 = new System.Windows.Forms.Label();
+            this.cbFaultByte7Bit1 = new System.Windows.Forms.Label();
+            this.cbFaultByte7Bit0 = new System.Windows.Forms.Label();
+            // 字节6初始化语句
+            this.cbFaultByte6Bit7 = new System.Windows.Forms.Label();
+            this.cbFaultByte6Bit6 = new System.Windows.Forms.Label();
+            this.cbFaultByte6Bit5 = new System.Windows.Forms.Label();
+            this.cbFaultByte6Bit4 = new System.Windows.Forms.Label();
+            this.cbFaultByte6Bit3 = new System.Windows.Forms.Label();
+            this.cbFaultByte6Bit2 = new System.Windows.Forms.Label();
+            this.cbFaultByte6Bit1 = new System.Windows.Forms.Label();
+            this.cbFaultByte6Bit0 = new System.Windows.Forms.Label();
+            // 字节5初始化语句
+            this.cbFaultByte5Bit7 = new System.Windows.Forms.Label();
+            this.cbFaultByte5Bit6 = new System.Windows.Forms.Label();
+            this.cbFaultByte5Bit5 = new System.Windows.Forms.Label();
+            this.cbFaultByte5Bit4 = new System.Windows.Forms.Label();
+            this.cbFaultByte5Bit3 = new System.Windows.Forms.Label();
+            this.cbFaultByte5Bit2 = new System.Windows.Forms.Label();
+            this.cbFaultByte5Bit1 = new System.Windows.Forms.Label();
+            this.cbFaultByte5Bit0 = new System.Windows.Forms.Label();
+            // 字节4初始化语句
+            this.cbFaultByte4Bit7 = new System.Windows.Forms.Label();
+            this.cbFaultByte4Bit6 = new System.Windows.Forms.Label();
+            this.cbFaultByte4Bit5 = new System.Windows.Forms.Label();
+            this.cbFaultByte4Bit4 = new System.Windows.Forms.Label();
+            this.cbFaultByte4Bit3 = new System.Windows.Forms.Label();
+            this.cbFaultByte4Bit2 = new System.Windows.Forms.Label();
+            this.cbFaultByte4Bit1 = new System.Windows.Forms.Label();
+            this.cbFaultByte4Bit0 = new System.Windows.Forms.Label();
+            // 字节3初始化语句
+            this.cbFaultByte3Bit7 = new System.Windows.Forms.Label();
+            this.cbFaultByte3Bit6 = new System.Windows.Forms.Label();
+            this.cbFaultByte3Bit5 = new System.Windows.Forms.Label();
+            this.cbFaultByte3Bit4 = new System.Windows.Forms.Label();
+            this.cbFaultByte3Bit3 = new System.Windows.Forms.Label();
+            this.cbFaultByte3Bit2 = new System.Windows.Forms.Label();
+            this.cbFaultByte3Bit1 = new System.Windows.Forms.Label();
+            this.cbFaultByte3Bit0 = new System.Windows.Forms.Label();
+
+            // 字节2初始化语句
+            this.cbFaultByte2Bit7 = new System.Windows.Forms.Label();
+            this.cbFaultByte2Bit6 = new System.Windows.Forms.Label();
+            this.cbFaultByte2Bit5 = new System.Windows.Forms.Label();
+            this.cbFaultByte2Bit4 = new System.Windows.Forms.Label();
+            this.cbFaultByte2Bit3 = new System.Windows.Forms.Label();
+            this.cbFaultByte2Bit2 = new System.Windows.Forms.Label();
+            this.cbFaultByte2Bit1 = new System.Windows.Forms.Label();
+            this.cbFaultByte2Bit0 = new System.Windows.Forms.Label();
+
+            this.cbFaultByte1Bit7 = new System.Windows.Forms.Label();
+            this.cbFaultByte1Bit6 = new System.Windows.Forms.Label();
+            this.cbFaultByte1Bit5 = new System.Windows.Forms.Label();
+            this.cbFaultByte1Bit4 = new System.Windows.Forms.Label();
+            this.cbFaultByte1Bit3 = new System.Windows.Forms.Label();
+            this.cbFaultByte1Bit2 = new System.Windows.Forms.Label();
+            this.cbFaultByte1Bit1 = new System.Windows.Forms.Label();
+            this.cbFaultByte1Bit0 = new System.Windows.Forms.Label();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.lblOilLevel = new System.Windows.Forms.Label();
             this.label19 = new System.Windows.Forms.Label();
@@ -239,12 +312,83 @@
             //this.groupBox8.Controls.Add(this.label32);
             //this.groupBox8.Controls.Add(this.lblEngineRpmSum);
             //this.groupBox8.Controls.Add(this.label30);
-            //this.groupBox8.Controls.Add(this.lblEngineStatus);
+            //this.groupBox8.Controls.Add(this.lblEngineStatuslblEngineStatus);
             //this.groupBox8.Controls.Add(this.label28);
-            //this.groupBox8.Controls.Add(this.label27);
+            // 添加到Controls
+            this.groupBox8.Controls.Add(this.cbFaultByte8Bit7);
+            this.groupBox8.Controls.Add(this.cbFaultByte8Bit6);
+            this.groupBox8.Controls.Add(this.cbFaultByte8Bit5);
+            this.groupBox8.Controls.Add(this.cbFaultByte8Bit4);
+            this.groupBox8.Controls.Add(this.cbFaultByte8Bit3);
+            this.groupBox8.Controls.Add(this.cbFaultByte8Bit2);
+            this.groupBox8.Controls.Add(this.cbFaultByte8Bit1);
+            this.groupBox8.Controls.Add(this.cbFaultByte8Bit0);
+            // 添加到Controls
+            this.groupBox8.Controls.Add(this.cbFaultByte7Bit7);
+            this.groupBox8.Controls.Add(this.cbFaultByte7Bit6);
+            this.groupBox8.Controls.Add(this.cbFaultByte7Bit5);
+            this.groupBox8.Controls.Add(this.cbFaultByte7Bit4);
+            this.groupBox8.Controls.Add(this.cbFaultByte7Bit3);
+            this.groupBox8.Controls.Add(this.cbFaultByte7Bit2);
+            this.groupBox8.Controls.Add(this.cbFaultByte7Bit1);
+            this.groupBox8.Controls.Add(this.cbFaultByte7Bit0);
+            // 添加到Controls
+            this.groupBox8.Controls.Add(this.cbFaultByte6Bit7);
+            this.groupBox8.Controls.Add(this.cbFaultByte6Bit6);
+            this.groupBox8.Controls.Add(this.cbFaultByte6Bit5);
+            this.groupBox8.Controls.Add(this.cbFaultByte6Bit4);
+            this.groupBox8.Controls.Add(this.cbFaultByte6Bit3);
+            this.groupBox8.Controls.Add(this.cbFaultByte6Bit2);
+            this.groupBox8.Controls.Add(this.cbFaultByte6Bit1);
+            this.groupBox8.Controls.Add(this.cbFaultByte6Bit0);
+            // 添加到Controls
+            this.groupBox8.Controls.Add(this.cbFaultByte5Bit7);
+            this.groupBox8.Controls.Add(this.cbFaultByte5Bit6);
+            this.groupBox8.Controls.Add(this.cbFaultByte5Bit5);
+            this.groupBox8.Controls.Add(this.cbFaultByte5Bit4);
+            this.groupBox8.Controls.Add(this.cbFaultByte5Bit3);
+            this.groupBox8.Controls.Add(this.cbFaultByte5Bit2);
+            this.groupBox8.Controls.Add(this.cbFaultByte5Bit1);
+            this.groupBox8.Controls.Add(this.cbFaultByte5Bit0);
+            // 添加到Controls
+            this.groupBox8.Controls.Add(this.cbFaultByte4Bit7);
+            this.groupBox8.Controls.Add(this.cbFaultByte4Bit6);
+            this.groupBox8.Controls.Add(this.cbFaultByte4Bit5);
+            this.groupBox8.Controls.Add(this.cbFaultByte4Bit4);
+            this.groupBox8.Controls.Add(this.cbFaultByte4Bit3);
+            this.groupBox8.Controls.Add(this.cbFaultByte4Bit2);
+            this.groupBox8.Controls.Add(this.cbFaultByte4Bit1);
+            this.groupBox8.Controls.Add(this.cbFaultByte4Bit0);
+            // 添加到Controls
+            this.groupBox8.Controls.Add(this.cbFaultByte3Bit7);
+            this.groupBox8.Controls.Add(this.cbFaultByte3Bit6);
+            this.groupBox8.Controls.Add(this.cbFaultByte3Bit5);
+            this.groupBox8.Controls.Add(this.cbFaultByte3Bit4);
+            this.groupBox8.Controls.Add(this.cbFaultByte3Bit3);
+            this.groupBox8.Controls.Add(this.cbFaultByte3Bit2);
+            this.groupBox8.Controls.Add(this.cbFaultByte3Bit1);
+            this.groupBox8.Controls.Add(this.cbFaultByte3Bit0);
+
+            this.groupBox8.Controls.Add(this.cbFaultByte2Bit7);
+            this.groupBox8.Controls.Add(this.cbFaultByte2Bit6);
+            this.groupBox8.Controls.Add(this.cbFaultByte2Bit5);
+            this.groupBox8.Controls.Add(this.cbFaultByte2Bit4);
+            this.groupBox8.Controls.Add(this.cbFaultByte2Bit3);
+            this.groupBox8.Controls.Add(this.cbFaultByte2Bit2);
+            this.groupBox8.Controls.Add(this.cbFaultByte2Bit1);
+            this.groupBox8.Controls.Add(this.cbFaultByte2Bit0);
+
+            this.groupBox8.Controls.Add(this.cbFaultByte1Bit7);
+            this.groupBox8.Controls.Add(this.cbFaultByte1Bit6);
+            this.groupBox8.Controls.Add(this.cbFaultByte1Bit5);
+            this.groupBox8.Controls.Add(this.cbFaultByte1Bit4);
+            this.groupBox8.Controls.Add(this.cbFaultByte1Bit3);
+            this.groupBox8.Controls.Add(this.cbFaultByte1Bit2);
+            this.groupBox8.Controls.Add(this.cbFaultByte1Bit1);
+            this.groupBox8.Controls.Add(this.cbFaultByte1Bit0);
             this.groupBox8.Location = new System.Drawing.Point(6, 480);
             this.groupBox8.Name = "groupBox8";
-            this.groupBox8.Size = new System.Drawing.Size(1180, 188);
+            this.groupBox8.Size = new System.Drawing.Size(1180, 230);
             this.groupBox8.TabIndex = 6;
             this.groupBox8.TabStop = false;
             this.groupBox8.Text = "故障状态";
@@ -537,7 +681,7 @@
             // 
             this.tbAdjustCoefficient4.Location = new System.Drawing.Point(280, 93);
             this.tbAdjustCoefficient4.Name = "tbAdjustCoefficient4";
-            this.tbAdjustCoefficient4.ReadOnly = true;
+          
             this.tbAdjustCoefficient4.Size = new System.Drawing.Size(100, 20);
             this.tbAdjustCoefficient4.TabIndex = 16;
             this.tbAdjustCoefficient4.Text = "1.0";
@@ -546,7 +690,7 @@
             // 
             this.tbAdjustCoefficient3.Location = new System.Drawing.Point(280, 68);
             this.tbAdjustCoefficient3.Name = "tbAdjustCoefficient3";
-            this.tbAdjustCoefficient3.ReadOnly = true;
+        
             this.tbAdjustCoefficient3.Size = new System.Drawing.Size(100, 20);
             this.tbAdjustCoefficient3.TabIndex = 15;
             this.tbAdjustCoefficient3.Text = "1.0";
@@ -555,7 +699,7 @@
             // 
             this.tbAdjustCoefficient2.Location = new System.Drawing.Point(280, 43);
             this.tbAdjustCoefficient2.Name = "tbAdjustCoefficient2";
-            this.tbAdjustCoefficient2.ReadOnly = true;
+           
             this.tbAdjustCoefficient2.Size = new System.Drawing.Size(100, 20);
             this.tbAdjustCoefficient2.TabIndex = 14;
             this.tbAdjustCoefficient2.Text = "1.0";
@@ -564,7 +708,7 @@
             // 
             this.tbAdjustCoefficient1.Location = new System.Drawing.Point(280, 18);
             this.tbAdjustCoefficient1.Name = "tbAdjustCoefficient1";
-            this.tbAdjustCoefficient1.ReadOnly = true;
+       
             this.tbAdjustCoefficient1.Size = new System.Drawing.Size(100, 20);
             this.tbAdjustCoefficient1.TabIndex = 13;
             this.tbAdjustCoefficient1.Text = "1.0";
@@ -604,104 +748,678 @@
             this.label22.Size = new System.Drawing.Size(79, 13);
             this.label22.TabIndex = 9;
             this.label22.Text = "调整系数1:";
-            // 
-            // cbFaultByte8
-            // 
-            this.cbFaultByte8.AutoSize = true;
-            this.cbFaultByte8.Enabled = false;
-            this.cbFaultByte8.Location = new System.Drawing.Point(280, 100);
-            this.cbFaultByte8.Name = "cbFaultByte8";
-            this.cbFaultByte8.Size = new System.Drawing.Size(76, 17);
-            this.cbFaultByte8.TabIndex = 8;
-            this.cbFaultByte8.Text = "故障字节8";
-            this.cbFaultByte8.UseVisualStyleBackColor = true;
-            // 
-            // cbFaultByte7
-            // 
-            this.cbFaultByte7.AutoSize = true;
-            this.cbFaultByte7.Enabled = false;
-            this.cbFaultByte7.Location = new System.Drawing.Point(280, 70);
-            this.cbFaultByte7.Name = "cbFaultByte7";
-            this.cbFaultByte7.Size = new System.Drawing.Size(76, 17);
-            this.cbFaultByte7.TabIndex = 7;
-            this.cbFaultByte7.Text = "故障字节7";
-            this.cbFaultByte7.UseVisualStyleBackColor = true;
-            // 
-            // label21
-            // 
-            this.label21.AutoSize = true;
-            this.label21.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label21.Location = new System.Drawing.Point(280, 20);
-            this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(91, 13);
-            this.label21.TabIndex = 6;
-            this.label21.Text = "故障字节7-8:";
-            // 
-            // cbFaultByte6
-            // 
-            this.cbFaultByte6.AutoSize = true;
-            this.cbFaultByte6.Enabled = false;
-            this.cbFaultByte6.Location = new System.Drawing.Point(150, 100);
-            this.cbFaultByte6.Name = "cbFaultByte6";
-            this.cbFaultByte6.Size = new System.Drawing.Size(76, 17);
-            this.cbFaultByte6.TabIndex = 5;
-            this.cbFaultByte6.Text = "故障字节6";
-            this.cbFaultByte6.UseVisualStyleBackColor = true;
-            // 
-            // cbFaultByte5
-            // 
-            this.cbFaultByte5.AutoSize = true;
-            this.cbFaultByte5.Enabled = false;
-            this.cbFaultByte5.Location = new System.Drawing.Point(150, 70);
-            this.cbFaultByte5.Name = "cbFaultByte5";
-            this.cbFaultByte5.Size = new System.Drawing.Size(76, 17);
-            this.cbFaultByte5.TabIndex = 4;
-            this.cbFaultByte5.Text = "故障字节5";
-            this.cbFaultByte5.UseVisualStyleBackColor = true;
-            // 
-            // cbFaultByte4
-            // 
-            this.cbFaultByte4.AutoSize = true;
-            this.cbFaultByte4.Enabled = false;
-            this.cbFaultByte4.Location = new System.Drawing.Point(150, 40);
-            this.cbFaultByte4.Name = "cbFaultByte4";
-            this.cbFaultByte4.Size = new System.Drawing.Size(76, 17);
-            this.cbFaultByte4.TabIndex = 3;
-            this.cbFaultByte4.Text = "故障字节4";
-            this.cbFaultByte4.UseVisualStyleBackColor = true;
-            // 
-            // cbFaultByte3
-            // 
-            this.cbFaultByte3.AutoSize = true;
-            this.cbFaultByte3.Enabled = false;
-            this.cbFaultByte3.Location = new System.Drawing.Point(20, 100);
-            this.cbFaultByte3.Name = "cbFaultByte3";
-            this.cbFaultByte3.Size = new System.Drawing.Size(76, 17);
-            this.cbFaultByte3.TabIndex = 2;
-            this.cbFaultByte3.Text = "故障字节3";
-            this.cbFaultByte3.UseVisualStyleBackColor = true;
-            // 
-            // cbFaultByte2
-            // 
-            this.cbFaultByte2.AutoSize = true;
-            this.cbFaultByte2.Enabled = false;
-            this.cbFaultByte2.Location = new System.Drawing.Point(20, 70);
-            this.cbFaultByte2.Name = "cbFaultByte2";
-            this.cbFaultByte2.Size = new System.Drawing.Size(76, 17);
-            this.cbFaultByte2.TabIndex = 1;
-            this.cbFaultByte2.Text = "故障字节2";
-            this.cbFaultByte2.UseVisualStyleBackColor = true;
-            // 
-            // cbFaultByte1
-            // 
-            this.cbFaultByte1.AutoSize = true;
-            this.cbFaultByte1.Enabled = false;
-            this.cbFaultByte1.Location = new System.Drawing.Point(20, 40);
-            this.cbFaultByte1.Name = "cbFaultByte1";
-            this.cbFaultByte1.Size = new System.Drawing.Size(76, 17);
-            this.cbFaultByte1.TabIndex = 0;
-            this.cbFaultByte1.Text = "故障字节1";
-            this.cbFaultByte1.UseVisualStyleBackColor = true;
+            //// 
+            //// cbFaultByte8
+            //// 
+            //this.cbFaultByte8.AutoSize = true;
+            //this.cbFaultByte8.Enabled = false;
+            //this.cbFaultByte8.Location = new System.Drawing.Point(280, 100);
+            //this.cbFaultByte8.Name = "cbFaultByte8";
+            //this.cbFaultByte8.Size = new System.Drawing.Size(76, 17);
+            //this.cbFaultByte8.TabIndex = 8;
+            //this.cbFaultByte8.Text = "故障字节8";
+
+            //// 
+            //// cbFaultByte7
+            //// 
+            //this.cbFaultByte7.AutoSize = true;
+            //this.cbFaultByte7.Enabled = false;
+            //this.cbFaultByte7.Location = new System.Drawing.Point(280, 70);
+            //this.cbFaultByte7.Name = "cbFaultByte7";
+            //this.cbFaultByte7.Size = new System.Drawing.Size(76, 17);
+            //this.cbFaultByte7.TabIndex = 7;
+            //this.cbFaultByte7.Text = "故障字节7";
+
+            //// 
+            //// label21
+            //// 
+            //this.label21.AutoSize = true;
+            //this.label21.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            //this.label21.Location = new System.Drawing.Point(280, 20);
+            //this.label21.Name = "label21";
+            //this.label21.Size = new System.Drawing.Size(91, 13);
+            //this.label21.TabIndex = 6;
+            //this.label21.Text = "故障字节7-8:";
+            //// 
+            //// cbFaultByte6
+            //// 
+            //this.cbFaultByte6.AutoSize = true;
+            //this.cbFaultByte6.Enabled = false;
+            //this.cbFaultByte6.Location = new System.Drawing.Point(150, 100);
+            //this.cbFaultByte6.Name = "cbFaultByte6";
+            //this.cbFaultByte6.Size = new System.Drawing.Size(76, 17);
+            //this.cbFaultByte6.TabIndex = 5;
+            //this.cbFaultByte6.Text = "故障字节6";
+
+            //// 
+            //// cbFaultByte5
+            //// 
+            //this.cbFaultByte5.AutoSize = true;
+            //this.cbFaultByte5.Enabled = false;
+            //this.cbFaultByte5.Location = new System.Drawing.Point(150, 70);
+            //this.cbFaultByte5.Name = "cbFaultByte5";
+            //this.cbFaultByte5.Size = new System.Drawing.Size(76, 17);
+            //this.cbFaultByte5.TabIndex = 4;
+            //this.cbFaultByte5.Text = "故障字节5";
+
+            //// 
+            //// cbFaultByte4
+            //// 
+            //this.cbFaultByte4.AutoSize = true;
+            //this.cbFaultByte4.Enabled = false;
+            //this.cbFaultByte4.Location = new System.Drawing.Point(150, 40);
+            //this.cbFaultByte4.Name = "cbFaultByte4";
+            //this.cbFaultByte4.Size = new System.Drawing.Size(76, 17);
+            //this.cbFaultByte4.TabIndex = 3;
+            //this.cbFaultByte4.Text = "故障字节4";
+
+            //// 
+            //// cbFaultByte3
+            //// 
+            //this.cbFaultByte3.AutoSize = true;
+            //this.cbFaultByte3.Enabled = false;
+            //this.cbFaultByte3.Location = new System.Drawing.Point(20, 100);
+            //this.cbFaultByte3.Name = "cbFaultByte3";
+            //this.cbFaultByte3.Size = new System.Drawing.Size(76, 17);
+            //this.cbFaultByte3.TabIndex = 2;
+            //this.cbFaultByte3.Text = "故障字节3";
+
+            //// 
+            //// cbFaultByte2
+            //// 
+            //this.cbFaultByte2.AutoSize = true;
+            //this.cbFaultByte2.Enabled = false;
+            //this.cbFaultByte2.Location = new System.Drawing.Point(20, 70);
+            //this.cbFaultByte2.Name = "cbFaultByte2";
+            //this.cbFaultByte2.Size = new System.Drawing.Size(76, 17);
+            //this.cbFaultByte2.TabIndex = 1;
+            //this.cbFaultByte2.Text = "故障字节2";
+
+            //// 
+            //// cbFaultByte1
+            //// 
+            //this.cbFaultByte1.AutoSize = true;
+            //this.cbFaultByte1.Enabled = false;
+            //this.cbFaultByte1.Location = new System.Drawing.Point(20, 40);
+            //this.cbFaultByte1.Name = "cbFaultByte1";
+            //this.cbFaultByte1.Size = new System.Drawing.Size(76, 17);
+            //this.cbFaultByte1.TabIndex = 0;
+            //this.cbFaultByte1.Text = "故障字节1";
+
+            // 字节1 Bit0
+            this.cbFaultByte1Bit0.AutoSize = true;
+            this.cbFaultByte1Bit0.Location = new System.Drawing.Point(70, 25);  // 改为: 20
+            this.cbFaultByte1Bit0.Name = "cbFaultByte1Bit0";
+            this.cbFaultByte1Bit0.Size = new System.Drawing.Size(100, 13);  // 改为固定宽度
+            this.cbFaultByte1Bit0.TabIndex = 1;
+            this.cbFaultByte1Bit0.Text = "ECU硬件";
+            this.cbFaultByte1Bit0.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+
+            // 字节1 Bit1
+            this.cbFaultByte1Bit1.AutoSize = true;
+            this.cbFaultByte1Bit1.Location = new System.Drawing.Point(170, 25);  // 改为: 170
+            this.cbFaultByte1Bit1.Name = "cbFaultByte1Bit1";
+            this.cbFaultByte1Bit1.Size = new System.Drawing.Size(130, 13);  // 改为固定宽度
+            this.cbFaultByte1Bit1.TabIndex = 2;
+            this.cbFaultByte1Bit1.Text = "传感器供电线路";
+            this.cbFaultByte1Bit1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+
+            // 字节1 Bit2
+            this.cbFaultByte1Bit2.AutoSize = true;
+            this.cbFaultByte1Bit2.Location = new System.Drawing.Point(320, 25);  // 改为: 320
+            this.cbFaultByte1Bit2.Name = "cbFaultByte1Bit2";
+            this.cbFaultByte1Bit2.Size = new System.Drawing.Size(118, 13);  // 改为固定宽度
+            this.cbFaultByte1Bit2.TabIndex = 3;
+            this.cbFaultByte1Bit2.Text = "转速传感器1信号";
+            this.cbFaultByte1Bit2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+
+            // 字节1 Bit3
+            this.cbFaultByte1Bit3.AutoSize = true;
+            this.cbFaultByte1Bit3.Location = new System.Drawing.Point(450, 25);  // 改为: 470
+            this.cbFaultByte1Bit3.Name = "cbFaultByte1Bit3";
+            this.cbFaultByte1Bit3.Size = new System.Drawing.Size(118, 13);  // 改为固定宽度
+            this.cbFaultByte1Bit3.TabIndex = 4;
+            this.cbFaultByte1Bit3.Text = "转速传感器2信号";
+            this.cbFaultByte1Bit3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+
+            // 字节1 Bit4
+            this.cbFaultByte1Bit4.AutoSize = true;
+            this.cbFaultByte1Bit4.Location = new System.Drawing.Point(580, 25);  // 改为: 620
+            this.cbFaultByte1Bit4.Name = "cbFaultByte1Bit4";
+            this.cbFaultByte1Bit4.Size = new System.Drawing.Size(106, 13);  // 改为固定宽度
+            this.cbFaultByte1Bit4.TabIndex = 5;
+            this.cbFaultByte1Bit4.Text = "点火1控制回路";
+            this.cbFaultByte1Bit4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+
+            // 字节1 Bit5
+            this.cbFaultByte1Bit5.AutoSize = true;
+            this.cbFaultByte1Bit5.Location = new System.Drawing.Point(700, 25);  // 改为: 770
+            this.cbFaultByte1Bit5.Name = "cbFaultByte1Bit5";
+            this.cbFaultByte1Bit5.Size = new System.Drawing.Size(106, 13);  // 改为固定宽度
+            this.cbFaultByte1Bit5.TabIndex = 6;
+            this.cbFaultByte1Bit5.Text = "点火2控制回路";
+            this.cbFaultByte1Bit5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+
+            // 字节1 Bit6
+            this.cbFaultByte1Bit6.AutoSize = true;
+            this.cbFaultByte1Bit6.Location = new System.Drawing.Point(820, 25);  // 改为: 920
+            this.cbFaultByte1Bit6.Name = "cbFaultByte1Bit6";
+            this.cbFaultByte1Bit6.Size = new System.Drawing.Size(106, 13);  // 改为固定宽度
+            this.cbFaultByte1Bit6.TabIndex = 7;
+            this.cbFaultByte1Bit6.Text = "点火3控制回路";
+            this.cbFaultByte1Bit6.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+
+            // 字节1 Bit7
+            this.cbFaultByte1Bit7.AutoSize = true;
+            this.cbFaultByte1Bit7.Location = new System.Drawing.Point(940, 25);  // 改为: 1070
+            this.cbFaultByte1Bit7.Name = "cbFaultByte1Bit7";
+            this.cbFaultByte1Bit7.Size = new System.Drawing.Size(106, 13);  // 改为固定宽度
+            this.cbFaultByte1Bit7.TabIndex = 8;
+            this.cbFaultByte1Bit7.Text = "点火4控制回路";
+            this.cbFaultByte1Bit7.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+
+
+            // 字节2 Bit0配置
+            this.cbFaultByte2Bit0.AutoSize = true;
+            this.cbFaultByte2Bit0.Location = new System.Drawing.Point(70, 50);
+            this.cbFaultByte2Bit0.Name = "cbFaultByte2Bit0";
+            this.cbFaultByte2Bit0.Size = new System.Drawing.Size(106, 13);
+            this.cbFaultByte2Bit0.TabIndex = 9;
+            this.cbFaultByte2Bit0.Text = "点火4控制回路";
+            this.cbFaultByte2Bit0.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+
+            // 字节2 Bit1配置
+            this.cbFaultByte2Bit1.AutoSize = true;
+            this.cbFaultByte2Bit1.Location = new System.Drawing.Point(170, 50);
+            this.cbFaultByte2Bit1.Name = "cbFaultByte2Bit1";
+            this.cbFaultByte2Bit1.Size = new System.Drawing.Size(118, 13);
+            this.cbFaultByte2Bit1.TabIndex = 10;
+            this.cbFaultByte2Bit1.Text = "喷油器1控制回路";
+            this.cbFaultByte2Bit1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+
+            // 字节2 Bit2配置
+            this.cbFaultByte2Bit2.AutoSize = true;
+            this.cbFaultByte2Bit2.Location = new System.Drawing.Point(320, 50);
+            this.cbFaultByte2Bit2.Name = "cbFaultByte2Bit2";
+            this.cbFaultByte2Bit2.Size = new System.Drawing.Size(118, 13);
+            this.cbFaultByte2Bit2.TabIndex = 11;
+            this.cbFaultByte2Bit2.Text = "喷油器2控制回路";
+            this.cbFaultByte2Bit2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+
+            // 字节2 Bit3配置
+            this.cbFaultByte2Bit3.AutoSize = true;
+            this.cbFaultByte2Bit3.Location = new System.Drawing.Point(450, 50);
+            this.cbFaultByte2Bit3.Name = "cbFaultByte2Bit3";
+            this.cbFaultByte2Bit3.Size = new System.Drawing.Size(118, 13);
+            this.cbFaultByte2Bit3.TabIndex = 12;
+            this.cbFaultByte2Bit3.Text = "喷油器3控制回路";
+            this.cbFaultByte2Bit3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+
+            // 字节2 Bit4配置
+            this.cbFaultByte2Bit4.AutoSize = true;
+            this.cbFaultByte2Bit4.Location = new System.Drawing.Point(580, 50);
+            this.cbFaultByte2Bit4.Name = "cbFaultByte2Bit4";
+            this.cbFaultByte2Bit4.Size = new System.Drawing.Size(118, 13);
+            this.cbFaultByte2Bit4.TabIndex = 13;
+            this.cbFaultByte2Bit4.Text = "喷油器4控制回路";
+            this.cbFaultByte2Bit4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+
+            // 字节2 Bit5配置
+            this.cbFaultByte2Bit5.AutoSize = true;
+            this.cbFaultByte2Bit5.Location = new System.Drawing.Point(700, 50);
+            this.cbFaultByte2Bit5.Name = "cbFaultByte2Bit5";
+            this.cbFaultByte2Bit5.Size = new System.Drawing.Size(130, 13);
+            this.cbFaultByte2Bit5.TabIndex = 14;
+            this.cbFaultByte2Bit5.Text = "低压油泵控制回路";
+            this.cbFaultByte2Bit5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+
+            // 字节2 Bit6配置
+            this.cbFaultByte2Bit6.AutoSize = true;
+            this.cbFaultByte2Bit6.Location = new System.Drawing.Point(820, 50);
+            this.cbFaultByte2Bit6.Name = "cbFaultByte2Bit6";
+            this.cbFaultByte2Bit6.Size = new System.Drawing.Size(130, 13);
+            this.cbFaultByte2Bit6.TabIndex = 15;
+            this.cbFaultByte2Bit6.Text = "高压油泵控制回路";
+            this.cbFaultByte2Bit6.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+
+            // 字节2 Bit7配置
+            this.cbFaultByte2Bit7.AutoSize = true;
+            this.cbFaultByte2Bit7.Location = new System.Drawing.Point(940, 50);
+            this.cbFaultByte2Bit7.Name = "cbFaultByte2Bit7";
+            this.cbFaultByte2Bit7.Size = new System.Drawing.Size(130, 13);
+            this.cbFaultByte2Bit7.TabIndex = 16;
+            this.cbFaultByte2Bit7.Text = "润滑油油泵控制回路";
+            this.cbFaultByte2Bit7.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+
+            // 字节3 Bit0配置
+            this.cbFaultByte3Bit0.AutoSize = true;
+            this.cbFaultByte3Bit0.Location = new System.Drawing.Point(70, 75);
+            this.cbFaultByte3Bit0.Name = "cbFaultByte3Bit0";
+            this.cbFaultByte3Bit0.Size = new System.Drawing.Size(106, 13);
+            this.cbFaultByte3Bit0.TabIndex = 17;
+            this.cbFaultByte3Bit0.Text = "节气门1电机控制";
+            this.cbFaultByte3Bit0.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+
+            // 字节3 Bit1配置
+            this.cbFaultByte3Bit1.AutoSize = true;
+            this.cbFaultByte3Bit1.Location = new System.Drawing.Point(170, 75);
+            this.cbFaultByte3Bit1.Name = "cbFaultByte3Bit1";
+            this.cbFaultByte3Bit1.Size = new System.Drawing.Size(106, 13);
+            this.cbFaultByte3Bit1.TabIndex = 18;
+            this.cbFaultByte3Bit1.Text = "节气门2电机控制";
+            this.cbFaultByte3Bit1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+
+            // 字节3 Bit2配置
+            this.cbFaultByte3Bit2.AutoSize = true;
+            this.cbFaultByte3Bit2.Location = new System.Drawing.Point(320, 75);
+            this.cbFaultByte3Bit2.Name = "cbFaultByte3Bit2";
+            this.cbFaultByte3Bit2.Size = new System.Drawing.Size(118, 13);
+            this.cbFaultByte3Bit2.TabIndex = 19;
+            this.cbFaultByte3Bit2.Text = "节气门1位置传感器";
+            this.cbFaultByte3Bit2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+
+            // 字节3 Bit3配置
+            this.cbFaultByte3Bit3.AutoSize = true;
+            this.cbFaultByte3Bit3.Location = new System.Drawing.Point(450, 75);
+            this.cbFaultByte3Bit3.Name = "cbFaultByte3Bit3";
+            this.cbFaultByte3Bit3.Size = new System.Drawing.Size(118, 13);
+            this.cbFaultByte3Bit3.TabIndex = 20;
+            this.cbFaultByte3Bit3.Text = "节气门2位置传感器";
+            this.cbFaultByte3Bit3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+
+            // 字节3 Bit4配置
+            this.cbFaultByte3Bit4.AutoSize = true;
+            this.cbFaultByte3Bit4.Location = new System.Drawing.Point(580, 75);
+            this.cbFaultByte3Bit4.Name = "cbFaultByte3Bit4";
+            this.cbFaultByte3Bit4.Size = new System.Drawing.Size(106, 13);
+            this.cbFaultByte3Bit4.TabIndex = 21;
+            this.cbFaultByte3Bit4.Text = "低压油压传感器";
+            this.cbFaultByte3Bit4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+
+            // 字节3 Bit5配置
+            this.cbFaultByte3Bit5.AutoSize = true;
+            this.cbFaultByte3Bit5.Location = new System.Drawing.Point(700, 75);
+            this.cbFaultByte3Bit5.Name = "cbFaultByte3Bit5";
+            this.cbFaultByte3Bit5.Size = new System.Drawing.Size(82, 13);
+            this.cbFaultByte3Bit5.TabIndex = 22;
+            this.cbFaultByte3Bit5.Text = "轨压传感器";
+            this.cbFaultByte3Bit5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+
+            // 字节3 Bit6配置
+            this.cbFaultByte3Bit6.AutoSize = true;
+            this.cbFaultByte3Bit6.Location = new System.Drawing.Point(820, 75);
+            this.cbFaultByte3Bit6.Name = "cbFaultByte3Bit6";
+            this.cbFaultByte3Bit6.Size = new System.Drawing.Size(94, 13);
+            this.cbFaultByte3Bit6.TabIndex = 23;
+            this.cbFaultByte3Bit6.Text = "低压油压异常";
+            this.cbFaultByte3Bit6.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+
+            // 字节3 Bit7配置
+            this.cbFaultByte3Bit7.AutoSize = true;
+            this.cbFaultByte3Bit7.Location = new System.Drawing.Point(940, 75);
+            this.cbFaultByte3Bit7.Name = "cbFaultByte3Bit7";
+            this.cbFaultByte3Bit7.Size = new System.Drawing.Size(70, 13);
+            this.cbFaultByte3Bit7.TabIndex = 24;
+            this.cbFaultByte3Bit7.Text = "轨压异常";
+            this.cbFaultByte3Bit7.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+
+            // 字节4 Bit0配置
+            this.cbFaultByte4Bit0.AutoSize = true;
+            this.cbFaultByte4Bit0.Location = new System.Drawing.Point(70, 100);
+            this.cbFaultByte4Bit0.Name = "cbFaultByte4Bit0";
+            this.cbFaultByte4Bit0.Size = new System.Drawing.Size(118, 13);
+            this.cbFaultByte4Bit0.TabIndex = 25;
+            this.cbFaultByte4Bit0.Text = "进气温度1传感器";
+            this.cbFaultByte4Bit0.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+
+            // 字节4 Bit1配置
+            this.cbFaultByte4Bit1.AutoSize = true;
+            this.cbFaultByte4Bit1.Location = new System.Drawing.Point(170, 100);
+            this.cbFaultByte4Bit1.Name = "cbFaultByte4Bit1";
+            this.cbFaultByte4Bit1.Size = new System.Drawing.Size(118, 13);
+            this.cbFaultByte4Bit1.TabIndex = 26;
+            this.cbFaultByte4Bit1.Text = "进气温度2传感器";
+            this.cbFaultByte4Bit1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+
+            // 字节4 Bit2配置
+            this.cbFaultByte4Bit2.AutoSize = true;
+            this.cbFaultByte4Bit2.Location = new System.Drawing.Point(320, 100);
+            this.cbFaultByte4Bit2.Name = "cbFaultByte4Bit2";
+            this.cbFaultByte4Bit2.Size = new System.Drawing.Size(82, 13);
+            this.cbFaultByte4Bit2.TabIndex = 27;
+            this.cbFaultByte4Bit2.Text = "缸头1传感器";
+            this.cbFaultByte4Bit2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+
+            // 字节4 Bit3配置
+            this.cbFaultByte4Bit3.AutoSize = true;
+            this.cbFaultByte4Bit3.Location = new System.Drawing.Point(450, 100);
+            this.cbFaultByte4Bit3.Name = "cbFaultByte4Bit3";
+            this.cbFaultByte4Bit3.Size = new System.Drawing.Size(82, 13);
+            this.cbFaultByte4Bit3.TabIndex = 28;
+            this.cbFaultByte4Bit3.Text = "缸头2传感器";
+            this.cbFaultByte4Bit3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+
+            // 字节4 Bit4配置
+            this.cbFaultByte4Bit4.AutoSize = true;
+            this.cbFaultByte4Bit4.Location = new System.Drawing.Point(580, 100);
+            this.cbFaultByte4Bit4.Name = "cbFaultByte4Bit4";
+            this.cbFaultByte4Bit4.Size = new System.Drawing.Size(82, 13);
+            this.cbFaultByte4Bit4.TabIndex = 29;
+            this.cbFaultByte4Bit4.Text = "缸头3传感器";
+            this.cbFaultByte4Bit4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+
+            // 字节4 Bit5配置
+            this.cbFaultByte4Bit5.AutoSize = true;
+            this.cbFaultByte4Bit5.Location = new System.Drawing.Point(700, 100);
+            this.cbFaultByte4Bit5.Name = "cbFaultByte4Bit5";
+            this.cbFaultByte4Bit5.Size = new System.Drawing.Size(82, 13);
+            this.cbFaultByte4Bit5.TabIndex = 30;
+            this.cbFaultByte4Bit5.Text = "缸头4传感器";
+            this.cbFaultByte4Bit5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+
+            // 字节4 Bit6配置
+            this.cbFaultByte4Bit6.AutoSize = true;
+            this.cbFaultByte4Bit6.Location = new System.Drawing.Point(820, 100);
+            this.cbFaultByte4Bit6.Name = "cbFaultByte4Bit6";
+            this.cbFaultByte4Bit6.Size = new System.Drawing.Size(31, 13);
+            this.cbFaultByte4Bit6.TabIndex = 31;
+            this.cbFaultByte4Bit6.Text = "预留";
+            this.cbFaultByte4Bit6.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+
+            // 字节4 Bit7配置
+            this.cbFaultByte4Bit7.AutoSize = true;
+            this.cbFaultByte4Bit7.Location = new System.Drawing.Point(940, 100);
+            this.cbFaultByte4Bit7.Name = "cbFaultByte4Bit7";
+            this.cbFaultByte4Bit7.Size = new System.Drawing.Size(31, 13);
+            this.cbFaultByte4Bit7.TabIndex = 32;
+            this.cbFaultByte4Bit7.Text = "预留";
+            this.cbFaultByte4Bit7.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+
+            // 字节5 Bit0配置
+            this.cbFaultByte5Bit0.AutoSize = true;
+            this.cbFaultByte5Bit0.Location = new System.Drawing.Point(70, 125);
+            this.cbFaultByte5Bit0.Name = "cbFaultByte5Bit0";
+            this.cbFaultByte5Bit0.Size = new System.Drawing.Size(106, 13);
+            this.cbFaultByte5Bit0.TabIndex = 33;
+            this.cbFaultByte5Bit0.Text = "冷风门1驱动控制";
+            this.cbFaultByte5Bit0.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+
+            // 字节5 Bit1配置
+            this.cbFaultByte5Bit1.AutoSize = true;
+            this.cbFaultByte5Bit1.Location = new System.Drawing.Point(170, 125);
+            this.cbFaultByte5Bit1.Name = "cbFaultByte5Bit1";
+            this.cbFaultByte5Bit1.Size = new System.Drawing.Size(106, 13);
+            this.cbFaultByte5Bit1.TabIndex = 34;
+            this.cbFaultByte5Bit1.Text = "冷风门2驱动控制";
+            this.cbFaultByte5Bit1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+
+            // 字节5 Bit2配置
+            this.cbFaultByte5Bit2.AutoSize = true;
+            this.cbFaultByte5Bit2.Location = new System.Drawing.Point(320, 125);
+            this.cbFaultByte5Bit2.Name = "cbFaultByte5Bit2";
+            this.cbFaultByte5Bit2.Size = new System.Drawing.Size(106, 13);
+            this.cbFaultByte5Bit2.TabIndex = 35;
+            this.cbFaultByte5Bit2.Text = "冷风门3驱动控制";
+            this.cbFaultByte5Bit2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+
+            // 字节5 Bit3配置
+            this.cbFaultByte5Bit3.AutoSize = true;
+            this.cbFaultByte5Bit3.Location = new System.Drawing.Point(450, 125);
+            this.cbFaultByte5Bit3.Name = "cbFaultByte5Bit3";
+            this.cbFaultByte5Bit3.Size = new System.Drawing.Size(106, 13);
+            this.cbFaultByte5Bit3.TabIndex = 36;
+            this.cbFaultByte5Bit3.Text = "冷风门4驱动控制";
+            this.cbFaultByte5Bit3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+
+            // 字节5 Bit4配置
+            this.cbFaultByte5Bit4.AutoSize = true;
+            this.cbFaultByte5Bit4.Location = new System.Drawing.Point(580, 125);
+            this.cbFaultByte5Bit4.Name = "cbFaultByte5Bit4";
+            this.cbFaultByte5Bit4.Size = new System.Drawing.Size(58, 13);
+            this.cbFaultByte5Bit4.TabIndex = 37;
+            this.cbFaultByte5Bit4.Text = "缸头1高温";
+            this.cbFaultByte5Bit4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+
+            // 字节5 Bit5配置
+            this.cbFaultByte5Bit5.AutoSize = true;
+            this.cbFaultByte5Bit5.Location = new System.Drawing.Point(700, 125);
+            this.cbFaultByte5Bit5.Name = "cbFaultByte5Bit5";
+            this.cbFaultByte5Bit5.Size = new System.Drawing.Size(58, 13);
+            this.cbFaultByte5Bit5.TabIndex = 38;
+            this.cbFaultByte5Bit5.Text = "缸头2高温";
+            this.cbFaultByte5Bit5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+
+            // 字节5 Bit6配置
+            this.cbFaultByte5Bit6.AutoSize = true;
+            this.cbFaultByte5Bit6.Location = new System.Drawing.Point(820, 125);
+            this.cbFaultByte5Bit6.Name = "cbFaultByte5Bit6";
+            this.cbFaultByte5Bit6.Size = new System.Drawing.Size(58, 13);
+            this.cbFaultByte5Bit6.TabIndex = 39;
+            this.cbFaultByte5Bit6.Text = "缸头3高温";
+            this.cbFaultByte5Bit6.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+
+            // 字节5 Bit7配置
+            this.cbFaultByte5Bit7.AutoSize = true;
+            this.cbFaultByte5Bit7.Location = new System.Drawing.Point(940, 125);
+            this.cbFaultByte5Bit7.Name = "cbFaultByte5Bit7";
+            this.cbFaultByte5Bit7.Size = new System.Drawing.Size(58, 13);
+            this.cbFaultByte5Bit7.TabIndex = 40;
+            this.cbFaultByte5Bit7.Text = "缸头4高温";
+            this.cbFaultByte5Bit7.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 字节6 Bit0配置
+            this.cbFaultByte6Bit0.AutoSize = true;
+            this.cbFaultByte6Bit0.Location = new System.Drawing.Point(70, 150);
+            this.cbFaultByte6Bit0.Name = "cbFaultByte6Bit0";
+            this.cbFaultByte6Bit0.Size = new System.Drawing.Size(94, 13);
+            this.cbFaultByte6Bit0.TabIndex = 41;
+            this.cbFaultByte6Bit0.Text = "排温1传感器";
+            this.cbFaultByte6Bit0.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+
+            // 字节6 Bit1配置
+            this.cbFaultByte6Bit1.AutoSize = true;
+            this.cbFaultByte6Bit1.Location = new System.Drawing.Point(170, 150);
+            this.cbFaultByte6Bit1.Name = "cbFaultByte6Bit1";
+            this.cbFaultByte6Bit1.Size = new System.Drawing.Size(94, 13);
+            this.cbFaultByte6Bit1.TabIndex = 42;
+            this.cbFaultByte6Bit1.Text = "排温2传感器";
+            this.cbFaultByte6Bit1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+
+            // 字节6 Bit2配置
+            this.cbFaultByte6Bit2.AutoSize = true;
+            this.cbFaultByte6Bit2.Location = new System.Drawing.Point(320, 150);
+            this.cbFaultByte6Bit2.Name = "cbFaultByte6Bit2";
+            this.cbFaultByte6Bit2.Size = new System.Drawing.Size(94, 13);
+            this.cbFaultByte6Bit2.TabIndex = 43;
+            this.cbFaultByte6Bit2.Text = "排温3传感器";
+            this.cbFaultByte6Bit2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+
+            // 字节6 Bit3配置
+            this.cbFaultByte6Bit3.AutoSize = true;
+            this.cbFaultByte6Bit3.Location = new System.Drawing.Point(450, 150);
+            this.cbFaultByte6Bit3.Name = "cbFaultByte6Bit3";
+            this.cbFaultByte6Bit3.Size = new System.Drawing.Size(94, 13);
+            this.cbFaultByte6Bit3.TabIndex = 44;
+            this.cbFaultByte6Bit3.Text = "排温4传感器";
+            this.cbFaultByte6Bit3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+
+            // 字节6 Bit4配置
+            this.cbFaultByte6Bit4.AutoSize = true;
+            this.cbFaultByte6Bit4.Location = new System.Drawing.Point(580, 150);
+            this.cbFaultByte6Bit4.Name = "cbFaultByte6Bit4";
+            this.cbFaultByte6Bit4.Size = new System.Drawing.Size(70, 13);
+            this.cbFaultByte6Bit4.TabIndex = 45;
+            this.cbFaultByte6Bit4.Text = "缸温过低";
+            this.cbFaultByte6Bit4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+
+            // 字节6 Bit5配置
+            this.cbFaultByte6Bit5.AutoSize = true;
+            this.cbFaultByte6Bit5.Location = new System.Drawing.Point(700, 150);
+            this.cbFaultByte6Bit5.Name = "cbFaultByte6Bit5";
+            this.cbFaultByte6Bit5.Size = new System.Drawing.Size(31, 13);
+            this.cbFaultByte6Bit5.TabIndex = 46;
+            this.cbFaultByte6Bit5.Text = "预留";
+            this.cbFaultByte6Bit5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+
+            // 字节6 Bit6配置
+            this.cbFaultByte6Bit6.AutoSize = true;
+            this.cbFaultByte6Bit6.Location = new System.Drawing.Point(820, 150);
+            this.cbFaultByte6Bit6.Name = "cbFaultByte6Bit6";
+            this.cbFaultByte6Bit6.Size = new System.Drawing.Size(31, 13);
+            this.cbFaultByte6Bit6.TabIndex = 47;
+            this.cbFaultByte6Bit6.Text = "预留";
+            this.cbFaultByte6Bit6.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+
+            // 字节6 Bit7配置
+            this.cbFaultByte6Bit7.AutoSize = true;
+            this.cbFaultByte6Bit7.Location = new System.Drawing.Point(940, 150);
+            this.cbFaultByte6Bit7.Name = "cbFaultByte6Bit7";
+            this.cbFaultByte6Bit7.Size = new System.Drawing.Size(31, 13);
+            this.cbFaultByte6Bit7.TabIndex = 48;
+            this.cbFaultByte6Bit7.Text = "预留";
+            this.cbFaultByte6Bit7.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 字节7 Bit0配置
+            this.cbFaultByte7Bit0.AutoSize = true;
+            this.cbFaultByte7Bit0.Location = new System.Drawing.Point(70, 175);
+            this.cbFaultByte7Bit0.Name = "cbFaultByte7Bit0";
+            this.cbFaultByte7Bit0.Size = new System.Drawing.Size(94, 13);
+            this.cbFaultByte7Bit0.TabIndex = 49;
+            this.cbFaultByte7Bit0.Text = "系统电压不足";
+            this.cbFaultByte7Bit0.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+
+            // 字节7 Bit1配置
+            this.cbFaultByte7Bit1.AutoSize = true;
+            this.cbFaultByte7Bit1.Location = new System.Drawing.Point(170, 175);
+            this.cbFaultByte7Bit1.Name = "cbFaultByte7Bit1";
+            this.cbFaultByte7Bit1.Size = new System.Drawing.Size(94, 13);
+            this.cbFaultByte7Bit1.TabIndex = 50;
+            this.cbFaultByte7Bit1.Text = "系统电压过高";
+            this.cbFaultByte7Bit1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+
+            // 字节7 Bit2配置
+            this.cbFaultByte7Bit2.AutoSize = true;
+            this.cbFaultByte7Bit2.Location = new System.Drawing.Point(320, 175);
+            this.cbFaultByte7Bit2.Name = "cbFaultByte7Bit2";
+            this.cbFaultByte7Bit2.Size = new System.Drawing.Size(70, 13);
+            this.cbFaultByte7Bit2.TabIndex = 51;
+            this.cbFaultByte7Bit2.Text = "PWM油门";
+            this.cbFaultByte7Bit2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+
+            // 字节7 Bit3配置
+            this.cbFaultByte7Bit3.AutoSize = true;
+            this.cbFaultByte7Bit3.Location = new System.Drawing.Point(450, 175);
+            this.cbFaultByte7Bit3.Name = "cbFaultByte7Bit3";
+            this.cbFaultByte7Bit3.Size = new System.Drawing.Size(94, 13);
+            this.cbFaultByte7Bit3.TabIndex = 52;
+            this.cbFaultByte7Bit3.Text = "丢失通讯油门";
+            this.cbFaultByte7Bit3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+
+            // 字节7 Bit4配置
+            this.cbFaultByte7Bit4.AutoSize = true;
+            this.cbFaultByte7Bit4.Location = new System.Drawing.Point(580, 175);
+            this.cbFaultByte7Bit4.Name = "cbFaultByte7Bit4";
+            this.cbFaultByte7Bit4.Size = new System.Drawing.Size(70, 13);
+            this.cbFaultByte7Bit4.TabIndex = 53;
+            this.cbFaultByte7Bit4.Text = "转速反馈";
+            this.cbFaultByte7Bit4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+
+            // 字节7 Bit5配置
+            this.cbFaultByte7Bit5.AutoSize = true;
+            this.cbFaultByte7Bit5.Location = new System.Drawing.Point(700, 175);
+            this.cbFaultByte7Bit5.Name = "cbFaultByte7Bit5";
+            this.cbFaultByte7Bit5.Size = new System.Drawing.Size(70, 13);
+            this.cbFaultByte7Bit5.TabIndex = 54;
+            this.cbFaultByte7Bit5.Text = "启动控制";
+            this.cbFaultByte7Bit5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+
+            // 字节7 Bit6配置
+            this.cbFaultByte7Bit6.AutoSize = true;
+            this.cbFaultByte7Bit6.Location = new System.Drawing.Point(820, 175);
+            this.cbFaultByte7Bit6.Name = "cbFaultByte7Bit6";
+            this.cbFaultByte7Bit6.Size = new System.Drawing.Size(94, 13);
+            this.cbFaultByte7Bit6.TabIndex = 55;
+            this.cbFaultByte7Bit6.Text = "加热继电器控制";
+            this.cbFaultByte7Bit6.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+
+            // 字节7 Bit7配置
+            this.cbFaultByte7Bit7.AutoSize = true;
+            this.cbFaultByte7Bit7.Location = new System.Drawing.Point(940, 175);
+            this.cbFaultByte7Bit7.Name = "cbFaultByte7Bit7";
+            this.cbFaultByte7Bit7.Size = new System.Drawing.Size(82, 13);
+            this.cbFaultByte7Bit7.TabIndex = 56;
+            this.cbFaultByte7Bit7.Text = "液位传感器";
+            this.cbFaultByte7Bit7.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+
+            // 字节8 Bit0配置
+            this.cbFaultByte8Bit0.AutoSize = true;
+            this.cbFaultByte8Bit0.Location = new System.Drawing.Point(70, 200);
+            this.cbFaultByte8Bit0.Name = "cbFaultByte8Bit0";
+            this.cbFaultByte8Bit0.Size = new System.Drawing.Size(58, 13);
+            this.cbFaultByte8Bit0.TabIndex = 57;
+            this.cbFaultByte8Bit0.Text = "氧1传感器";
+            this.cbFaultByte8Bit0.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+
+            // 字节8 Bit1配置
+            this.cbFaultByte8Bit1.AutoSize = true;
+            this.cbFaultByte8Bit1.Location = new System.Drawing.Point(170, 200);
+            this.cbFaultByte8Bit1.Name = "cbFaultByte8Bit1";
+            this.cbFaultByte8Bit1.Size = new System.Drawing.Size(82, 13);
+            this.cbFaultByte8Bit1.TabIndex = 58;
+            this.cbFaultByte8Bit1.Text = "氧1加热控制";
+            this.cbFaultByte8Bit1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+
+            // 字节8 Bit2配置
+            this.cbFaultByte8Bit2.AutoSize = true;
+            this.cbFaultByte8Bit2.Location = new System.Drawing.Point(320, 200);
+            this.cbFaultByte8Bit2.Name = "cbFaultByte8Bit2";
+            this.cbFaultByte8Bit2.Size = new System.Drawing.Size(58, 13);
+            this.cbFaultByte8Bit2.TabIndex = 59;
+            this.cbFaultByte8Bit2.Text = "氧2传感器";
+            this.cbFaultByte8Bit2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+
+            // 字节8 Bit3配置
+            this.cbFaultByte8Bit3.AutoSize = true;
+            this.cbFaultByte8Bit3.Location = new System.Drawing.Point(450, 200);
+            this.cbFaultByte8Bit3.Name = "cbFaultByte8Bit3";
+            this.cbFaultByte8Bit3.Size = new System.Drawing.Size(82, 13);
+            this.cbFaultByte8Bit3.TabIndex = 60;
+            this.cbFaultByte8Bit3.Text = "氧2加热控制";
+            this.cbFaultByte8Bit3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+
+            // 字节8 Bit4配置
+            this.cbFaultByte8Bit4.AutoSize = true;
+            this.cbFaultByte8Bit4.Location = new System.Drawing.Point(580, 200);
+            this.cbFaultByte8Bit4.Name = "cbFaultByte8Bit4";
+            this.cbFaultByte8Bit4.Size = new System.Drawing.Size(58, 13);
+            this.cbFaultByte8Bit4.TabIndex = 61;
+            this.cbFaultByte8Bit4.Text = "氧3传感器";
+            this.cbFaultByte8Bit4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+
+            // 字节8 Bit5配置
+            this.cbFaultByte8Bit5.AutoSize = true;
+            this.cbFaultByte8Bit5.Location = new System.Drawing.Point(700, 200);
+            this.cbFaultByte8Bit5.Name = "cbFaultByte8Bit5";
+            this.cbFaultByte8Bit5.Size = new System.Drawing.Size(82, 13);
+            this.cbFaultByte8Bit5.TabIndex = 62;
+            this.cbFaultByte8Bit5.Text = "氧3加热控制";
+            this.cbFaultByte8Bit5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+
+            // 字节8 Bit6配置
+            this.cbFaultByte8Bit6.AutoSize = true;
+            this.cbFaultByte8Bit6.Location = new System.Drawing.Point(820, 200);
+            this.cbFaultByte8Bit6.Name = "cbFaultByte8Bit6";
+            this.cbFaultByte8Bit6.Size = new System.Drawing.Size(58, 13);
+            this.cbFaultByte8Bit6.TabIndex = 63;
+            this.cbFaultByte8Bit6.Text = "氧4传感器";
+            this.cbFaultByte8Bit6.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+
+            // 字节8 Bit7配置
+            this.cbFaultByte8Bit7.AutoSize = true;
+            this.cbFaultByte8Bit7.Location = new System.Drawing.Point(940, 200);
+            this.cbFaultByte8Bit7.Name = "cbFaultByte8Bit7";
+            this.cbFaultByte8Bit7.Size = new System.Drawing.Size(82, 13);
+            this.cbFaultByte8Bit7.TabIndex = 64;
+            this.cbFaultByte8Bit7.Text = "氧4加热控制";
+            this.cbFaultByte8Bit7.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // groupBox6
             // 
@@ -1724,7 +2442,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1200, 722);
+            this.ClientSize = new System.Drawing.Size(1200, 790);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.statusStrip1);
             this.Name = "LideEngine";
@@ -1836,23 +2554,94 @@
         private System.Windows.Forms.Label lblThrottle1Position;
         private System.Windows.Forms.Label lblThrottle1Deviation;
         private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.TextBox tbAdjustCoefficient4;
-        private System.Windows.Forms.TextBox tbAdjustCoefficient3;
-        private System.Windows.Forms.TextBox tbAdjustCoefficient2;
-        private System.Windows.Forms.TextBox tbAdjustCoefficient1;
+        private System.Windows.Forms.Label tbAdjustCoefficient4;
+        private System.Windows.Forms.Label tbAdjustCoefficient3;
+        private System.Windows.Forms.Label tbAdjustCoefficient2;
+        private System.Windows.Forms.Label tbAdjustCoefficient1;
         private System.Windows.Forms.Label label25;
         private System.Windows.Forms.Label label24;
         private System.Windows.Forms.Label label23;
         private System.Windows.Forms.Label label22;
-        private System.Windows.Forms.CheckBox cbFaultByte8;
-        private System.Windows.Forms.CheckBox cbFaultByte7;
+        //private System.Windows.Forms.Label cbFaultByte8;
+        //private System.Windows.Forms.Label cbFaultByte7;
         private System.Windows.Forms.Label label21;
-        private System.Windows.Forms.CheckBox cbFaultByte6;
-        private System.Windows.Forms.CheckBox cbFaultByte5;
-        private System.Windows.Forms.CheckBox cbFaultByte4;
-        private System.Windows.Forms.CheckBox cbFaultByte3;
-        private System.Windows.Forms.CheckBox cbFaultByte2;
-        private System.Windows.Forms.CheckBox cbFaultByte1;
+        //private System.Windows.Forms.Label cbFaultByte6;
+        //private System.Windows.Forms.Label cbFaultByte5;
+        //private System.Windows.Forms.Label cbFaultByte4;
+        //private System.Windows.Forms.Label cbFaultByte3;
+        //private System.Windows.Forms.Label cbFaultByte2;
+        // 字节8声明
+        private System.Windows.Forms.Label cbFaultByte8Bit0;
+        private System.Windows.Forms.Label cbFaultByte8Bit1;
+        private System.Windows.Forms.Label cbFaultByte8Bit2;
+        private System.Windows.Forms.Label cbFaultByte8Bit3;
+        private System.Windows.Forms.Label cbFaultByte8Bit4;
+        private System.Windows.Forms.Label cbFaultByte8Bit5;
+        private System.Windows.Forms.Label cbFaultByte8Bit6;
+        private System.Windows.Forms.Label cbFaultByte8Bit7;
+        // 字节7声明
+        private System.Windows.Forms.Label cbFaultByte7Bit0;
+        private System.Windows.Forms.Label cbFaultByte7Bit1;
+        private System.Windows.Forms.Label cbFaultByte7Bit2;
+        private System.Windows.Forms.Label cbFaultByte7Bit3;
+        private System.Windows.Forms.Label cbFaultByte7Bit4;
+        private System.Windows.Forms.Label cbFaultByte7Bit5;
+        private System.Windows.Forms.Label cbFaultByte7Bit6;
+        private System.Windows.Forms.Label cbFaultByte7Bit7;
+        // 字节6声明
+        private System.Windows.Forms.Label cbFaultByte6Bit0;
+        private System.Windows.Forms.Label cbFaultByte6Bit1;
+        private System.Windows.Forms.Label cbFaultByte6Bit2;
+        private System.Windows.Forms.Label cbFaultByte6Bit3;
+        private System.Windows.Forms.Label cbFaultByte6Bit4;
+        private System.Windows.Forms.Label cbFaultByte6Bit5;
+        private System.Windows.Forms.Label cbFaultByte6Bit6;
+        private System.Windows.Forms.Label cbFaultByte6Bit7;
+        // 字节5声明
+        private System.Windows.Forms.Label cbFaultByte5Bit0;
+        private System.Windows.Forms.Label cbFaultByte5Bit1;
+        private System.Windows.Forms.Label cbFaultByte5Bit2;
+        private System.Windows.Forms.Label cbFaultByte5Bit3;
+        private System.Windows.Forms.Label cbFaultByte5Bit4;
+        private System.Windows.Forms.Label cbFaultByte5Bit5;
+        private System.Windows.Forms.Label cbFaultByte5Bit6;
+        private System.Windows.Forms.Label cbFaultByte5Bit7;
+        // 字节4声明
+        private System.Windows.Forms.Label cbFaultByte4Bit0;
+        private System.Windows.Forms.Label cbFaultByte4Bit1;
+        private System.Windows.Forms.Label cbFaultByte4Bit2;
+        private System.Windows.Forms.Label cbFaultByte4Bit3;
+        private System.Windows.Forms.Label cbFaultByte4Bit4;
+        private System.Windows.Forms.Label cbFaultByte4Bit5;
+        private System.Windows.Forms.Label cbFaultByte4Bit6;
+        private System.Windows.Forms.Label cbFaultByte4Bit7;
+        // 字节3声明
+        private System.Windows.Forms.Label cbFaultByte3Bit0;
+        private System.Windows.Forms.Label cbFaultByte3Bit1;
+        private System.Windows.Forms.Label cbFaultByte3Bit2;
+        private System.Windows.Forms.Label cbFaultByte3Bit3;
+        private System.Windows.Forms.Label cbFaultByte3Bit4;
+        private System.Windows.Forms.Label cbFaultByte3Bit5;
+        private System.Windows.Forms.Label cbFaultByte3Bit6;
+        private System.Windows.Forms.Label cbFaultByte3Bit7;
+
+        private System.Windows.Forms.Label cbFaultByte2Bit0;
+        private System.Windows.Forms.Label cbFaultByte2Bit1;
+        private System.Windows.Forms.Label cbFaultByte2Bit2;
+        private System.Windows.Forms.Label cbFaultByte2Bit3;
+        private System.Windows.Forms.Label cbFaultByte2Bit4;
+        private System.Windows.Forms.Label cbFaultByte2Bit5;
+        private System.Windows.Forms.Label cbFaultByte2Bit6;
+        private System.Windows.Forms.Label cbFaultByte2Bit7;
+
+        private System.Windows.Forms.Label cbFaultByte1Bit0;
+        private System.Windows.Forms.Label cbFaultByte1Bit1;
+        private System.Windows.Forms.Label cbFaultByte1Bit2;
+        private System.Windows.Forms.Label cbFaultByte1Bit3;
+        private System.Windows.Forms.Label cbFaultByte1Bit4;
+        private System.Windows.Forms.Label cbFaultByte1Bit5;
+        private System.Windows.Forms.Label cbFaultByte1Bit6;
+        private System.Windows.Forms.Label cbFaultByte1Bit7;
         private System.Windows.Forms.Label lblEngineHealthScore;
         private System.Windows.Forms.Label label49;
         private System.Windows.Forms.Label lblMaintenanceRemaining;

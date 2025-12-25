@@ -110,7 +110,7 @@ namespace MissionPlanner
         public byte engine_running;
         public byte maintenance_status;
 
-        public byte throttle_feedback;
+        public int throttle_feedback;
         public ushort engine_rpm;
         public float cylinder_temp_1;
         public float cylinder_temp_2;
@@ -157,7 +157,7 @@ namespace MissionPlanner
 
         public byte engine_status_summary;
         public ushort engine_rpm_summary;
-        public byte throttle_feedback_summary;
+        public int throttle_feedback_summary;
         public float cylinder_temp_max;
         public float exhaust_temp_max;
         public float fuel_pressure_target_summary;
@@ -167,7 +167,7 @@ namespace MissionPlanner
         public ushort engine_runtime_minutes_summary;
         public byte fault_count;
         public byte maintenance_status_summary;
-        public byte engine_health_score;
+        public int engine_health_score;
         public ushort maintenance_time_remaining;
 
         // HIL
@@ -2363,12 +2363,13 @@ namespace MissionPlanner
                         fault_byte4 = status6.fault_byte4;
                         fault_byte5 = status6.fault_byte5;
                         fault_byte6 = status6.fault_byte6;
+                        fault_byte7 = status6.fault_byte7;
+                        fault_byte8 = status6.fault_byte8;
                         break;
 
                     case (uint)MAVLink.MAVLINK_MSG_ID.LIDE_CAN_STATUS7:
                         var status7 = mavLinkMessage.ToStructure<MAVLink.mavlink_lide_can_status7_t>();
-                        fault_byte7 = status7.fault_byte7;
-                        fault_byte8 = status7.fault_byte8;
+                     
                         adjust_coefficient1 = status7.adjust_coefficient1;
                         adjust_coefficient2 = status7.adjust_coefficient2;
                         adjust_coefficient3 = status7.adjust_coefficient3;

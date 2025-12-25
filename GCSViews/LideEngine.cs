@@ -185,7 +185,7 @@ namespace MissionPlanner.GCSViews
                 lblFuelRateInstant.Text = fuelRateInstant.ToString("F1");
 
                 // 状态2
-                byte throttleFeedback = MainV2.comPort.MAV.cs.throttle_feedback;
+                int throttleFeedback = MainV2.comPort.MAV.cs.throttle_feedback;
                 ushort engineRpm = MainV2.comPort.MAV.cs.engine_rpm;
                 float cylinderTemp1 = MainV2.comPort.MAV.cs.cylinder_temp_1;
                 float cylinderTemp2 = MainV2.comPort.MAV.cs.cylinder_temp_2;
@@ -198,7 +198,15 @@ namespace MissionPlanner.GCSViews
                 lblCylinderTemp2.Text = cylinderTemp2.ToString("F1");
                 lblCylinderTemp3.Text = cylinderTemp3.ToString("F1");
                 lblCylinderTemp4.Text = cylinderTemp4.ToString("F1");
-
+                // 状态2 打印
+                //Console.WriteLine("=== 发动机状态2 ===");
+                //Console.WriteLine($"油门反馈: {throttleFeedback} %");
+                //Console.WriteLine($"发动机转速: {engineRpm} rpm");
+                //Console.WriteLine($"1缸缸头温度: {cylinderTemp1:F1} ℃");
+                //Console.WriteLine($"2缸缸头温度: {cylinderTemp2:F1} ℃");
+                //Console.WriteLine($"3缸缸头温度: {cylinderTemp3:F1} ℃");
+                //Console.WriteLine($"4缸缸头温度: {cylinderTemp4:F1} ℃");
+                //Console.WriteLine();
                 // 状态3
                 float exhaustTemp1 = MainV2.comPort.MAV.cs.exhaust_temp_1;
                 float exhaustTemp2 = MainV2.comPort.MAV.cs.exhaust_temp_2;
@@ -217,7 +225,17 @@ namespace MissionPlanner.GCSViews
                 lblCoolingDoorDuty2.Text = coolingDoorDuty2.ToString("F1");
                 lblCoolingDoorDuty3.Text = coolingDoorDuty3.ToString("F1");
                 lblCoolingDoorDuty4.Text = coolingDoorDuty4.ToString("F1");
-
+                //// 状态3 打印
+                //Console.WriteLine("=== 发动机状态3 ===");
+                //Console.WriteLine($"1缸排气温度: {exhaustTemp1:F1} ℃");
+                //Console.WriteLine($"2缸排气温度: {exhaustTemp2:F1} ℃");
+                //Console.WriteLine($"3缸排气温度: {exhaustTemp3:F1} ℃");
+                //Console.WriteLine($"4缸排气温度: {exhaustTemp4:F1} ℃");
+                //Console.WriteLine($"1缸冷却门占空比: {coolingDoorDuty1:F1} %");
+                //Console.WriteLine($"2缸冷却门占空比: {coolingDoorDuty2:F1} %");
+                //Console.WriteLine($"3缸冷却门占空比: {coolingDoorDuty3:F1} %");
+                //Console.WriteLine($"4缸冷却门占空比: {coolingDoorDuty4:F1} %");
+                //Console.WriteLine();
                 // 状态4
                 float fuelPressureTarget = MainV2.comPort.MAV.cs.fuel_pressure_target;
                 float fuelPressureActual = MainV2.comPort.MAV.cs.fuel_pressure_actual;
@@ -235,14 +253,24 @@ namespace MissionPlanner.GCSViews
                 lblSystemVoltage.Text = systemVoltage.ToString("F1");
                 lblOilConsumption.Text = oilConsumption.ToString();
 
+                // 状态4 打印
+                Console.WriteLine("=== 发动机状态4 ===");
+                Console.WriteLine($"燃油压力目标值: {fuelPressureTarget:F1} kPa");
+                Console.WriteLine($"燃油压力实际值: {fuelPressureActual:F1} kPa");
+                Console.WriteLine($"燃油泵转速: {fuelPumpRpm} rpm");
+                Console.WriteLine($"轨压目标值: {railPressureTarget:F1} kPa");
+                Console.WriteLine($"轨压实际值: {railPressureActual:F1} kPa");
+                Console.WriteLine($"系统电压: {systemVoltage:F1} V");
+                Console.WriteLine($"机油消耗: {oilConsumption} ml");
+                Console.WriteLine();
                 // 状态5
-                float throttle1Deviation = MainV2.comPort.MAV.cs.throttle1_deviation;
-                float throttle1Position = MainV2.comPort.MAV.cs.throttle1_position;
-                float throttle2Deviation = MainV2.comPort.MAV.cs.throttle2_deviation;
-                float throttle2Position = MainV2.comPort.MAV.cs.throttle2_position;
-                float intakeTemperature = MainV2.comPort.MAV.cs.intake_temperature;
-                float environmentPressure = MainV2.comPort.MAV.cs.environment_pressure;
-                float oilLevel = MainV2.comPort.MAV.cs.oil_level;
+                float throttle1Deviation = (MainV2.comPort.MAV.cs.throttle1_deviation*0.5f-60);
+                float throttle1Position = MainV2.comPort.MAV.cs.throttle1_position * 0.5f;
+                float throttle2Deviation = (MainV2.comPort.MAV.cs.throttle2_deviation * 0.5f - 60);
+                float throttle2Position = MainV2.comPort.MAV.cs.throttle2_position * 0.5f;
+                float intakeTemperature = (MainV2.comPort.MAV.cs.intake_temperature * 2f - 50);
+                float environmentPressure = MainV2.comPort.MAV.cs.environment_pressure * 0.5f;
+                float oilLevel = MainV2.comPort.MAV.cs.oil_level * 0.5f;
 
                 lblThrottle1Deviation.Text = throttle1Deviation.ToString("F1");
                 lblThrottle1Position.Text = throttle1Position.ToString("F1");
@@ -251,49 +279,197 @@ namespace MissionPlanner.GCSViews
                 lblIntakeTemperature.Text = intakeTemperature.ToString("F1");
                 lblEnvironmentPressure.Text = environmentPressure.ToString("F1");
                 lblOilLevel.Text = oilLevel.ToString("F1");
+                //// 状态5 打印
+                //Console.WriteLine("=== 发动机状态5 ===");
+                //Console.WriteLine($"油门1偏差: {throttle1Deviation:F1} %");
+                //Console.WriteLine($"油门1位置: {throttle1Position:F1} %");
+                //Console.WriteLine($"油门2偏差: {throttle2Deviation:F1} %");
+                //Console.WriteLine($"油门2位置: {throttle2Position:F1} %");
+                //Console.WriteLine($"进气温度: {intakeTemperature:F1} ℃");
+                //Console.WriteLine($"环境压力: {environmentPressure:F1} hPa");
+                //Console.WriteLine($"机油液位: {oilLevel:F1} %");
 
-                // 汇总数据
-                byte engineStatusSummary = MainV2.comPort.MAV.cs.engine_status_summary;
-                ushort engineRpmSummary = MainV2.comPort.MAV.cs.engine_rpm_summary;
-                byte throttleFeedbackSummary = MainV2.comPort.MAV.cs.throttle_feedback_summary;
-                float cylinderTempMax = MainV2.comPort.MAV.cs.cylinder_temp_max;
-                float exhaustTempMax = MainV2.comPort.MAV.cs.exhaust_temp_max;
-                float fuelPressureTargetSummary = MainV2.comPort.MAV.cs.fuel_pressure_target_summary;
-                float railPressureTargetSummary = MainV2.comPort.MAV.cs.rail_pressure_target_summary;
-                float systemVoltageSummary = MainV2.comPort.MAV.cs.system_voltage_summary;
-                float engineRuntimeHoursSummary = MainV2.comPort.MAV.cs.engine_runtime_hours_summary;
-                ushort engineRuntimeMinutesSummary = MainV2.comPort.MAV.cs.engine_runtime_minutes_summary;
-                byte faultCount = MainV2.comPort.MAV.cs.fault_count;
-                byte maintenanceStatusSummary = MainV2.comPort.MAV.cs.maintenance_status_summary;
-                byte engineHealthScore = MainV2.comPort.MAV.cs.engine_health_score;
-                ushort maintenanceTimeRemaining = MainV2.comPort.MAV.cs.maintenance_time_remaining;
+                //cbFaultByte1.Text = MainV2.comPort.MAV.cs.fault_byte1.ToString();
+                //cbFaultByte2.Text = MainV2.comPort.MAV.cs.fault_byte2.ToString();
+                //cbFaultByte3.Text = MainV2.comPort.MAV.cs.fault_byte3.ToString();
+                //cbFaultByte4.Text = MainV2.comPort.MAV.cs.fault_byte4.ToString();
+                //cbFaultByte5.Text = MainV2.comPort.MAV.cs.fault_byte5.ToString();
+                //cbFaultByte6.Text = MainV2.comPort.MAV.cs.fault_byte6.ToString();
+                //cbFaultByte7.Text = MainV2.comPort.MAV.cs.fault_byte7.ToString();
+                //cbFaultByte8.Text = MainV2.comPort.MAV.cs.fault_byte8.ToString();
 
-                lblEngineStatus.Text = GetStatusText(engineStatusSummary);
-                lblEngineStatus.ForeColor = GetStatusColor(engineStatusSummary);
-                lblEngineRpmSum.Text = engineRpmSummary.ToString();
-                lblThrottleFeedbackSum.Text = throttleFeedbackSummary.ToString();
-                lblCylinderTempMax.Text = cylinderTempMax.ToString("F1");
-                lblExhaustTempMax.Text = exhaustTempMax.ToString("F1");
-                lblFuelPressureTargetSum.Text = fuelPressureTargetSummary.ToString("F1");
-                lblRailPressureTargetSum.Text = railPressureTargetSummary.ToString("F1");
-                lblSystemVoltageSum.Text = systemVoltageSummary.ToString("F1");
-                lblEngineRuntimeHours.Text = engineRuntimeHoursSummary.ToString("F1");
-                lblEngineRuntimeMins.Text = engineRuntimeMinutesSummary.ToString();
-                lblFaultCount.Text = faultCount.ToString();
-                lblMaintenanceRemaining.Text = maintenanceTimeRemaining.ToString();
-                lblEngineHealthScore.Text = engineHealthScore.ToString();
+                // 更新故障状态函数中添加所有字节
+                // 字节1更新代码
+                byte byte1 = MainV2.comPort.MAV.cs.fault_byte1;
+                UpdateFaultLabel(this.cbFaultByte1Bit0, (byte1 & 0x01) != 0);
+                UpdateFaultLabel(this.cbFaultByte1Bit1, (byte1 & 0x02) != 0);
+                UpdateFaultLabel(this.cbFaultByte1Bit2, (byte1 & 0x04) != 0);
+                UpdateFaultLabel(this.cbFaultByte1Bit3, (byte1 & 0x08) != 0);
+                UpdateFaultLabel(this.cbFaultByte1Bit4, (byte1 & 0x10) != 0);
+                UpdateFaultLabel(this.cbFaultByte1Bit5, (byte1 & 0x20) != 0);
+                UpdateFaultLabel(this.cbFaultByte1Bit6, (byte1 & 0x40) != 0);
+                UpdateFaultLabel(this.cbFaultByte1Bit7, (byte1 & 0x80) != 0);
 
-                // 根据数值变化颜色
-                UpdateColorCoding(cylinderTemp1, cylinderTemp2, cylinderTemp3, cylinderTemp4,
-                    exhaustTemp1, exhaustTemp2, exhaustTemp3, exhaustTemp4,
-                    systemVoltage, systemVoltageSummary, oilLevel);
+                // 字节2更新代码
+                byte byte2 = MainV2.comPort.MAV.cs.fault_byte2;
+                UpdateFaultLabel(this.cbFaultByte2Bit0, (byte2 & 0x01) != 0);
+                UpdateFaultLabel(this.cbFaultByte2Bit1, (byte2 & 0x02) != 0);
+                UpdateFaultLabel(this.cbFaultByte2Bit2, (byte2 & 0x04) != 0);
+                UpdateFaultLabel(this.cbFaultByte2Bit3, (byte2 & 0x08) != 0);
+                UpdateFaultLabel(this.cbFaultByte2Bit4, (byte2 & 0x10) != 0);
+                UpdateFaultLabel(this.cbFaultByte2Bit5, (byte2 & 0x20) != 0);
+                UpdateFaultLabel(this.cbFaultByte2Bit6, (byte2 & 0x40) != 0);
+                UpdateFaultLabel(this.cbFaultByte2Bit7, (byte2 & 0x80) != 0);
+
+                // 字节3更新代码
+                byte byte3 = MainV2.comPort.MAV.cs.fault_byte3;
+                UpdateFaultLabel(this.cbFaultByte3Bit0, (byte3 & 0x01) != 0);
+                UpdateFaultLabel(this.cbFaultByte3Bit1, (byte3 & 0x02) != 0);
+                UpdateFaultLabel(this.cbFaultByte3Bit2, (byte3 & 0x04) != 0);
+                UpdateFaultLabel(this.cbFaultByte3Bit3, (byte3 & 0x08) != 0);
+                UpdateFaultLabel(this.cbFaultByte3Bit4, (byte3 & 0x10) != 0);
+                UpdateFaultLabel(this.cbFaultByte3Bit5, (byte3 & 0x20) != 0);
+                UpdateFaultLabel(this.cbFaultByte3Bit6, (byte3 & 0x40) != 0);
+                UpdateFaultLabel(this.cbFaultByte3Bit7, (byte3 & 0x80) != 0);
+
+                // 字节4更新代码
+                byte byte4 = MainV2.comPort.MAV.cs.fault_byte4;
+                UpdateFaultLabel(this.cbFaultByte4Bit0, (byte4 & 0x01) != 0);
+                UpdateFaultLabel(this.cbFaultByte4Bit1, (byte4 & 0x02) != 0);
+                UpdateFaultLabel(this.cbFaultByte4Bit2, (byte4 & 0x04) != 0);
+                UpdateFaultLabel(this.cbFaultByte4Bit3, (byte4 & 0x08) != 0);
+                UpdateFaultLabel(this.cbFaultByte4Bit4, (byte4 & 0x10) != 0);
+                UpdateFaultLabel(this.cbFaultByte4Bit5, (byte4 & 0x20) != 0);
+                UpdateFaultLabel(this.cbFaultByte4Bit6, (byte4 & 0x40) != 0);
+                UpdateFaultLabel(this.cbFaultByte4Bit7, (byte4 & 0x80) != 0);
+
+                // 字节5更新代码
+                byte byte5 = MainV2.comPort.MAV.cs.fault_byte5;
+                UpdateFaultLabel(this.cbFaultByte5Bit0, (byte5 & 0x01) != 0);
+                UpdateFaultLabel(this.cbFaultByte5Bit1, (byte5 & 0x02) != 0);
+                UpdateFaultLabel(this.cbFaultByte5Bit2, (byte5 & 0x04) != 0);
+                UpdateFaultLabel(this.cbFaultByte5Bit3, (byte5 & 0x08) != 0);
+                UpdateFaultLabel(this.cbFaultByte5Bit4, (byte5 & 0x10) != 0);
+                UpdateFaultLabel(this.cbFaultByte5Bit5, (byte5 & 0x20) != 0);
+                UpdateFaultLabel(this.cbFaultByte5Bit6, (byte5 & 0x40) != 0);
+                UpdateFaultLabel(this.cbFaultByte5Bit7, (byte5 & 0x80) != 0);
+
+                // 字节6更新代码
+                byte byte6 = MainV2.comPort.MAV.cs.fault_byte6;
+                UpdateFaultLabel(this.cbFaultByte6Bit0, (byte6 & 0x01) != 0);
+                UpdateFaultLabel(this.cbFaultByte6Bit1, (byte6 & 0x02) != 0);
+                UpdateFaultLabel(this.cbFaultByte6Bit2, (byte6 & 0x04) != 0);
+                UpdateFaultLabel(this.cbFaultByte6Bit3, (byte6 & 0x08) != 0);
+                UpdateFaultLabel(this.cbFaultByte6Bit4, (byte6 & 0x10) != 0);
+                UpdateFaultLabel(this.cbFaultByte6Bit5, (byte6 & 0x20) != 0);
+                UpdateFaultLabel(this.cbFaultByte6Bit6, (byte6 & 0x40) != 0);
+                UpdateFaultLabel(this.cbFaultByte6Bit7, (byte6 & 0x80) != 0);
+
+                // 字节7更新代码
+                byte byte7 = MainV2.comPort.MAV.cs.fault_byte7;
+                UpdateFaultLabel(this.cbFaultByte7Bit0, (byte7 & 0x01) != 0);
+                UpdateFaultLabel(this.cbFaultByte7Bit1, (byte7 & 0x02) != 0);
+                UpdateFaultLabel(this.cbFaultByte7Bit2, (byte7 & 0x04) != 0);
+                UpdateFaultLabel(this.cbFaultByte7Bit3, (byte7 & 0x08) != 0);
+                UpdateFaultLabel(this.cbFaultByte7Bit4, (byte7 & 0x10) != 0);
+                UpdateFaultLabel(this.cbFaultByte7Bit5, (byte7 & 0x20) != 0);
+                UpdateFaultLabel(this.cbFaultByte7Bit6, (byte7 & 0x40) != 0);
+                UpdateFaultLabel(this.cbFaultByte7Bit7, (byte7 & 0x80) != 0);
+
+                // 字节8更新代码
+                byte byte8 = MainV2.comPort.MAV.cs.fault_byte8;
+                UpdateFaultLabel(this.cbFaultByte8Bit0, (byte8 & 0x01) != 0);
+                UpdateFaultLabel(this.cbFaultByte8Bit1, (byte8 & 0x02) != 0);
+                UpdateFaultLabel(this.cbFaultByte8Bit2, (byte8 & 0x04) != 0);
+                UpdateFaultLabel(this.cbFaultByte8Bit3, (byte8 & 0x08) != 0);
+                UpdateFaultLabel(this.cbFaultByte8Bit4, (byte8 & 0x10) != 0);
+                UpdateFaultLabel(this.cbFaultByte8Bit5, (byte8 & 0x20) != 0);
+                UpdateFaultLabel(this.cbFaultByte8Bit6, (byte8 & 0x40) != 0);
+                UpdateFaultLabel(this.cbFaultByte8Bit7, (byte8 & 0x80) != 0);
+                // 故障状态字节打印
+                Console.WriteLine("=== 故障状态字节 ===");
+                Console.WriteLine($"故障字节1: {MainV2.comPort.MAV.cs.fault_byte1} (0x{MainV2.comPort.MAV.cs.fault_byte1:X2})");
+                Console.WriteLine($"故障字节2: {MainV2.comPort.MAV.cs.fault_byte2} (0x{MainV2.comPort.MAV.cs.fault_byte2:X2})");
+                Console.WriteLine($"故障字节3: {MainV2.comPort.MAV.cs.fault_byte3} (0x{MainV2.comPort.MAV.cs.fault_byte3:X2})");
+                Console.WriteLine($"故障字节4: {MainV2.comPort.MAV.cs.fault_byte4} (0x{MainV2.comPort.MAV.cs.fault_byte4:X2})");
+                Console.WriteLine($"故障字节5: {MainV2.comPort.MAV.cs.fault_byte5} (0x{MainV2.comPort.MAV.cs.fault_byte5:X2})");
+                Console.WriteLine($"故障字节6: {MainV2.comPort.MAV.cs.fault_byte6} (0x{MainV2.comPort.MAV.cs.fault_byte6:X2})");
+                Console.WriteLine($"故障字节7: {MainV2.comPort.MAV.cs.fault_byte7} (0x{MainV2.comPort.MAV.cs.fault_byte7:X2})");
+                Console.WriteLine($"故障字节8: {MainV2.comPort.MAV.cs.fault_byte8} (0x{MainV2.comPort.MAV.cs.fault_byte8:X2})");
+                Console.WriteLine();
+
+                tbAdjustCoefficient1.Text = (MainV2.comPort.MAV.cs.adjust_coefficient1 / 100).ToString("F1");
+                tbAdjustCoefficient2.Text = (MainV2.comPort.MAV.cs.adjust_coefficient2 / 100).ToString("F1");
+                tbAdjustCoefficient3.Text = (MainV2.comPort.MAV.cs.adjust_coefficient3 / 100).ToString("F1");
+                tbAdjustCoefficient4.Text = (MainV2.comPort.MAV.cs.adjust_coefficient4 / 100).ToString("F1");
+                // 调整系数打印
+                Console.WriteLine("=== 发动机调整系数 ===");
+                Console.WriteLine($"调整系数1: {MainV2.comPort.MAV.cs.adjust_coefficient1 / 100:F1}");
+                Console.WriteLine($"调整系数2: {MainV2.comPort.MAV.cs.adjust_coefficient2 / 100:F1}");
+                Console.WriteLine($"调整系数3: {MainV2.comPort.MAV.cs.adjust_coefficient3 / 100:F1}");
+                Console.WriteLine($"调整系数4: {MainV2.comPort.MAV.cs.adjust_coefficient4 / 100:F1}");
+                //// 汇总数据
+                //byte engineStatusSummary = MainV2.comPort.MAV.cs.engine_status_summary;
+                //ushort engineRpmSummary = MainV2.comPort.MAV.cs.engine_rpm_summary;
+                //int throttleFeedbackSummary = MainV2.comPort.MAV.cs.throttle_feedback_summary;
+                //float cylinderTempMax = MainV2.comPort.MAV.cs.cylinder_temp_max;
+                //float exhaustTempMax = MainV2.comPort.MAV.cs.exhaust_temp_max;
+                //float fuelPressureTargetSummary = MainV2.comPort.MAV.cs.fuel_pressure_target_summary;
+                //float railPressureTargetSummary = MainV2.comPort.MAV.cs.rail_pressure_target_summary;
+                //float systemVoltageSummary = MainV2.comPort.MAV.cs.system_voltage_summary;
+                //float engineRuntimeHoursSummary = MainV2.comPort.MAV.cs.engine_runtime_hours_summary;
+                //ushort engineRuntimeMinutesSummary = MainV2.comPort.MAV.cs.engine_runtime_minutes_summary;
+                //byte faultCount = MainV2.comPort.MAV.cs.fault_count;
+                //byte maintenanceStatusSummary = MainV2.comPort.MAV.cs.maintenance_status_summary;
+                //int engineHealthScore = MainV2.comPort.MAV.cs.engine_health_score;
+                //ushort maintenanceTimeRemaining = MainV2.comPort.MAV.cs.maintenance_time_remaining;
+
+                //lblEngineStatus.Text = GetStatusText(engineStatusSummary);
+                //lblEngineStatus.ForeColor = GetStatusColor(engineStatusSummary);
+                //lblEngineRpmSum.Text = engineRpmSummary.ToString();
+                //lblThrottleFeedbackSum.Text = throttleFeedbackSummary.ToString();
+                //lblCylinderTempMax.Text = cylinderTempMax.ToString("F1");
+                //lblExhaustTempMax.Text = exhaustTempMax.ToString("F1");
+                //lblFuelPressureTargetSum.Text = fuelPressureTargetSummary.ToString("F1");
+                //lblRailPressureTargetSum.Text = railPressureTargetSummary.ToString("F1");
+                //lblSystemVoltageSum.Text = systemVoltageSummary.ToString("F1");
+                //lblEngineRuntimeHours.Text = engineRuntimeHoursSummary.ToString("F1");
+                //lblEngineRuntimeMins.Text = engineRuntimeMinutesSummary.ToString();
+                //lblFaultCount.Text = faultCount.ToString();
+                //lblMaintenanceRemaining.Text = maintenanceTimeRemaining.ToString();
+                //lblEngineHealthScore.Text = engineHealthScore.ToString();
+
+                //// 根据数值变化颜色
+                //UpdateColorCoding(cylinderTemp1, cylinderTemp2, cylinderTemp3, cylinderTemp4,
+                //    exhaustTemp1, exhaustTemp2, exhaustTemp3, exhaustTemp4,
+                //    systemVoltage, systemVoltageSummary, oilLevel);
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"更新显示时出错: {ex.Message}");
             }
         }
+        // 简化版本：只改变颜色
+        // 只改变字体颜色，不改变背景的版本
+        private void UpdateFaultLabel(Label label, bool isFault)
+        {
+            if (label == null)
+                return;
 
+            if (isFault)
+            {
+                // 故障状态：红色字体
+                label.ForeColor = Color.Red;
+            }
+            else
+            {
+                // 正常状态：绿色字体
+                label.ForeColor = Color.Green;
+            }
+
+            // 保持原有的背景色不变
+            // label.BackColor 保持不变
+        }
         private void UpdateColorCoding(float cylTemp1, float cylTemp2, float cylTemp3, float cylTemp4,
                                      float exhTemp1, float exhTemp2, float exhTemp3, float exhTemp4,
                                      float voltage, float voltageSum, float oilLevel)

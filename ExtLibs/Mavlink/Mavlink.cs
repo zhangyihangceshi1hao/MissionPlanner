@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 
 public partial class MAVLink
 {
-    public const string MAVLINK_BUILD_DATE = "Wed Dec 24 2025";
+    public const string MAVLINK_BUILD_DATE = "Thu Dec 25 2025";
     public const string MAVLINK_WIRE_PROTOCOL_VERSION = "2.0";
     public const int MAVLINK_MAX_PAYLOAD_LEN = 255;
 
@@ -321,13 +321,13 @@ public partial class MAVLink
         new message_info(12920, "HYGROMETER_SENSOR", 20, 5, 5, typeof( mavlink_hygrometer_sensor_t )),
         new message_info(12921, "LIDE_CAN_CONTROL", 104, 9, 9, typeof( mavlink_lide_can_control_t )),
         new message_info(12922, "LIDE_CAN_STATUS1", 61, 15, 15, typeof( mavlink_lide_can_status1_t )),
-        new message_info(12923, "LIDE_CAN_STATUS2", 148, 19, 19, typeof( mavlink_lide_can_status2_t )),
+        new message_info(12923, "LIDE_CAN_STATUS2", 70, 20, 20, typeof( mavlink_lide_can_status2_t )),
         new message_info(12924, "LIDE_CAN_STATUS3", 91, 32, 32, typeof( mavlink_lide_can_status3_t )),
         new message_info(12925, "LIDE_CAN_STATUS4", 208, 24, 24, typeof( mavlink_lide_can_status4_t )),
         new message_info(12926, "LIDE_CAN_STATUS5", 161, 28, 28, typeof( mavlink_lide_can_status5_t )),
-        new message_info(12927, "LIDE_CAN_STATUS6", 108, 6, 6, typeof( mavlink_lide_can_status6_t )),
-        new message_info(12928, "LIDE_CAN_STATUS7", 81, 18, 18, typeof( mavlink_lide_can_status7_t )),
-        new message_info(12929, "LIDE_ENGINE_SUMMARY", 16, 35, 35, typeof( mavlink_lide_engine_summary_t )),
+        new message_info(12927, "LIDE_CAN_STATUS6", 129, 8, 8, typeof( mavlink_lide_can_status6_t )),
+        new message_info(12928, "LIDE_CAN_STATUS7", 200, 16, 16, typeof( mavlink_lide_can_status7_t )),
+        new message_info(12929, "LIDE_ENGINE_SUMMARY", 242, 37, 37, typeof( mavlink_lide_engine_summary_t )),
         new message_info(42000, "ICAROUS_HEARTBEAT", 227, 1, 1, typeof( mavlink_icarous_heartbeat_t )),
         new message_info(42001, "ICAROUS_KINEMATIC_BANDS", 239, 46, 46, typeof( mavlink_icarous_kinematic_bands_t )),
         new message_info(50001, "CUBEPILOT_RAW_RC", 246, 32, 32, typeof( mavlink_cubepilot_raw_rc_t )),
@@ -30583,24 +30583,24 @@ public partial class MAVLink
 
     
     /// extensions_start 0
-    [StructLayout(LayoutKind.Sequential,Pack=1,Size=19)]
+    [StructLayout(LayoutKind.Sequential,Pack=1,Size=20)]
     ///<summary> 砺德CAN状态消息2 - 油门反馈和缸头温度 </summary>
     public struct mavlink_lide_can_status2_t
     {
         /// packet ordered constructor
-        public mavlink_lide_can_status2_t(float cylinder_temp_1,float cylinder_temp_2,float cylinder_temp_3,float cylinder_temp_4,ushort engine_rpm,byte throttle_feedback) 
+        public mavlink_lide_can_status2_t(float cylinder_temp_1,float cylinder_temp_2,float cylinder_temp_3,float cylinder_temp_4,ushort throttle_feedback,ushort engine_rpm) 
         {
             this.cylinder_temp_1 = cylinder_temp_1;
             this.cylinder_temp_2 = cylinder_temp_2;
             this.cylinder_temp_3 = cylinder_temp_3;
             this.cylinder_temp_4 = cylinder_temp_4;
-            this.engine_rpm = engine_rpm;
             this.throttle_feedback = throttle_feedback;
+            this.engine_rpm = engine_rpm;
             
         }
         
         /// packet xml order
-        public static mavlink_lide_can_status2_t PopulateXMLOrder(byte throttle_feedback,ushort engine_rpm,float cylinder_temp_1,float cylinder_temp_2,float cylinder_temp_3,float cylinder_temp_4) 
+        public static mavlink_lide_can_status2_t PopulateXMLOrder(ushort throttle_feedback,ushort engine_rpm,float cylinder_temp_1,float cylinder_temp_2,float cylinder_temp_3,float cylinder_temp_4) 
         {
             var msg = new mavlink_lide_can_status2_t();
 
@@ -30639,17 +30639,17 @@ public partial class MAVLink
         //[FieldOffset(12)]
         public  float cylinder_temp_4;
 
-        /// <summary> 			  发动机转速 (RPM) 		     </summary>
-        [Units("")]
-        [Description(" 			  发动机转速 (RPM) 		  ")]
-        //[FieldOffset(16)]
-        public  ushort engine_rpm;
-
         /// <summary> 			  油门反馈百分比 (0-100%) 		     </summary>
         [Units("")]
         [Description(" 			  油门反馈百分比 (0-100%) 		  ")]
+        //[FieldOffset(16)]
+        public  ushort throttle_feedback;
+
+        /// <summary> 			  发动机转速 (RPM) 		     </summary>
+        [Units("")]
+        [Description(" 			  发动机转速 (RPM) 		  ")]
         //[FieldOffset(18)]
-        public  byte throttle_feedback;
+        public  ushort engine_rpm;
     };
 
     
@@ -30899,12 +30899,12 @@ public partial class MAVLink
 
     
     /// extensions_start 0
-    [StructLayout(LayoutKind.Sequential,Pack=1,Size=6)]
-    ///<summary> 砺德CAN状态消息6 - 故障状态字节1-6 </summary>
+    [StructLayout(LayoutKind.Sequential,Pack=1,Size=8)]
+    ///<summary> 砺德CAN状态消息6 - 故障状态字节1-8 </summary>
     public struct mavlink_lide_can_status6_t
     {
         /// packet ordered constructor
-        public mavlink_lide_can_status6_t(byte fault_byte1,byte fault_byte2,byte fault_byte3,byte fault_byte4,byte fault_byte5,byte fault_byte6) 
+        public mavlink_lide_can_status6_t(byte fault_byte1,byte fault_byte2,byte fault_byte3,byte fault_byte4,byte fault_byte5,byte fault_byte6,byte fault_byte7,byte fault_byte8) 
         {
             this.fault_byte1 = fault_byte1;
             this.fault_byte2 = fault_byte2;
@@ -30912,11 +30912,13 @@ public partial class MAVLink
             this.fault_byte4 = fault_byte4;
             this.fault_byte5 = fault_byte5;
             this.fault_byte6 = fault_byte6;
+            this.fault_byte7 = fault_byte7;
+            this.fault_byte8 = fault_byte8;
             
         }
         
         /// packet xml order
-        public static mavlink_lide_can_status6_t PopulateXMLOrder(byte fault_byte1,byte fault_byte2,byte fault_byte3,byte fault_byte4,byte fault_byte5,byte fault_byte6) 
+        public static mavlink_lide_can_status6_t PopulateXMLOrder(byte fault_byte1,byte fault_byte2,byte fault_byte3,byte fault_byte4,byte fault_byte5,byte fault_byte6,byte fault_byte7,byte fault_byte8) 
         {
             var msg = new mavlink_lide_can_status6_t();
 
@@ -30926,6 +30928,8 @@ public partial class MAVLink
             msg.fault_byte4 = fault_byte4;
             msg.fault_byte5 = fault_byte5;
             msg.fault_byte6 = fault_byte6;
+            msg.fault_byte7 = fault_byte7;
+            msg.fault_byte8 = fault_byte8;
             
             return msg;
         }
@@ -30966,33 +30970,41 @@ public partial class MAVLink
         [Description(" 			  故障状态字节6 		  ")]
         //[FieldOffset(5)]
         public  byte fault_byte6;
+
+        /// <summary> 			  故障状态字节7 		     </summary>
+        [Units("")]
+        [Description(" 			  故障状态字节7 		  ")]
+        //[FieldOffset(6)]
+        public  byte fault_byte7;
+
+        /// <summary> 			  故障状态字节8 		     </summary>
+        [Units("")]
+        [Description(" 			  故障状态字节8 		  ")]
+        //[FieldOffset(7)]
+        public  byte fault_byte8;
     };
 
     
     /// extensions_start 0
-    [StructLayout(LayoutKind.Sequential,Pack=1,Size=18)]
-    ///<summary> 砺德CAN状态消息7 - 故障状态字节7-8和调整系数 </summary>
+    [StructLayout(LayoutKind.Sequential,Pack=1,Size=16)]
+    ///<summary> 砺德CAN状态消息7 - 调整系数 </summary>
     public struct mavlink_lide_can_status7_t
     {
         /// packet ordered constructor
-        public mavlink_lide_can_status7_t(float adjust_coefficient1,float adjust_coefficient2,float adjust_coefficient3,float adjust_coefficient4,byte fault_byte7,byte fault_byte8) 
+        public mavlink_lide_can_status7_t(float adjust_coefficient1,float adjust_coefficient2,float adjust_coefficient3,float adjust_coefficient4) 
         {
             this.adjust_coefficient1 = adjust_coefficient1;
             this.adjust_coefficient2 = adjust_coefficient2;
             this.adjust_coefficient3 = adjust_coefficient3;
             this.adjust_coefficient4 = adjust_coefficient4;
-            this.fault_byte7 = fault_byte7;
-            this.fault_byte8 = fault_byte8;
             
         }
         
         /// packet xml order
-        public static mavlink_lide_can_status7_t PopulateXMLOrder(byte fault_byte7,byte fault_byte8,float adjust_coefficient1,float adjust_coefficient2,float adjust_coefficient3,float adjust_coefficient4) 
+        public static mavlink_lide_can_status7_t PopulateXMLOrder(float adjust_coefficient1,float adjust_coefficient2,float adjust_coefficient3,float adjust_coefficient4) 
         {
             var msg = new mavlink_lide_can_status7_t();
 
-            msg.fault_byte7 = fault_byte7;
-            msg.fault_byte8 = fault_byte8;
             msg.adjust_coefficient1 = adjust_coefficient1;
             msg.adjust_coefficient2 = adjust_coefficient2;
             msg.adjust_coefficient3 = adjust_coefficient3;
@@ -31025,28 +31037,16 @@ public partial class MAVLink
         [Description(" 			  调整系数4 		  ")]
         //[FieldOffset(12)]
         public  float adjust_coefficient4;
-
-        /// <summary> 			  故障状态字节7 		     </summary>
-        [Units("")]
-        [Description(" 			  故障状态字节7 		  ")]
-        //[FieldOffset(16)]
-        public  byte fault_byte7;
-
-        /// <summary> 			  故障状态字节8 		     </summary>
-        [Units("")]
-        [Description(" 			  故障状态字节8 		  ")]
-        //[FieldOffset(17)]
-        public  byte fault_byte8;
     };
 
     
     /// extensions_start 0
-    [StructLayout(LayoutKind.Sequential,Pack=1,Size=35)]
+    [StructLayout(LayoutKind.Sequential,Pack=1,Size=37)]
     ///<summary> 砺德发动机汇总状态 </summary>
     public struct mavlink_lide_engine_summary_t
     {
         /// packet ordered constructor
-        public mavlink_lide_engine_summary_t(float cylinder_temp_max,float exhaust_temp_max,float fuel_pressure_target,float rail_pressure_target,float system_voltage,float engine_runtime_hours,ushort engine_rpm,ushort engine_runtime_minutes,ushort maintenance_time_remaining,byte engine_status,byte throttle_feedback,byte fault_count,byte maintenance_status,byte engine_health_score) 
+        public mavlink_lide_engine_summary_t(float cylinder_temp_max,float exhaust_temp_max,float fuel_pressure_target,float rail_pressure_target,float system_voltage,float engine_runtime_hours,ushort engine_rpm,ushort throttle_feedback,ushort engine_runtime_minutes,ushort engine_health_score,ushort maintenance_time_remaining,byte engine_status,byte fault_count,byte maintenance_status) 
         {
             this.cylinder_temp_max = cylinder_temp_max;
             this.exhaust_temp_max = exhaust_temp_max;
@@ -31055,18 +31055,18 @@ public partial class MAVLink
             this.system_voltage = system_voltage;
             this.engine_runtime_hours = engine_runtime_hours;
             this.engine_rpm = engine_rpm;
+            this.throttle_feedback = throttle_feedback;
             this.engine_runtime_minutes = engine_runtime_minutes;
+            this.engine_health_score = engine_health_score;
             this.maintenance_time_remaining = maintenance_time_remaining;
             this.engine_status = engine_status;
-            this.throttle_feedback = throttle_feedback;
             this.fault_count = fault_count;
             this.maintenance_status = maintenance_status;
-            this.engine_health_score = engine_health_score;
             
         }
         
         /// packet xml order
-        public static mavlink_lide_engine_summary_t PopulateXMLOrder(byte engine_status,ushort engine_rpm,byte throttle_feedback,float cylinder_temp_max,float exhaust_temp_max,float fuel_pressure_target,float rail_pressure_target,float system_voltage,float engine_runtime_hours,ushort engine_runtime_minutes,byte fault_count,byte maintenance_status,byte engine_health_score,ushort maintenance_time_remaining) 
+        public static mavlink_lide_engine_summary_t PopulateXMLOrder(byte engine_status,ushort engine_rpm,ushort throttle_feedback,float cylinder_temp_max,float exhaust_temp_max,float fuel_pressure_target,float rail_pressure_target,float system_voltage,float engine_runtime_hours,ushort engine_runtime_minutes,byte fault_count,byte maintenance_status,ushort engine_health_score,ushort maintenance_time_remaining) 
         {
             var msg = new mavlink_lide_engine_summary_t();
 
@@ -31131,47 +31131,47 @@ public partial class MAVLink
         //[FieldOffset(24)]
         public  ushort engine_rpm;
 
+        /// <summary> 			  油门反馈 (0-100%) 		     </summary>
+        [Units("")]
+        [Description(" 			  油门反馈 (0-100%) 		  ")]
+        //[FieldOffset(26)]
+        public  ushort throttle_feedback;
+
         /// <summary> 			  当前运行时间 (分钟) 		     </summary>
         [Units("")]
         [Description(" 			  当前运行时间 (分钟) 		  ")]
-        //[FieldOffset(26)]
+        //[FieldOffset(28)]
         public  ushort engine_runtime_minutes;
+
+        /// <summary> 			  健康度评分 (0-100) 		     </summary>
+        [Units("")]
+        [Description(" 			  健康度评分 (0-100) 		  ")]
+        //[FieldOffset(30)]
+        public  ushort engine_health_score;
 
         /// <summary> 			  剩余维护时间 (分钟) 		     </summary>
         [Units("")]
         [Description(" 			  剩余维护时间 (分钟) 		  ")]
-        //[FieldOffset(28)]
+        //[FieldOffset(32)]
         public  ushort maintenance_time_remaining;
 
         /// <summary> 			  发动机总体状态 (1:正常, 2:异常, 3:警告) 		     </summary>
         [Units("")]
         [Description(" 			  发动机总体状态 (1:正常, 2:异常, 3:警告) 		  ")]
-        //[FieldOffset(30)]
+        //[FieldOffset(34)]
         public  byte engine_status;
-
-        /// <summary> 			  油门反馈 (0-100%) 		     </summary>
-        [Units("")]
-        [Description(" 			  油门反馈 (0-100%) 		  ")]
-        //[FieldOffset(31)]
-        public  byte throttle_feedback;
 
         /// <summary> 			  故障数量 		     </summary>
         [Units("")]
         [Description(" 			  故障数量 		  ")]
-        //[FieldOffset(32)]
+        //[FieldOffset(35)]
         public  byte fault_count;
 
         /// <summary> 			  维保状态 		     </summary>
         [Units("")]
         [Description(" 			  维保状态 		  ")]
-        //[FieldOffset(33)]
+        //[FieldOffset(36)]
         public  byte maintenance_status;
-
-        /// <summary> 			  健康度评分 (0-100) 		     </summary>
-        [Units("")]
-        [Description(" 			  健康度评分 (0-100) 		  ")]
-        //[FieldOffset(34)]
-        public  byte engine_health_score;
     };
 
     

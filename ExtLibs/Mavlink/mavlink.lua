@@ -10594,7 +10594,7 @@ f.LIDE_CAN_STATUS1_engine_runtime_minutes = ProtoField.new("engine_runtime_minut
 f.LIDE_CAN_STATUS1_fuel_consumption_ml = ProtoField.new("fuel_consumption_ml (uint16_t)", "mavlink_proto.LIDE_CAN_STATUS1_fuel_consumption_ml", ftypes.UINT16, nil)
 f.LIDE_CAN_STATUS1_fuel_rate_instant = ProtoField.new("fuel_rate_instant (float)", "mavlink_proto.LIDE_CAN_STATUS1_fuel_rate_instant", ftypes.FLOAT, nil)
 
-f.LIDE_CAN_STATUS2_throttle_feedback = ProtoField.new("throttle_feedback (uint8_t)", "mavlink_proto.LIDE_CAN_STATUS2_throttle_feedback", ftypes.UINT8, nil)
+f.LIDE_CAN_STATUS2_throttle_feedback = ProtoField.new("throttle_feedback (uint16_t)", "mavlink_proto.LIDE_CAN_STATUS2_throttle_feedback", ftypes.UINT16, nil)
 f.LIDE_CAN_STATUS2_engine_rpm = ProtoField.new("engine_rpm (uint16_t)", "mavlink_proto.LIDE_CAN_STATUS2_engine_rpm", ftypes.UINT16, nil)
 f.LIDE_CAN_STATUS2_cylinder_temp_1 = ProtoField.new("cylinder_temp_1 (float)", "mavlink_proto.LIDE_CAN_STATUS2_cylinder_temp_1", ftypes.FLOAT, nil)
 f.LIDE_CAN_STATUS2_cylinder_temp_2 = ProtoField.new("cylinder_temp_2 (float)", "mavlink_proto.LIDE_CAN_STATUS2_cylinder_temp_2", ftypes.FLOAT, nil)
@@ -10632,9 +10632,9 @@ f.LIDE_CAN_STATUS6_fault_byte3 = ProtoField.new("fault_byte3 (uint8_t)", "mavlin
 f.LIDE_CAN_STATUS6_fault_byte4 = ProtoField.new("fault_byte4 (uint8_t)", "mavlink_proto.LIDE_CAN_STATUS6_fault_byte4", ftypes.UINT8, nil)
 f.LIDE_CAN_STATUS6_fault_byte5 = ProtoField.new("fault_byte5 (uint8_t)", "mavlink_proto.LIDE_CAN_STATUS6_fault_byte5", ftypes.UINT8, nil)
 f.LIDE_CAN_STATUS6_fault_byte6 = ProtoField.new("fault_byte6 (uint8_t)", "mavlink_proto.LIDE_CAN_STATUS6_fault_byte6", ftypes.UINT8, nil)
+f.LIDE_CAN_STATUS6_fault_byte7 = ProtoField.new("fault_byte7 (uint8_t)", "mavlink_proto.LIDE_CAN_STATUS6_fault_byte7", ftypes.UINT8, nil)
+f.LIDE_CAN_STATUS6_fault_byte8 = ProtoField.new("fault_byte8 (uint8_t)", "mavlink_proto.LIDE_CAN_STATUS6_fault_byte8", ftypes.UINT8, nil)
 
-f.LIDE_CAN_STATUS7_fault_byte7 = ProtoField.new("fault_byte7 (uint8_t)", "mavlink_proto.LIDE_CAN_STATUS7_fault_byte7", ftypes.UINT8, nil)
-f.LIDE_CAN_STATUS7_fault_byte8 = ProtoField.new("fault_byte8 (uint8_t)", "mavlink_proto.LIDE_CAN_STATUS7_fault_byte8", ftypes.UINT8, nil)
 f.LIDE_CAN_STATUS7_adjust_coefficient1 = ProtoField.new("adjust_coefficient1 (float)", "mavlink_proto.LIDE_CAN_STATUS7_adjust_coefficient1", ftypes.FLOAT, nil)
 f.LIDE_CAN_STATUS7_adjust_coefficient2 = ProtoField.new("adjust_coefficient2 (float)", "mavlink_proto.LIDE_CAN_STATUS7_adjust_coefficient2", ftypes.FLOAT, nil)
 f.LIDE_CAN_STATUS7_adjust_coefficient3 = ProtoField.new("adjust_coefficient3 (float)", "mavlink_proto.LIDE_CAN_STATUS7_adjust_coefficient3", ftypes.FLOAT, nil)
@@ -10642,7 +10642,7 @@ f.LIDE_CAN_STATUS7_adjust_coefficient4 = ProtoField.new("adjust_coefficient4 (fl
 
 f.LIDE_ENGINE_SUMMARY_engine_status = ProtoField.new("engine_status (uint8_t)", "mavlink_proto.LIDE_ENGINE_SUMMARY_engine_status", ftypes.UINT8, nil)
 f.LIDE_ENGINE_SUMMARY_engine_rpm = ProtoField.new("engine_rpm (uint16_t)", "mavlink_proto.LIDE_ENGINE_SUMMARY_engine_rpm", ftypes.UINT16, nil)
-f.LIDE_ENGINE_SUMMARY_throttle_feedback = ProtoField.new("throttle_feedback (uint8_t)", "mavlink_proto.LIDE_ENGINE_SUMMARY_throttle_feedback", ftypes.UINT8, nil)
+f.LIDE_ENGINE_SUMMARY_throttle_feedback = ProtoField.new("throttle_feedback (uint16_t)", "mavlink_proto.LIDE_ENGINE_SUMMARY_throttle_feedback", ftypes.UINT16, nil)
 f.LIDE_ENGINE_SUMMARY_cylinder_temp_max = ProtoField.new("cylinder_temp_max (float)", "mavlink_proto.LIDE_ENGINE_SUMMARY_cylinder_temp_max", ftypes.FLOAT, nil)
 f.LIDE_ENGINE_SUMMARY_exhaust_temp_max = ProtoField.new("exhaust_temp_max (float)", "mavlink_proto.LIDE_ENGINE_SUMMARY_exhaust_temp_max", ftypes.FLOAT, nil)
 f.LIDE_ENGINE_SUMMARY_fuel_pressure_target = ProtoField.new("fuel_pressure_target (float)", "mavlink_proto.LIDE_ENGINE_SUMMARY_fuel_pressure_target", ftypes.FLOAT, nil)
@@ -10652,7 +10652,7 @@ f.LIDE_ENGINE_SUMMARY_engine_runtime_hours = ProtoField.new("engine_runtime_hour
 f.LIDE_ENGINE_SUMMARY_engine_runtime_minutes = ProtoField.new("engine_runtime_minutes (uint16_t)", "mavlink_proto.LIDE_ENGINE_SUMMARY_engine_runtime_minutes", ftypes.UINT16, nil)
 f.LIDE_ENGINE_SUMMARY_fault_count = ProtoField.new("fault_count (uint8_t)", "mavlink_proto.LIDE_ENGINE_SUMMARY_fault_count", ftypes.UINT8, nil)
 f.LIDE_ENGINE_SUMMARY_maintenance_status = ProtoField.new("maintenance_status (uint8_t)", "mavlink_proto.LIDE_ENGINE_SUMMARY_maintenance_status", ftypes.UINT8, nil)
-f.LIDE_ENGINE_SUMMARY_engine_health_score = ProtoField.new("engine_health_score (uint8_t)", "mavlink_proto.LIDE_ENGINE_SUMMARY_engine_health_score", ftypes.UINT8, nil)
+f.LIDE_ENGINE_SUMMARY_engine_health_score = ProtoField.new("engine_health_score (uint16_t)", "mavlink_proto.LIDE_ENGINE_SUMMARY_engine_health_score", ftypes.UINT16, nil)
 f.LIDE_ENGINE_SUMMARY_maintenance_time_remaining = ProtoField.new("maintenance_time_remaining (uint16_t)", "mavlink_proto.LIDE_ENGINE_SUMMARY_maintenance_time_remaining", ftypes.UINT16, nil)
 
 f.UAVIONIX_ADSB_OUT_CFG_ICAO = ProtoField.new("ICAO (uint32_t)", "mavlink_proto.UAVIONIX_ADSB_OUT_CFG_ICAO", ftypes.UINT32, nil)
@@ -52338,17 +52338,17 @@ end
 -- dissect payload of message type LIDE_CAN_STATUS2
 function payload_fns.payload_12923(buffer, tree, msgid, offset, limit, pinfo)
     local padded, field_offset, value, subtree, tvbrange
-    if (offset + 19 > limit) then
+    if (offset + 20 > limit) then
         padded = buffer(0, limit):bytes()
-        padded:set_size(offset + 19)
+        padded:set_size(offset + 20)
         padded = padded:tvb("Untruncated payload")
     else
         padded = buffer
     end
-    tvbrange = padded(offset + 18, 1)
+    tvbrange = padded(offset + 16, 2)
     value = tvbrange:le_uint()
     subtree = tree:add_le(f.LIDE_CAN_STATUS2_throttle_feedback, tvbrange, value)
-    tvbrange = padded(offset + 16, 2)
+    tvbrange = padded(offset + 18, 2)
     value = tvbrange:le_uint()
     subtree = tree:add_le(f.LIDE_CAN_STATUS2_engine_rpm, tvbrange, value)
     tvbrange = padded(offset + 0, 4)
@@ -52466,9 +52466,9 @@ end
 -- dissect payload of message type LIDE_CAN_STATUS6
 function payload_fns.payload_12927(buffer, tree, msgid, offset, limit, pinfo)
     local padded, field_offset, value, subtree, tvbrange
-    if (offset + 6 > limit) then
+    if (offset + 8 > limit) then
         padded = buffer(0, limit):bytes()
-        padded:set_size(offset + 6)
+        padded:set_size(offset + 8)
         padded = padded:tvb("Untruncated payload")
     else
         padded = buffer
@@ -52491,23 +52491,23 @@ function payload_fns.payload_12927(buffer, tree, msgid, offset, limit, pinfo)
     tvbrange = padded(offset + 5, 1)
     value = tvbrange:le_uint()
     subtree = tree:add_le(f.LIDE_CAN_STATUS6_fault_byte6, tvbrange, value)
+    tvbrange = padded(offset + 6, 1)
+    value = tvbrange:le_uint()
+    subtree = tree:add_le(f.LIDE_CAN_STATUS6_fault_byte7, tvbrange, value)
+    tvbrange = padded(offset + 7, 1)
+    value = tvbrange:le_uint()
+    subtree = tree:add_le(f.LIDE_CAN_STATUS6_fault_byte8, tvbrange, value)
 end
 -- dissect payload of message type LIDE_CAN_STATUS7
 function payload_fns.payload_12928(buffer, tree, msgid, offset, limit, pinfo)
     local padded, field_offset, value, subtree, tvbrange
-    if (offset + 18 > limit) then
+    if (offset + 16 > limit) then
         padded = buffer(0, limit):bytes()
-        padded:set_size(offset + 18)
+        padded:set_size(offset + 16)
         padded = padded:tvb("Untruncated payload")
     else
         padded = buffer
     end
-    tvbrange = padded(offset + 16, 1)
-    value = tvbrange:le_uint()
-    subtree = tree:add_le(f.LIDE_CAN_STATUS7_fault_byte7, tvbrange, value)
-    tvbrange = padded(offset + 17, 1)
-    value = tvbrange:le_uint()
-    subtree = tree:add_le(f.LIDE_CAN_STATUS7_fault_byte8, tvbrange, value)
     tvbrange = padded(offset + 0, 4)
     value = tvbrange:le_float()
     subtree = tree:add_le(f.LIDE_CAN_STATUS7_adjust_coefficient1, tvbrange, value)
@@ -52524,20 +52524,20 @@ end
 -- dissect payload of message type LIDE_ENGINE_SUMMARY
 function payload_fns.payload_12929(buffer, tree, msgid, offset, limit, pinfo)
     local padded, field_offset, value, subtree, tvbrange
-    if (offset + 35 > limit) then
+    if (offset + 37 > limit) then
         padded = buffer(0, limit):bytes()
-        padded:set_size(offset + 35)
+        padded:set_size(offset + 37)
         padded = padded:tvb("Untruncated payload")
     else
         padded = buffer
     end
-    tvbrange = padded(offset + 30, 1)
+    tvbrange = padded(offset + 34, 1)
     value = tvbrange:le_uint()
     subtree = tree:add_le(f.LIDE_ENGINE_SUMMARY_engine_status, tvbrange, value)
     tvbrange = padded(offset + 24, 2)
     value = tvbrange:le_uint()
     subtree = tree:add_le(f.LIDE_ENGINE_SUMMARY_engine_rpm, tvbrange, value)
-    tvbrange = padded(offset + 31, 1)
+    tvbrange = padded(offset + 26, 2)
     value = tvbrange:le_uint()
     subtree = tree:add_le(f.LIDE_ENGINE_SUMMARY_throttle_feedback, tvbrange, value)
     tvbrange = padded(offset + 0, 4)
@@ -52558,19 +52558,19 @@ function payload_fns.payload_12929(buffer, tree, msgid, offset, limit, pinfo)
     tvbrange = padded(offset + 20, 4)
     value = tvbrange:le_float()
     subtree = tree:add_le(f.LIDE_ENGINE_SUMMARY_engine_runtime_hours, tvbrange, value)
-    tvbrange = padded(offset + 26, 2)
+    tvbrange = padded(offset + 28, 2)
     value = tvbrange:le_uint()
     subtree = tree:add_le(f.LIDE_ENGINE_SUMMARY_engine_runtime_minutes, tvbrange, value)
-    tvbrange = padded(offset + 32, 1)
+    tvbrange = padded(offset + 35, 1)
     value = tvbrange:le_uint()
     subtree = tree:add_le(f.LIDE_ENGINE_SUMMARY_fault_count, tvbrange, value)
-    tvbrange = padded(offset + 33, 1)
+    tvbrange = padded(offset + 36, 1)
     value = tvbrange:le_uint()
     subtree = tree:add_le(f.LIDE_ENGINE_SUMMARY_maintenance_status, tvbrange, value)
-    tvbrange = padded(offset + 34, 1)
+    tvbrange = padded(offset + 30, 2)
     value = tvbrange:le_uint()
     subtree = tree:add_le(f.LIDE_ENGINE_SUMMARY_engine_health_score, tvbrange, value)
-    tvbrange = padded(offset + 28, 2)
+    tvbrange = padded(offset + 32, 2)
     value = tvbrange:le_uint()
     subtree = tree:add_le(f.LIDE_ENGINE_SUMMARY_maintenance_time_remaining, tvbrange, value)
 end
