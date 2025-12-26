@@ -613,7 +613,7 @@
 	    <value>0</value>
     </data>
     <data name="BUT_LIDE_ENGINE.Text" xml:space="preserve">
-    <value>send_TCP</value>
+    <value>LIDE_ENGINE</value>
     </data>
     <data name="&gt;&gt;BUT_LIDE_ENGINE.Name" xml:space="preserve">
     <value>BUT_LIDE_ENGINE</value>
