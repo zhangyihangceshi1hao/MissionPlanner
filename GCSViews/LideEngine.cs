@@ -684,8 +684,19 @@ namespace MissionPlanner.GCSViews
                         controlCommand |= 0x08; // Bit3 = 1
                         break;
                 }
+                // 添加有效位设置（根据复选框状态）
+                if (isStartValid)     // Bit4: 启动指令有效
+                    controlCommand |= 0x10; // 00010000
 
-              
+                if (isHeatingValid)   // Bit5: 加热指令有效
+                    controlCommand |= 0x20; // 00100000
+
+                if (isAltitudeValid)  // Bit6: 海拔字节有效
+                    controlCommand |= 0x40; // 01000000
+
+                if (isAirspeedValid)  // Bit7: 空速字节有效
+                    controlCommand |= 0x80; // 10000000
+
 
                 // ========== MAVLink转换部分 ==========
 
