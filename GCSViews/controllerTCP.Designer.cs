@@ -83,7 +83,7 @@
             this.myButton3.Name = "myButton3";
             this.myButton3.Size = new System.Drawing.Size(100, 26);
             this.myButton3.TabIndex = 3;
-            this.myButton3.Text = "开始侦察";
+            this.myButton3.Text = "启动服务";
             this.myButton3.TextColorNotEnabled = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(87)))), ((int)(((byte)(4)))));
             this.myButton3.UseVisualStyleBackColor = true;
             this.myButton3.Click += new System.EventHandler(this.myButton3_Click);
