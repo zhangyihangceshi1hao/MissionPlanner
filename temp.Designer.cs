@@ -151,6 +151,10 @@
             this.label56 = new System.Windows.Forms.Label();
             this.label57 = new System.Windows.Forms.Label();
             this.label58 = new System.Windows.Forms.Label();
+
+            this.but_relay_station = new MissionPlanner.Controls.MyButton();
+            this.label_relay_station = new System.Windows.Forms.Label();
+
             this.controlSensorsStatus1 = new MissionPlanner.Controls.ControlSensorsStatus();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
@@ -280,6 +284,17 @@
             this.tableLayoutPanel1.Controls.Add(this.label56, 3, 30);
             this.tableLayoutPanel1.Controls.Add(this.label57, 1, 30);
             this.tableLayoutPanel1.Controls.Add(this.label58, 1, 31);
+
+            // 放在左列 col=0, row=32
+            this.tableLayoutPanel1.Controls.Add(this.but_relay_station, 0, 32);
+            // 说明文字放在 col=1, row=32
+            this.tableLayoutPanel1.Controls.Add(this.label_relay_station, 1, 32);
+
+            // 在 tableLayoutPanel1 配置区追加这两行：
+            this.tableLayoutPanel1.AutoScroll = true;
+            this.tableLayoutPanel1.AutoSize = true;
+            this.tableLayoutPanel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             // 
             // BUT_forcecal_accel
@@ -1074,6 +1089,25 @@
             resources.ApplyResources(this.label58, "label58");
             this.label58.Name = "label58";
             // 
+            // but_relay_station
+            // 
+            this.but_relay_station.Name = "but_relay_station";
+            this.but_relay_station.Text = "中继站";
+            this.but_relay_station.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.but_relay_station.BackColor = System.Drawing.Color.FromArgb(64, 87, 4);
+            this.but_relay_station.ForeColor = System.Drawing.Color.White;
+            this.but_relay_station.TextColorNotEnabled = System.Drawing.Color.FromArgb(64, 87, 4);
+            this.but_relay_station.UseVisualStyleBackColor = true;
+            this.but_relay_station.Click += new System.EventHandler(this.but_relay_station_Click);
+            // 
+            // label_relay_station
+            // 
+            this.label_relay_station.Name = "label_relay_station";
+            this.label_relay_station.Text = "无人机数据中继站：发送控制指令与接收回传数据";
+            this.label_relay_station.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label_relay_station.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.label_relay_station.AutoSize = false;
+            // 
             // controlSensorsStatus1
             // 
             resources.ApplyResources(this.controlSensorsStatus1, "controlSensorsStatus1");
@@ -1082,6 +1116,7 @@
             // temp
             // 
             resources.ApplyResources(this, "$this");
+            this.AutoScroll = true;
             this.Controls.Add(this.controlSensorsStatus1);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Name = "temp";
@@ -1220,5 +1255,8 @@
         private Controls.MyButton BUT_forcecal_mag;
         private System.Windows.Forms.Label label57;
         private System.Windows.Forms.Label label58;
+
+        private Controls.MyButton but_relay_station;
+        private System.Windows.Forms.Label label_relay_station;
     }
 }

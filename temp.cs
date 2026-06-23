@@ -1424,5 +1424,27 @@ namespace MissionPlanner
                 CustomMessageBox.Show(ex.ToString(), Strings.ERROR);
             }
         }
+
+        private void but_relay_station_Click(object sender, EventArgs e)
+        {
+            var form = new Form
+            {
+                Text = "无人机数据中继站",
+                Width = 680,
+                Height = 660,
+                StartPosition = FormStartPosition.CenterScreen,
+                MinimizeBox = true,
+                MaximizeBox = true
+            };
+
+            var ctrl = new MissionPlanner.GCSViews.Actions_RelayStation
+            {
+                Dock = DockStyle.Fill
+            };
+
+            form.Controls.Add(ctrl);
+            form.FormClosing += (s, ev) => ctrl.Dispose();
+            form.Show();
+        }
     }
 }

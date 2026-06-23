@@ -1364,7 +1364,7 @@ Mission Planner waits for 2 valid heartbeat packets before connecting
 
                 if (BaseStream.IsOpen)
                 {
-                    if (messageType == 12921)
+                    if (messageType == 86)
                     {
 
                         byte[] data1 = MavlinkUtil.StructureToByteArray(indata);
